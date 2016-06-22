@@ -1,0 +1,319 @@
+<dom-module id='search-users'>
+  <template>
+  <style include='view-styles'></style>
+  <style include='houseme-styles'></style>
+<!--
+  <style include='iron-flex'></style> -->
+
+  <style>
+      :host {
+        display: block;
+      }
+
+  		paper-button {
+        width: 100%;
+  		}
+
+    	section {
+        background: var(--grey);
+        margin-top: 20px;
+        margin-bottom: 20px;
+    		padding: 30px;
+    	}
+
+      img {
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+
+
+    	.description {
+    		font-weight: 500;
+
+    	}
+
+      iron-icon {
+        /*margin: 0 3px;*/
+        /*margin: 10px 0;*/
+        margin: 0px;
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+      }
+
+      .green {
+        color: var(--green);
+      }
+
+      .row-eq-height{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+      }
+
+      .perks {
+        line-height: 30px;
+      }
+
+      .warning {
+        @apply(--fixed-view);
+        @apply(--layout);
+        @apply(--layout-center-center);
+        background: rgba(0, 0, 0, 0.9);
+      }
+
+      .warning a {
+        text-decoration: none;
+        border-bottom: 2px solid white;
+        padding-bottom: 3px;
+        color: white;
+      }
+
+      .warning a:hover {
+        color: var(--orange);
+        border-color: var(--orange);
+      }
+
+      hero1 {
+        color: white;
+        text-align: center;
+        line-height: 1.4;
+        margin: 0 20px;
+      }
+
+      .center {
+      }
+
+      .perks {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+        /*padding-top: 10px;*/
+        /*padding-bottom: 10px;*/
+        color: var(--red);
+      }
+
+
+      article {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        /*@apply(--layout-justified);*/
+        /*padding-top: 10px;*/
+        /*padding-bottom: 10px;*/
+      }
+
+      article span {
+        @apply(--layout-flex);
+        /*@apply(--layout-horizon tal);*/
+      }
+
+
+      .card-actions {
+        padding: 15px;
+      }
+
+      paper-tooltip {
+        --paper-tooltip-background: var(--orange);
+        --paper-tooltip-opacity: 1;
+      }
+
+      iron-icon {
+        @apply(--layout-flex);
+      }
+
+      header {
+        @apply(--layout-horizontal);
+        margin-bottom: 10px;
+      }
+
+      paper-card {
+        margin:20px 0;
+        width: 100%;
+      }
+
+
+
+      paper-dialog {
+        padding: 20px;
+      }
+
+
+      fsn-messaging-input {
+        margin-top: 20px;
+      }
+
+    </style>
+
+    <app-location path={{path}}></app-location>
+    <!-- <platinum-push-messaging message-url="../notification-data.json"></platinum-push-messaging> -->
+<!--
+    <platinum-push-messaging
+      title="Application updated"
+      message="The application was updated in the background"
+      icon-url="icon.png"
+      click-url="notification.html">
+    </platinum-push-messaging>
+ -->
+
+    <div hidden$=[[loggedIn]] class='warning layout center'>
+      <hero1>Please <a href='/signup'>log in or sign up</a> to start looking for roommates.</hero1>
+    </div>
+
+    <div hidden$=[[!loggedIn]]>
+      <div hidden$=[[user.profile.active]] class='warning layout center'>
+        <hero1>Please fill in <a href='/profile'>your profile</a> to start looking for people.</hero1>
+      </div>
+    </div>
+
+    <template is='dom-if' if=[[user.profile.active]]>
+
+      <div class='container'>
+        <template is='dom-repeat' items='[[users]]'>
+        <!-- <iron-list grid id='users' items='[[users]]'> -->
+          <!-- <template> -->
+
+
+          <paper-card elevation='3'>
+              <div class='card-content'>
+                <header>
+                  <img src='http://graph.facebook.com/[[item.services.facebook.id]]/picture?type=square' />
+                  <h1>[[item.services.facebook.first_name]]</h1>
+                </header>
+                <main>
+                  <p>Looking for roomies in <strong>[[item.profile.details.moving_to]]</strong>
+                  for <strong>[[item.profile.details.duration_of_stay]] months</strong>,
+                  starting <strong>[[item.profile.details.move_in_date]]</strong>
+                  for around
+                  <strong>[[item.profile.details.minimum_budget]]&thinsp;&ndash;&thinsp;[[item.profile.details.maximum_budget]] ₱ each</strong>.</p>
+                </main>
+              </div>
+              <div class='card-actions' on-tap='toggleInfo'>
+                <article>
+                  <span>Read this profile description</span>
+                  <paper-icon-button icon='fsn:arrow-up'></paper-icon-button>
+                </article>
+                <iron-collapse>
+                  [[item.profile.introduction]]
+                </iron-collapse>
+              </div>
+              <div class='card-actions perks'>
+                <div class$=[[perkClass(item.profile.perks.party)]]>
+                  <iron-icon icon='fsn:party'></iron-icon>
+                  <paper-tooltip position='top' offset='5'>Party Person</paper-tooltip>
+                  <span class='hidden-xs-down'>Party Person</span>
+                </div>
+                <div class$=[[perkClass(item.profile.perks.pets)]]>
+                  <iron-icon icon='fsn:pets'></iron-icon>
+                  <paper-tooltip position='top' offset='5'>Pet Person</paper-tooltip>
+                  <span class='hidden-xs-down'>Pet Person</span>
+                </div>
+                <div class$=[[perkClass(item.profile.perks.smoker)]]>
+                  <iron-icon icon='fsn:smoker'></iron-icon>
+                  <paper-tooltip position='top' offset='5'>Smoker</paper-tooltip>
+                  <span class='hidden-xs-down'>Smoker</span>
+                </div>
+                <div class$=[[perkClass(item.profile.perks.messy)]]>
+                  <iron-icon icon='fsn:messy'></iron-icon>
+                  <paper-tooltip position='top' offset='5'>Messy</paper-tooltip>
+                  <span class='hidden-xs-down'>Messy</span>
+                </div>
+              </div>
+              <div class='card-actions'>
+                  <paper-button full-width on-tap='sendMessage'>send a message</paper-button>
+              </div>
+          </paper-card>
+
+
+          <!-- </template> -->
+        <!-- </iron-list> -->
+        </template>
+
+        <paper-dialog class='container' with-backdrop>
+          <h1>Send a message</h1>
+          <fsn-messaging-input other-user-id=[[otherUserId]]></fsn-messaging-input>
+        </paper-dialog>
+
+      </div>
+    </template>
+
+
+
+  </template>
+</dom-module>
+
+
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-button/paper-button.html');
+  require('@polymer/paper-card/paper-card.html');
+  require('@polymer/paper-tooltip/paper-tooltip.html');
+  require('@polymer/paper-icon-button/paper-icon-button.html');
+  require('@polymer/iron-collapse/iron-collapse.html');
+  require('@polymer/iron-list/iron-list.html');
+  require('@polymer/app-route/app-location.html');
+  require('@polymer/iron-icon/iron-icon.html');
+  require('@polymer/iron-flex-layout/iron-flex-layout.html');
+
+
+
+  require('@polymer/paper-dialog/paper-dialog.html');
+  require('@andreasgalster/fsn-messaging-input/dist/fsn-messaging-input.html');
+  // require('@polymer/platinum-push-messaging/platinum-push-messaging.html');
+
+
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
+
+  Polymer({
+    is: 'search-users',
+    properties: {
+      otherUserId: {
+        type: String,
+        notify: true,
+      },
+      user: {
+        type: Object
+      },
+      loggedIn: {
+        type: Boolean
+      }
+    },
+
+    behaviors:[mwcMixin],
+
+
+    // Subscribe to data. Once data is ready, set dynamic meta tags
+    attached: function() {
+      // this.subscription = Meteor.subscribe('usersTeaser');
+      this.subscribe('usersTeaser');
+    },
+    // close the current description when view gets deleted
+    detached: function() {
+      // this.subscription.stop();
+    },
+    tracker: function() {
+      var user = Meteor.user();
+      this.user = user;
+      this.loggedIn = (user != null);
+      this.users = Meteor.users.find().fetch();
+    },
+    perkClass: function(perk) {
+      return perk ? 'green' : '';
+    },
+    toggleInfo: function(e) {
+      let ironCollapse = e.currentTarget.querySelector('iron-collapse');
+      let iconButton = e.currentTarget.querySelector('paper-icon-button');
+      iconButton = ironCollapse.opened  ? 'fsn:arrow-up' : 'fsn:arrow-down';
+      ironCollapse.toggle();
+    },
+    sendMessage: function(e) {
+      this.otherUserId = e.model.item._id;
+      this.$$('paper-dialog').toggle();
+      console.log(`yo ${this.otherUserId}`);
+      // this.path = '/messages';
+    },
+
+  });
+
+</script>

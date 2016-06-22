@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="../../bower/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower/iron-flex-layout/iron-flex-layout-classes.html">
+
+
+<link rel="import" href="../../bower/paper-button/paper-button.html">
+<link rel="import" href="../../bower/iron-icon/iron-icon.html">
+<link rel="import" href="../../custom-icons.html">
+
+
+
+<dom-module id="payment-product-gif">
+
+  <template>
+    <style>
+
+      iron-image {
+        width: 100px;
+        padding-bottom: 15%;
+      }
+
+    </style>
+
+    <paper-dialog entry-animation="fade-in-animation" exit-animation="fade-out-animation" with-backdrop always-on-top>
+      <section>
+        <iron-image preload sizing='cover' placeholder='[[base]]w_40,q_10,e_blur:600[[info.url]].gif' src='[[base]]w_400,q_70[[info.url]].gif'></iron-image>
+
+        <h1>[[info.title]]</h1>
+        <p>[[info.description]]</p>
+
+        <paper-button on-tap="pay">
+          <iron-icon icon='pigments:verified-user'></iron-icon>
+          Pay <span>{{payments.total}}</span> PHP
+        </paper-button>
+
+      </section>
+    </paper-dialog>
+
+  </template>
+
+</dom-module>

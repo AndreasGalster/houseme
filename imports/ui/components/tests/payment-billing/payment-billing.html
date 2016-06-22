@@ -1,0 +1,163 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="../../pigments-styles.html">
+
+<link rel="import" href="../../bower/iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="../../bower/paper-material/paper-material.html">
+<link rel="import" href="../../bower/paper-input/paper-input.html">
+<link rel="import" href="../../bower/paper-button/paper-button.html">
+<link rel="import" href="../../bower/iron-icon/iron-icon.html">
+
+<link rel="import" href="../../bower/paper-checkbox/paper-checkbox.html">
+
+
+<dom-module id="payment-billing">
+
+
+
+
+  <template>
+    <style include="pigments-styles"></style>
+    <style include="iron-flex"></style>
+    <style>
+      :host {
+        background: white;
+        padding: var(--pigments-padding-lg);
+        margin:0;
+      }
+    </style>
+
+
+    <paper-material class='container'>
+      <header>
+        <h1>Billing & Shipping</h1>
+      </header>
+
+      <section>
+
+        <div class='col-xs-5'>
+          <h4>Billing Address</h4>
+          <paper-input
+            name="company"
+            label="Your company (optional)"
+            autocomplete="company"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="firstName"
+            label="Your first name"
+            autocomplete="firstName"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="lastName"
+            label="Your last name"
+            autocomplete="lastName"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="streetAddress"
+            label="Your street address"
+            autocomplete="streetAddress"
+            allowed-pattern="[A-Z a-z 0-9]">
+          </paper-input>
+
+          <paper-input
+            name="extendedAddress"
+            label="Additional address details"
+            autocomplete="extendedAddress"
+            allowed-pattern="[A-Z a-z 0-9]">
+          </paper-input>
+
+          <paper-input
+            name="locality"
+            label="Your city"
+            autocomplete="locality"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="countryName"
+            label="Your country"
+            autocomplete="countryName"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+        </div>
+
+        <div class='col-xs-5 col-xs-offset-2'>
+          <h4>Shipping Address</h4>
+
+          <paper-checkbox checked={{isSameAsBilling}}>Same as billing address</paper-checkbox>
+
+          <paper-input
+            name="company"
+            label="Your company (optional)"
+            autocomplete="company"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="firstName"
+            label="Your first name"
+            autocomplete="firstName"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="lastName"
+            label="Your last name"
+            autocomplete="lastName"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="streetAddress"
+            label="Your street address"
+            autocomplete="streetAddress"
+            allowed-pattern="[A-Z a-z 0-9]">
+          </paper-input>
+
+          <paper-input
+            name="extendedAddress"
+            label="Additional address details"
+            autocomplete="extendedAddress"
+            allowed-pattern="[A-Z a-z 0-9]">
+          </paper-input>
+
+          <paper-input
+            name="locality"
+            label="Your city"
+            autocomplete="locality"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+
+          <paper-input
+            name="countryName"
+            label="Your country"
+            autocomplete="countryName"
+            allowed-pattern="[A-Z a-z]">
+          </paper-input>
+        </div>
+
+      </section>
+
+      <!-- company
+      firstName
+      lastName
+      streetAddress
+      extendedAddress
+      locality
+      region
+      countryName
+      countryCodeAlpha2 -->
+
+
+    </paper-material>
+
+
+  </template>
+
+</dom-module>

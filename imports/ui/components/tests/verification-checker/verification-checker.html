@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+
+<link rel="import" href="../../pigments-styles.html">
+
+
+<link rel="import" href="../../bower/meteor-elements/meteor-user.html">
+
+<link rel="import" href="../../bower/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower/paper-button/paper-button.html">
+<link rel="import" href="../../bower/paper-toast/paper-toast.html">
+
+
+<dom-module id="verification-checker">
+
+  <template>
+    <style is="custom-style" include="pigments-styles iron-positioning iron-flex-alignment iron-flex"></style>
+    <style>
+      :host {
+      }
+
+      div.header {
+        background: #F3B421;
+        padding: 10px 20px;
+      }
+
+      h1 {
+        font-size: 13px;
+      }
+
+      paper-button {
+        --paper-button-ink-color: white;
+        background: rgba(255,255,255,0.3);
+      }
+    </style>
+
+
+    <meteor-user logged-in={{loggedIn}} user={{user}}></meteor-user>
+    <iron-media-query query="(max-width:600px)" query-matches="{{isMaximum600}}"></iron-media-query>
+
+    <template is='dom-if' if=[[!user.emails.0.verified]]>
+      <div class$='header {{isFixedBottom(fixedBottom)}}'>
+        <h1 class='black'>Your account isn't verified yet. Please click the link we have emailed you.</h1>
+        <paper-button class='black' full$=[[isMaximum600]] on-tap='sendVerificationEmail'>Resend verification email</paper-button>
+      </div>
+    </template>
+
+    <paper-toast class='horizontal layout fixed-bottom' duration="7000">
+      <div class='flex'>[[toastMessage]]</div>
+      <paper-button no-ink on-tap="close">Close</paper-button>
+    </paper-toast>
+
+
+
+  </template>
+
+</dom-module>

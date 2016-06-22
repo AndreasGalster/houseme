@@ -1,0 +1,204 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="../../pigments-styles.html">
+
+<link rel="import" href="../../bower/paper-dialog/paper-dialog.html">
+
+
+<link rel="import" href="../../bower/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower/paper-input/paper-input.html">
+<link rel="import" href="../../bower/gold-cc-input/gold-cc-input.html">
+<link rel="import" href="../../bower/gold-cc-expiration-input/gold-cc-expiration-input.html">
+<link rel="import" href="../../bower/gold-cc-cvc-input/gold-cc-cvc-input.html">
+<link rel="import" href="../../bower/paper-button/paper-button.html">
+<link rel="import" href="../../bower/iron-icon/iron-icon.html">
+
+
+
+<dom-module id="payment-methods">
+
+
+
+
+  <template>
+    <style include="pigments-styles"></style>
+    <style include="iron-flex"></style>
+    <style>
+      :host {
+        background: var(--pigments-gray-50);
+        padding: var(--pigments-padding-lg);
+        margin:0;
+      }
+
+      #cards {
+        margin-right: -20px;
+        margin-left: -20px;
+      }
+
+      #cards img {
+        margin: 20px 0;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+      }
+      #delivery,
+      #pay {
+        padding: 0 20px 20px;
+      }
+      #delivery paper-button iron-icon,
+      #pay paper-button iron-icon {
+        margin-right: 5px;
+      }
+      paper-tabs {
+        background: #384555;
+        margin: 0 -20px;
+        padding: 0;
+      }
+      h2 {
+        color: #3896ed;
+        font-size: 18px;
+        margin: 0;
+        margin-top: -3px;
+      }
+
+      paper-input,
+      gold-cc-input {
+        margin-bottom: 25px;
+      }
+      gold-cc-expiration-input {
+        padding-left: 0 !important;
+      }
+      gold-cc-cvc-input {
+        padding-right: 0 !important;
+      }
+
+      .subtotal-item div,
+      .tax-item div,
+      .total-item div {
+        color: #384555 !important;
+      }
+      #summary .price {
+        margin-left: 10px;
+      }
+      #summary {
+        margin: 15px 0;
+      }
+      p {
+        color: #3896ed;
+        font-size: 17px;
+        text-align: center;
+        margin: 10px 0 15px;
+        font-weight: 500;
+      }
+      .bankdetail {
+        color: black;
+        font-size: 28px;
+        font-weight: 300;
+        margin-bottom: 40px;
+      }
+      .title {
+        text-align: right;
+        font-weight: 500;
+      }
+
+      .bankdetail .row div {
+        padding: 0 5px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        -webkit-appearance: none;
+        border: 0;
+        padding: 0;
+        background: transparent;
+      }
+
+    </style>
+
+    <section id='pay'>
+      <header><h1>Pay & Order now</h1></header>
+      <div class="container-fluid row" id="cards">
+        <img class='col-xs-3 cards' src='/cards/visa_color.png' />
+        <img class='col-xs-3 cards' src='/cards/mastercard_color.png' />
+        <img class='col-xs-3 cards' src='/cards/maestro_color.png' />
+        <img class='col-xs-3 cards' src='/cards/amex_color.png' />
+      </div>
+    </section>
+      <form>
+        <div id="dropin"></div>
+
+             <!--
+               <input data-braintree-name="expiration_month" value="10">
+               <input data-braintree-name="expiration_year" value="2020">
+                 -->
+               <!--
+               <paper-input
+                  data-braintree-name="cardholder_name"
+                  name="name"
+                  label="Name on card"
+                  required
+                  autocomplete="cc-name"
+                  allowed-pattern="[A-Z a-z]">
+                </paper-input>
+
+               <gold-cc-input
+                  data-braintree-name="number"
+                  name="cc"
+                  required
+                  auto-validate
+                  value=""
+                  label="Sample Valid VISA number"
+                  card-type="">
+                </gold-cc-input>
+
+               <div class='container-fluid'>
+                 <div class="row">
+                   <gold-cc-expiration-input
+                      class='col-xs-6'
+                      data-braintree-name="expiration_date"
+                      name="cc-expiration"
+                      required
+                      auto-validate>
+                    </gold-cc-expiration-input>
+
+                    <gold-cc-cvc-input
+                      data-braintree-name="cvv"
+                      name="cc-cvc"
+                      class='col-xs-offset-1 col-xs-5'
+                      required
+                      auto-validate
+                      card-type="">
+                    </gold-cc-cvc-input>
+                 </div>
+               </div>
+                -->
+
+               <!-- <div class="vertical layout" id='summary'>
+                 <div class="footer self-end">
+                   <div class="subtotal-item horizontal layout">
+                     <div class="flex">Subtotal</div>
+                     <div class="price"><span>[[payments.estimate]]</span> PHP</div>
+                   </div>
+
+                   <div class="tax-item horizontal layout">
+                     <div class="flex">Service fee </div>
+                     <div class="price"><span>[[payments.fee]]</span> PHP</div>
+                   </div>
+
+                   <div class="total-item horizontal layout">
+                     <div class="flex">Your total </div>
+                     <div class="price"><span>[[payments.total]]</span> PHP</div>
+                   </div>
+                 </div>
+               </div> -->
+
+               <button type="submit">
+                 <paper-button large green full>
+                   <iron-icon icon='pigments:verified-user'></iron-icon>
+                   Pay <span>{{payments.total}}</span> PHP
+                 </paper-button>
+               </button>
+
+
+      </form>
+  </template>
+</dom-module>

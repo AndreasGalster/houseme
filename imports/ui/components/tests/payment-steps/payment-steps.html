@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="../../bower/paper-dialog/paper-dialog.html">
+
+<dom-module id="payment-steps">
+  <template>
+    <style>
+      payment-billing, payment-methods {
+        margin: 0 !important;
+        padding: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+
+      /*payment-billing.container, */
+      .container {
+        padding: 0 !important;
+      }
+
+    </style>
+
+    <paper-dialog class='container' entry-animation="fade-in-animation" exit-animation="fade-out-animation" with-backdrop always-on-top>
+      <!-- <h1>[[billingInfo.download]]</h1> -->
+        <payment-billing class='col-sm-8 col-md-8'></payment-billing>
+
+        <payment-methods class='col-sm-4 col-md-4' price='[[billingInfo.price]]'></payment-methods>
+        <payment-thanks class='col-sm-4 col-md-4' download-url='[[billingInfo.download]]'></payment-thanks>
+    </paper-dialog>
+
+  </template>
+</dom-module>

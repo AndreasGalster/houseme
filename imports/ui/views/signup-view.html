@@ -1,0 +1,56 @@
+
+<dom-module id="landing-view">
+
+  <template>
+  <style include="view-styles"></style>
+  <style>
+
+    :host {
+      @apply(--fixed-view);
+      @apply(--scroll-view);
+      @apply(--bg-img);
+    }
+
+    fsn-text-swapper {
+      margin-top:170px;
+    }
+
+
+    fsn-fblogin-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top:250px;
+    }
+
+    @media screen and (max-width: 480px) {
+
+      /*white-space: normal;*/
+
+      fsn-text-swapper {
+        margin-top: 70px;
+      }
+
+      fsn-fblogin-button {
+        margin-top: 120px;
+      }
+    }
+
+  </style>
+
+  <fsn-text-swapper></fsn-text-swapper>
+  <fsn-fblogin-button redirect-to='profile'></fsn-fblogin-button>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-fblogin-button/dist/fsn-fblogin-button.html');
+  require('@andreasgalster/fsn-text-swapper/dist/fsn-text-swapper.html');
+
+  Polymer({
+    is: 'landing-view'
+  });
+</script>

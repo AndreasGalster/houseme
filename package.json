@@ -1,0 +1,59 @@
+{
+  "name": "dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@andreasgalster/fsn-boilerplate": "*",
+    "@andreasgalster/fsn-fblogin-button": "*",
+    "@andreasgalster/fsn-icons": "*",
+    "@andreasgalster/fsn-messaging-chat": "*",
+    "@andreasgalster/fsn-messaging-input": "*",
+    "@andreasgalster/fsn-messaging-list": "*",
+    "@andreasgalster/fsn-meta-tags": "*",
+    "@andreasgalster/fsn-places-api": "*",
+    "@andreasgalster/fsn-places-autocomplete": "*",
+    "@andreasgalster/fsn-text-swapper": "*",
+    "@andreasgalster/fsn-yesno-button": "*",
+    "@polymer/iron-media-query": "0.0.3",
+    "@polymer/neon-animation": "0.0.3",
+    "@polymer/paper-button": "0.0.3",
+    "@polymer/paper-dialog": "0.0.3",
+    "@polymer/paper-header-panel": "0.0.3",
+    "@polymer/paper-icon-button": "0.0.3",
+    "@polymer/paper-input": "0.0.3",
+    "@polymer/paper-item": "0.0.3",
+    "@polymer/paper-material": "0.0.3",
+    "@polymer/paper-spinner": "0.0.3",
+    "@polymer/paper-tabs": "0.0.3",
+    "@polymer/paper-toast": "0.0.3",
+    "@polymer/paper-toggle-button": "0.0.3",
+    "@polymer/paper-toolbar": "0.0.3",
+    "@polymer/polymer": "^1.2.5-npm-test.2",
+    "bootstrap": "^4.0.0-alpha.2",
+    "braintree": "^1.37.1",
+    "braintree-web": "^2.23.0",
+    "cloudinary": "^1.3.0",
+    "cloudinary-core": "^2.0.6",
+    "lodash": "^4.6.1",
+    "moment": "^2.13.0",
+    "prerender-node": "^2.3.0",
+    "sendgrid": "^2.0.0",
+    "web-animations-js": "^2.2.1",
+    "webcomponents.js": "^0.7.22"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://AndreasGalster@bitbucket.org/AndreasGalster/pigments.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/AndreasGalster/pigments#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.3.6"
+  }
+}

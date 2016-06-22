@@ -1,0 +1,277 @@
+<dom-module id='profile-forms'>
+  <template>
+  <style include='houseme-styles'></style>
+  <style>
+      :host {
+        padding: 30px;
+      }
+
+  		section {
+  			margin-bottom: 100px;
+  		}
+
+      #last {
+  			margin-bottom: 40px;
+  		}
+
+  		h1 {
+  			color: var(--blue);
+  			font-size: 34px;
+  			font-weight: 300;
+  		}
+
+  		p {
+  			font-size: 16px;
+  			font-weight: 500;
+  		}
+
+  		.perk {
+  			border-bottom: #c4c4c4;
+
+  		}
+
+
+  		input {
+  		    border-radius: 0;
+  		    padding: 22px 16px;
+  		    font-size: 16px;
+  		    font-weight: 300;
+  		}
+
+  		input:focus {
+  			border: 1px solid var(--blue);
+  		}
+
+      div[suffix] {
+        margin-right: 0px;
+      }
+
+      paper-toast {
+        background: var(--blue);
+        color: white;
+        font-size: 16px;
+        padding: 25px;
+      }
+    </style>
+
+    <!-- <meteor-user user={{user}}></meteor-user> -->
+    <!-- <meteor-subscribe name='user' args='[]'></meteor-subscribe> -->
+
+		<section>
+			<h1>Profile introduction</h1>
+      <paper-textarea
+        value={{user.profile.introduction}}
+        class='validate'
+        placeholder='Tell us in less than 200 characters about yourself.'
+        char-counter maxlength='200'
+        required>
+      </paper-textarea>
+		</section>
+
+		<section>
+			<h1>Basic profile</h1>
+      <!-- <fsn-places-autocomplete
+        value={{user.profile.details.moving_to}}
+        class='validate'
+        label='Desired city'
+        input-value={{selectedCity}}
+        placeholder='Where do you want to move?'
+        required
+        city-id='{{cityId}}'>
+      </fsn-places-autocomplete> -->
+
+      <paper-input
+        value={{user.profile.details.moving_to}}
+        class='validate'
+        label='Desired city'
+        placeholder='Where do you want to move?'
+        required>
+      </paper-input>
+
+      <paper-input
+        value={{user.profile.details.minimum_budget}}
+        class='validate'
+        label='Minimum budget'
+        placeholder='What’s your minimum budget?'
+        allowed-pattern='[0-9]'
+        min='500'
+        max='60000'
+        minlength='3'
+        maxlength='5'
+        required>
+        <div suffix>₱</div>
+      </paper-input>
+
+      <paper-input
+        value={{user.profile.details.maximum_budget}}
+        class='validate'
+        label='Maximum budget'
+        placeholder='What’s your maximum budget?'
+        allowed-pattern='[0-9]'
+        min='3000'
+        max='60000'
+        minlength='4'
+        maxlength='5'
+        required>
+        <div suffix>₱</div>
+      </paper-input>
+
+      <app-datepicker-dialog with-backdrop locale='en' show-long-date date={{user.profile.details.move_in_date}}></app-datepicker-dialog>
+      <paper-input
+        value=[[user.profile.details.move_in_date]]
+        class='validate'
+        label='Move in date'
+        placeholder='When do you want to move in?'
+        required
+        on-tap='toggleDatePicker'>
+      </paper-input>
+
+      <paper-input
+        value={{user.profile.details.duration_of_stay}}
+        class='validate'
+        label='Duration of stay'
+        placeholder='How long do you want to stay?'
+        allowed-pattern='[0-9]'
+        minlength='1'
+        maxlength='2'
+        required>
+        <div suffix>months</div>
+      </paper-input>
+<!--
+      <paper-dropdown-menu label="Dinosaurs">
+        <paper-listbox class="dropdown-content">
+          <paper-item>allosaurus</paper-item>
+          <paper-item>brontosaurus</paper-item>
+          <paper-item>carcharodontosaurus</paper-item>
+          <paper-item>diplodocus</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-slider min="10" max="200" value="110"></paper-slider>
+ -->
+
+		</section>
+
+		<section id='last'>
+			<h1>Your perks</h1>
+			<p>Tell us about your perks so you can find the perfect roommates.</p>
+
+      <fsn-yesno-button checked={{user.profile.perks.messy}} value=''>Are you a messy?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.profile.perks.smoker}} value=''>Are you a smoker?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.profile.perks.pets}} value=''>Do you like pets?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.profile.perks.party}} value=''>Do you party a lot?</fsn-yesno-button>
+		</section>
+
+    <paper-button full-width class='hidden-md-up' on-tap='saveProfile'>save your profile</paper-button>
+    <paper-toast text="Your profile has been saved" duration="2500"></paper-toast>
+
+  </template>
+</dom-module>
+
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-input/paper-input.html');
+  require('@polymer/paper-input/paper-textarea.html');
+  require('@polymer/paper-toast/paper-toast.html');
+  require('@polymer/paper-dialog/paper-dialog.html');
+
+
+  // require('@polymer/vaadin-date-picker/vaadin-date-picker.html');
+  require('@polymer/app-datepicker/app-datepicker-dialog.html');
+  // require('@polymer/paper-date-picker/paper-date-picker.html');
+
+
+  // require('@polymer/paper-dropdown-menu/paper-dropdown-menu.html');
+  // require('@polymer/paper-listbox/paper-listbox.html');
+  // require('@polymer/paper-item/paper-item.html');
+  // require('@polymer/paper-slider/paper-slider.html');
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-yesno-button/dist/fsn-yesno-button.html');
+  require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
+
+  var _ = require('lodash');
+  // var _includes = require('lodash/includes');
+  var moment = require('moment');
+
+
+  Polymer({
+    is: 'profile-forms',
+    behaviors:[mwcMixin],
+    listeners: {
+      'saveProfile': 'saveProfile',
+    },
+    properties: {
+      user: Object,
+      formattedDate: String,
+      unformattedDate: {
+        type: String,
+        observer: 'formatDate'
+      }
+    },
+    toggleDatePicker: function() {
+      this.$$('app-datepicker-dialog').toggle();
+      // moment = require('moment');
+    },
+    attached: function() {
+      this.subscribe("user");
+    },
+    tracker: function() {
+      this.user = Meteor.user();
+    },
+    validate: function() {
+      var validity = [];
+
+      Polymer.dom(this.root).querySelectorAll('.validate').forEach(function(value) {
+        value.validate();
+        validity.push(value.invalid);
+      });
+
+      return validity;
+    },
+
+    formatDate: function() {
+      if(!this.user.profile.details.move_in_date) {
+        this.formattedDate = moment().format('MMM DD');
+      } else {
+        this.formattedDate = moment(this.user.profile.details.move_in_date, 'YYYY-MM-DD').format('MMM DD');
+      }
+    },
+
+    saveProfile: function(e) {
+      var user;
+      this.validate();
+
+      if ( _.includes(this.validate(), true) === false ) {
+        Meteor.users.update(
+          Meteor.userId(),
+          {$set: {
+            profile: {
+              active: true,
+              introduction: this.user.profile.introduction,
+              details: {
+                moving_to: this.user.profile.details.moving_to,
+                minimum_budget: this.user.profile.details.minimum_budget,
+                maximum_budget: this.user.profile.details.maximum_budget,
+                move_in_date: this.user.profile.details.move_in_date,
+                duration_of_stay: this.user.profile.details.duration_of_stay,
+              },
+              perks: {
+                messy: this.user.profile.perks.messy,
+                smoker: this.user.profile.perks.smoker,
+                pets: this.user.profile.perks.pets,
+                party: this.user.profile.perks.party
+              }
+            }
+          }}, () => {
+            mixpanel.track("usersSubmittedProfile");
+            this.$$('paper-toast').toggle();
+          }
+        );
+
+      }
+    }
+  });
+
+</script>

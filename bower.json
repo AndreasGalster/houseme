@@ -1,0 +1,21 @@
+{
+  "name": "dev",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Andreas Galster <andreas.galster@salarium.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "app-route": "PolymerElements/app-route#^0.9.1",
+    "iron-lazy-pages": "/timvdlippe/iron-lazy-pages#^1.1.1"
+  }
+}

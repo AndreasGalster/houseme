@@ -1,0 +1,26 @@
+<dom-module id="talk-view">
+  <template>
+    <style include="view-styles"></style>
+    <style>
+      :host {
+        @apply(--fill-view);
+        /*@apply(--bg-img);*/
+      }
+    </style>
+
+    <fsn-public-messaging public></fsn-public-messaging>
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+
+  require('../components/fsn-public-messaging/fsn-public-messaging.html');
+
+  Polymer({
+    is: 'talk-view',
+
+  });
+</script>

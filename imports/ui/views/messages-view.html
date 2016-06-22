@@ -1,0 +1,63 @@
+
+<dom-module id="messages-view">
+
+  <template>
+    <style include="view-styles"></style>
+    <style>
+
+      :host {
+        @apply(--fill-view);
+        /*@apply(--bg-img);*/
+      }
+
+      paper-material {
+        background: white;
+        /*height: calc(100vh - 64px);        */
+      }
+
+      .no-gutter > [class*='col-'] {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      @media screen and (max-width: 768px) {
+        fsn-messaging-list {
+          height: 30vh !important;
+        }
+
+        fsn-messaging-chat {
+          height: calc(70vh - 64px) !important;
+        }
+      }
+
+    </style>
+
+    <paper-material class='container' elevation='3'>
+      <h1>[[otherUserId]]</h1>
+      <h1>otherUserId</h1>
+  		<div class='row row-eq-height no-gutter'>
+        <fsn-messaging-list class='col-xs-12 col-md-4' other-user-id={{otherUserId}} message-id={{messageId}}></fsn-messaging-list>
+        <fsn-messaging-chat class='col-xs-12 col-md-8' other-user-id=[[otherUserId]] message-id=[[messageId]]></fsn-messaging-chat>
+      </div>
+    </paper-material>
+
+  </template>
+</dom-module>
+
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-material/paper-material.html');
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-messaging-list/dist/fsn-messaging-list.html');
+  require('@andreasgalster/fsn-messaging-chat/dist/fsn-messaging-chat.html');
+
+  Polymer({
+    is: 'messages-view',
+    properties: {
+      otherUserId: String,
+      messageId: String
+    }
+  });
+</script>

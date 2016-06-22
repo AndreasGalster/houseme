@@ -1,0 +1,139 @@
+<dom-module id="paper-navigation">
+
+  <template>
+    <style include="houseme-styles"></style>
+    <style>
+
+      paper-badge {
+          --paper-badge-margin-left: -24px;
+          --paper-badge-margin-bottom: -12px;
+      }
+
+      #houseme_logo {
+        height: 80%;
+        margin-bottom: 3px;
+      }
+
+      #houseme_logo img {
+        height: 100%;
+      }
+
+      .transparent {
+        background: none !important;
+      }
+
+      paper-button {
+        background: var(--orange);
+        min-width: 0;
+      }
+
+      @media screen and (min-width: 600px) {
+        iron-icon {
+          margin-right: 8px;
+        }
+
+        paper-tab {
+          margin: 0 12px;
+          --paper-tab-content-unselected: {
+            opacity: 0.4;
+          }
+        }
+      }
+
+      paper-toolbar {
+        background: var(--blue);
+        z-index: 10;
+        @apply(--layout-vertical);
+      }
+
+      paper-toolbar span {
+        @apply(--layout-flex);
+      }
+
+      nav {
+        @apply(--layout-horizontal);
+        /*@apply(--layout-self-end);*/
+      }
+
+    </style>
+
+    <paper-toolbar>
+        <a id='houseme_logo' href="/">
+          <img src='/svg/houseme_logo.svg' id='houseme_logo' />
+        </a>
+
+        <span></span>
+
+        <nav hidden$="[[!loggedIn]]">
+            <paper-tabs selected="{{selectedPage}}" attr-for-selected="selected-page" no-bar>
+              <paper-tab selected-page='/search'>
+                <iron-icon hide-sm icon='fsn:search'></iron-icon>
+                <menuitem hide-xs>Search</menuitem>
+              </paper-tab>
+
+              <!-- <paper-tab selected-page='/messages'>
+                <iron-icon hide-sm icon='fsn:messages'></iron-icon>
+                <menuitem hide-xs>Messages</menuitem>
+              </paper-tab> -->
+
+              <paper-tab selected-page='/talk'>
+                <iron-icon hide-sm icon='fsn:messages'></iron-icon>
+                <menuitem hide-xs>Talk</menuitem>
+              </paper-tab>
+
+              <paper-tab selected-page='/profile'>
+                <iron-icon hide-sm icon='fsn:profile'></iron-icon>
+                <menuitem hide-xs>Profile</menuitem>
+              </paper-tab>
+            </paper-tabs>
+
+            <a href='https://feedback.userreport.com/dfcde2cd-6c6d-4d0a-a4c3-cce340dfd149/' target='_blank'>
+              <paper-button>
+                <iron-icon hide-sm icon='fsn:ideas'></iron-icon>
+                <menuitem hide-xs>Give Feedback</menuitem>
+              </paper-button>
+            </a>
+          <!-- <a href='https://fb.me/msg/houseme'><paper-button>Chat with us</paper-button>               -->
+        </nav>
+    </paper-toolbar>
+
+  </template>
+
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/iron-icon/iron-icon.html');
+  require('@polymer/paper-button/paper-button.html');
+  require('@polymer/paper-tabs/paper-tabs.html');
+  require('@polymer/iron-flex-layout/iron-flex-layout.html');
+  require('@polymer/iron-media-query/iron-media-query.html');
+  require('@polymer/paper-toolbar/paper-toolbar.html');
+
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
+
+  Polymer({
+    is: 'paper-navigation',
+    behaviors:[mwcMixin],
+    tracker: function() {
+      this.loggedIn = (Meteor.user() != null);
+    },
+    properties: {
+      user: {
+        type: Object
+      },
+      loggedIn: {
+        type: Boolean
+      },
+      selectedPage: {
+        type: String,
+        notify: true
+      }
+    }
+    // transparentClass: function(conn) {
+    //   return conn ? '' : 'transparent';
+    // }
+  });
+</script>

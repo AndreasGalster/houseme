@@ -1,0 +1,131 @@
+<dom-module id='fsn-public-messaging'>
+  <template>
+  <style include='view-styles'></style>
+  <style include='houseme-styles'></style>
+
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+    <div hidden$=[[loggedIn]] class='warning layout center'>
+      <hero1>Please <a href='/signup'>log in or sign up</a> to start looking for roommates.</hero1>
+    </div>
+
+    <div hidden$=[[!loggedIn]]>
+      <div hidden$=[[user.profile.active]] class='warning layout center'>
+        <hero1>Please fill in <a href='/profile'>your profile</a> to start looking for people.</hero1>
+      </div>
+    </div>
+
+    <template is='dom-if' if=[[user.profile.active]]>
+      <div class='container'>
+        <paper-card elevation='3'>
+          <h1>Start a new conversation</h1>
+          <fsn-messaging-input></fsn-messaging-input>
+        </paper-card>
+      </div>
+
+      <div class='container'>
+        <template is='dom-repeat' items='[[publicMessages]]'>
+          <paper-card elevation='3'>
+              <div class='card-content'>
+                <header>
+                  <img src='http://graph.facebook.com/[[item.services.facebook.id]]/picture?type=square' />
+                  <h1>[[item.services.facebook.first_name]]</h1>
+                </header>
+                <main>
+                  <p>Looking for roomies in <strong>[[item.profile.details.moving_to]]</strong>
+                  for <strong>[[item.profile.details.duration_of_stay]] months</strong>,
+                  starting <strong>[[item.profile.details.move_in_date]]</strong>
+                  for around
+                  <strong>[[item.profile.details.minimum_budget]]&thinsp;&ndash;&thinsp;[[item.profile.details.maximum_budget]] ₱ each</strong>.</p>
+                </main>
+              </div>
+              <div class='card-actions' on-tap='toggleInfo'>
+                <article>
+                  <span>Read this profile description</span>
+                  <paper-icon-button icon='fsn:arrow-up'></paper-icon-button>
+                </article>
+                <iron-collapse>
+                  [[item.profile.introduction]]
+                </iron-collapse>
+              </div>
+              <div class='card-actions'>
+                  <paper-button full-width on-tap='sendMessage'>send a message</paper-button>
+              </div>
+          </paper-card>
+
+        </template>
+
+      </div>
+    </template>
+
+
+
+  </template>
+</dom-module>
+
+
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-button/paper-button.html');
+  require('@polymer/paper-card/paper-card.html');
+  require('@polymer/paper-tooltip/paper-tooltip.html');
+  require('@polymer/paper-icon-button/paper-icon-button.html');
+  require('@polymer/iron-collapse/iron-collapse.html');
+  require('@polymer/iron-list/iron-list.html');
+  require('@polymer/app-route/app-location.html');
+  require('@polymer/iron-icon/iron-icon.html');
+  require('@polymer/iron-flex-layout/iron-flex-layout.html');
+
+
+
+  require('@polymer/paper-dialog/paper-dialog.html');
+  require('@andreasgalster/fsn-messaging-input/dist/fsn-messaging-input.html');
+  // require('@polymer/platinum-push-messaging/platinum-push-messaging.html');
+
+
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
+
+  Polymer({
+    is: 'fsn-public-messaging',
+    behaviors:[mwcMixin],
+    properties: {
+      user: {
+        type: Object
+      },
+      loggedIn: {
+        type: Boolean
+      },
+      limiter: {
+        type: Number,
+        value: 8,
+        observer: 'tracker'
+      },
+    },
+    attached: function() {
+      this.subscribe("PublicMessages");
+    },
+    tracker: function() {
+      this.publicMessages = PublicMessages.find().fetch();
+      var user = Meteor.user();
+      this.user = user;
+      this.loggedIn = (user != null);
+      this.users = Meteor.users.find().fetch();
+    },
+
+    sendMessage: function(e) {
+      this.otherUserId = e.model.item._id;
+      this.$$('paper-dialog').toggle();
+      console.log(`yo ${this.otherUserId}`);
+      // this.path = '/messages';
+    },
+
+  });
+
+</script>

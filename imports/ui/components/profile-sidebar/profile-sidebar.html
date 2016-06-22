@@ -1,0 +1,82 @@
+<dom-module id="profile-sidebar">
+  <template>
+  <style include="houseme-styles"></style>
+  <style>
+      :host {
+        background: #fafafa;
+        text-align: center;
+        padding-bottom: 20px;
+      }
+
+  		img {
+  			border-radius: 50%;
+  			width: 80%;
+  			height: auto;
+    		margin: 30px 0;
+  		}
+
+  		h1 {
+  			color: var(--blue);
+  			font-size: 30px;
+  			font-weight: 300;
+  			/*margin-bottom: 55px;*/
+  		}
+
+  		h2 {
+  			color: #7f7f7f;
+  			font-size: 16px;
+  			line-height: 1.7em;
+  			font-weight: 300;
+  		}
+
+  		h2.active {
+  			color: var(--blue);
+  			font-weight: 600;
+  			font-weight: 18px;
+  		}
+
+  		paper-button {
+  			margin: 0 10px;
+  			margin-top: 55px;
+        background: var(--blue);
+        color: white;
+        padding: 15px;
+  		}
+
+    </style>
+
+    <!-- <meteor-user user={{user}}></meteor-user> -->
+    <!-- <meteor-subscribe name='user' args='[]'></meteor-subscribe> -->
+
+    <img src="http://graph.facebook.com/[[user.services.facebook.id]]/picture?type=large" />
+    <h1>[[user.services.facebook.first_name]]</h1>
+
+<!--
+    <h2 class='active'>Introduction</h2>
+    <h2>Basic profile</h2>
+    <h2>Your perks</h2>
+ -->
+    <paper-button class='hidden-sm-down' on-tap='saveProfile'>save your profile</paper-button>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-button/paper-button.html');
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+  Polymer({
+    is: 'profile-sidebar',
+    behaviors:[mwcMixin],
+    attached: function() {
+      this.subscribe("user");
+    },
+    tracker: function() {
+      this.user = Meteor.user();
+    },
+    saveProfile: function() {
+      this.fire('saveProfile');
+    }
+  });
+</script>

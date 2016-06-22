@@ -1,0 +1,52 @@
+
+<dom-module id="profile-view">
+
+  <template>
+    <style include="view-styles"></style>
+    <style include="houseme-styles"></style>
+    <style>
+
+      :host {
+        @apply(--fill-view);
+        /*@apply(--bg-img);*/
+      }
+
+      paper-material {
+        background: white;
+      }
+
+      @media screen and (min-width: 600px) {
+        paper-material {
+          top: 60px;
+        }
+      }
+
+    </style>
+
+    <paper-material class='container' elevation='3'>
+  		<div class='row row-eq-height'>
+        <profile-sidebar class='col-xs-12 col-md-4 col-lg-3'></profile-sidebar>
+        <profile-forms class='col-xs-12 col-md-8 col-lg-9'></profile-forms>
+  		</div>
+    </paper-material>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('../components/profile-forms/profile-forms.html');
+  require('../components/profile-sidebar/profile-sidebar.html');
+
+  Polymer({
+    is: 'profile-view',
+    listeners: {
+      'saveProfile': 'saveProfile',
+    },
+    saveProfile: function() {
+      this.$$('profile-forms').saveProfile();
+    }
+  });
+</script>

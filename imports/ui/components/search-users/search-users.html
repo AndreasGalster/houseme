@@ -2,157 +2,171 @@
   <template>
   <style include='view-styles'></style>
   <style include='houseme-styles'></style>
-<!--
-  <style include='iron-flex'></style> -->
 
   <style>
       :host {
         display: block;
       }
 
-  		paper-button {
-        width: 100%;
-  		}
-
-    	section {
-        background: var(--grey);
-        margin-top: 20px;
-        margin-bottom: 20px;
-    		padding: 30px;
-    	}
-
-      img {
-        border-radius: 50%;
-        margin-right: 15px;
-      }
-
-
-    	.description {
-    		font-weight: 500;
-
-    	}
-
-      iron-icon {
-        /*margin: 0 3px;*/
-        /*margin: 10px 0;*/
-        margin: 0px;
-        --iron-icon-height: 32px;
-        --iron-icon-width: 32px;
-      }
-
-      .green {
-        color: var(--green);
-      }
-
-      .row-eq-height{
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-      }
-
-      .perks {
-        line-height: 30px;
-      }
-
-      .warning {
-        @apply(--fixed-view);
-        @apply(--layout);
-        @apply(--layout-center-center);
-        background: rgba(0, 0, 0, 0.9);
-      }
-
-      .warning a {
-        text-decoration: none;
-        border-bottom: 2px solid white;
-        padding-bottom: 3px;
-        color: white;
-      }
-
-      .warning a:hover {
-        color: var(--orange);
-        border-color: var(--orange);
-      }
-
-      hero1 {
-        color: white;
-        text-align: center;
-        line-height: 1.4;
-        margin: 0 20px;
-      }
-
-      .center {
-      }
-
-      .perks {
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-        /*padding-top: 10px;*/
-        /*padding-bottom: 10px;*/
-        color: var(--red);
-      }
-
-
-      article {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        /*@apply(--layout-justified);*/
-        /*padding-top: 10px;*/
-        /*padding-bottom: 10px;*/
-      }
-
-      article span {
-        @apply(--layout-flex);
-        /*@apply(--layout-horizon tal);*/
-      }
-
-
-      .card-actions {
-        padding: 15px;
-      }
-
-      paper-tooltip {
-        --paper-tooltip-background: var(--orange);
-        --paper-tooltip-opacity: 1;
-      }
-
-      iron-icon {
-        @apply(--layout-flex);
-      }
-
-      header {
-        @apply(--layout-horizontal);
-        margin-bottom: 10px;
-      }
-
-      paper-card {
-        margin:20px 0;
-        width: 100%;
-      }
-
-
-
       paper-dialog {
         padding: 20px;
       }
 
-
-      fsn-messaging-input {
-        margin-top: 20px;
+      iron-scroll-threshold {
+        @apply(--layout-fit);
       }
+
+      .container {
+        @apply(--layout-vertical);
+      }
+
+      paper-card:before {
+        content: '';
+        @apply(--layout-fit);
+        background: rgba(0,0,0,0.7);
+        z-index: 1;
+      }
+
+      iron-icon:nth-child(1), iron-icon:nth-child(2){
+        padding: 2%;
+      }
+
+      section {
+        @apply(--layout-fit);
+        @apply(--layout-vertical);
+        padding: 10px;
+        margin: 0;
+        background: none;
+        z-index: 3;
+        opacity: 0;
+        background: rgba(12,138,235,0.8);
+        /*backdrop-filter: blur(10px);*/
+        transition: opacity .1s ease-in-out;
+
+      }
+
+      span {
+        @apply(--layout-flex);
+      }
+
+      paper-button {
+        width: auto;
+      }
+
+      table {
+        color: white;
+      }
+
+      tr {
+        border-bottom: 7px solid transparent;
+      }
+
+      iron-list {
+        background: black;
+        --iron-list-items-container: {
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+        }
+      }
+
+      td:first-child {
+        border-right: 7px solid transparent;
+      }
+
+      paper-card {
+        --paper-card-header-color: white;
+        --paper-card-header-text: {
+          z-index: 2;
+        };
+      }
+
+      paper-card:hover > section {
+        opacity: 1;
+      }
+
+      @media screen and (min-width: 1px) and (max-width: 500px) {
+        paper-card {
+          width: 100vw;
+          height: 100vw;
+/*
+          --paper-card-header-image: {
+            width: 100vw;
+            height: 100vw;
+          }*/
+        }
+      }
+
+      @media screen and (min-width: 401px) and (max-width: 800px) {
+        paper-card {
+          width: 50vw;
+          height: 50vw;
+/*
+          --paper-card-header-image: {
+            width: 50vw;
+            height: 50vw;
+          }*/
+        }
+      }
+
+
+      @media screen and (min-width: 801px) and (max-width: 1200px) {
+        paper-card {
+          width: 33.33vw;
+          height: 33.33vw;
+/*
+          --paper-card-header-image: {
+            width: 25vw;
+            height: 25vw;
+          }*/
+        }
+      }
+
+      @media screen and (min-width: 1201px) and (max-width: 1700px) {
+        paper-card {
+          width: 25vw;
+          height: 25vw;
+/*
+          --paper-card-header-image: {
+            width: 25vw;
+            height: 25vw;
+          }*/
+        }
+      }
+
+
+      @media screen and (min-width: 1701px) and (max-width: 3000px) {
+        paper-card {
+          width: 20vw;
+          height: 20vw;
+/*
+          --paper-card-header-image: {
+            width: 20vw;
+            height: 20vw;
+          }*/
+        }
+      }
+
+      paper-card {
+        --paper-card-header-image: {
+          width: 100%;
+          padding-bottom: 100%;
+        }
+      }
+
+
+
+
+
+
 
     </style>
 
-    <app-location path={{path}}></app-location>
-    <!-- <platinum-push-messaging message-url="../notification-data.json"></platinum-push-messaging> -->
-<!--
-    <platinum-push-messaging
-      title="Application updated"
-      message="The application was updated in the background"
-      icon-url="icon.png"
-      click-url="notification.html">
-    </platinum-push-messaging>
- -->
+    <iron-media-query query='(min-width: 600px)' query-matches='{{queryMatches}}'></iron-media-query>
+
+    <paper-dialog class='container' with-backdrop>
+      <h1>Private messaging is coming soon ¯\_(ツ)_/¯</h1>
+    </paper-dialog>
 
     <div hidden$=[[loggedIn]] class='warning layout center'>
       <hero1>Please <a href='/signup'>log in or sign up</a> to start looking for roommates.</hero1>
@@ -166,73 +180,63 @@
 
     <template is='dom-if' if=[[user.profile.active]]>
 
-      <div class='container'>
-        <template is='dom-repeat' items='[[users]]'>
-        <!-- <iron-list grid id='users' items='[[users]]'> -->
-          <!-- <template> -->
+      <iron-scroll-threshold on-lower-threshold='loadMoreData' id='threshold'>
+        <iron-list grid items=[[users]]>
+          <template>
 
+            <paper-card
+            fade-image
+            preload-image
+            sizing-image='cover'
+            image='https://graph.facebook.com/[[item.services.facebook.id]]/picture?width=400'
+            placeholder-image='https://graph.facebook.com/[[item.services.facebook.id]]/picture?width=1'
+            heading=[[item.services.facebook.first_name]]>
 
-          <paper-card elevation='3'>
-              <div class='card-content'>
-                <header>
-                  <img src='http://graph.facebook.com/[[item.services.facebook.id]]/picture?type=square' />
-                  <h1>[[item.services.facebook.first_name]]</h1>
-                </header>
-                <main>
-                  <p>Looking for roomies in <strong>[[item.profile.details.moving_to]]</strong>
-                  for <strong>[[item.profile.details.duration_of_stay]] months</strong>,
-                  starting <strong>[[item.profile.details.move_in_date]]</strong>
-                  for around
-                  <strong>[[item.profile.details.minimum_budget]]&thinsp;&ndash;&thinsp;[[item.profile.details.maximum_budget]] ₱ each</strong>.</p>
-                </main>
-              </div>
-              <div class='card-actions' on-tap='toggleInfo'>
-                <article>
-                  <span>Read this profile description</span>
-                  <paper-icon-button icon='fsn:arrow-up'></paper-icon-button>
-                </article>
-                <iron-collapse>
-                  [[item.profile.introduction]]
-                </iron-collapse>
-              </div>
-              <div class='card-actions perks'>
-                <div class$=[[perkClass(item.profile.perks.party)]]>
-                  <iron-icon icon='fsn:party'></iron-icon>
-                  <paper-tooltip position='top' offset='5'>Party Person</paper-tooltip>
-                  <span class='hidden-xs-down'>Party Person</span>
-                </div>
-                <div class$=[[perkClass(item.profile.perks.pets)]]>
-                  <iron-icon icon='fsn:pets'></iron-icon>
-                  <paper-tooltip position='top' offset='5'>Pet Person</paper-tooltip>
-                  <span class='hidden-xs-down'>Pet Person</span>
-                </div>
-                <div class$=[[perkClass(item.profile.perks.smoker)]]>
-                  <iron-icon icon='fsn:smoker'></iron-icon>
-                  <paper-tooltip position='top' offset='5'>Smoker</paper-tooltip>
-                  <span class='hidden-xs-down'>Smoker</span>
-                </div>
-                <div class$=[[perkClass(item.profile.perks.messy)]]>
-                  <iron-icon icon='fsn:messy'></iron-icon>
-                  <paper-tooltip position='top' offset='5'>Messy</paper-tooltip>
-                  <span class='hidden-xs-down'>Messy</span>
-                </div>
-              </div>
-              <div class='card-actions'>
-                  <paper-button full-width on-tap='sendMessage'>send a message</paper-button>
-              </div>
-          </paper-card>
+            <section>
+                <table>
+                  <tr>
+                    <td>
+                      <iron-icon icon='fsn:location'></iron-icon>Moving to:
+                    </td>
+                    <td>
+                      [[item.profile.details.moving_to]]
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <iron-icon icon='fsn:date'></iron-icon>Moving in:
+                    </td>
+                    <td>
+                      [[item.profile.details.move_in_date]]
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <iron-icon icon='fsn:duration'></iron-icon>How long:
+                    </td>
+                    <td>
+                      [[item.profile.details.duration_of_stay]] months
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <iron-icon icon='fsn:budget'></iron-icon>Monthly budget:
+                    </td>
+                    <td>
+                      [[item.profile.details.maximum_budget]] ₱
+                    </td>
+                  </tr>
+                </table>
 
+                <span></span>
 
-          <!-- </template> -->
-        <!-- </iron-list> -->
-        </template>
+                <paper-button whitebg pdLarge on-tap='sendMessage'>send a message</paper-button>
+              </section>
+            </paper-card>
 
-        <paper-dialog class='container' with-backdrop>
-          <h1>Send a message</h1>
-          <fsn-messaging-input other-user-id=[[otherUserId]]></fsn-messaging-input>
-        </paper-dialog>
-
-      </div>
+          </template>
+        </iron-list>
+      </iron-scroll-threshold>
     </template>
 
 
@@ -244,24 +248,24 @@
 
 <script>
   require('@polymer/polymer/polymer.html');
+  require('@polymer/app-route/app-location.html');
+
+  require('@polymer/iron-image/iron-image.html');
+  require('@polymer/iron-collapse/iron-collapse.html');
+  require('@polymer/iron-list/iron-list.html');
+  require('@polymer/iron-icon/iron-icon.html');
+  require('@polymer/iron-scroll-threshold/iron-scroll-threshold.html');
+  require('@polymer/iron-flex-layout/iron-flex-layout.html');
+
   require('@polymer/paper-button/paper-button.html');
   require('@polymer/paper-card/paper-card.html');
   require('@polymer/paper-tooltip/paper-tooltip.html');
   require('@polymer/paper-icon-button/paper-icon-button.html');
-  require('@polymer/iron-collapse/iron-collapse.html');
-  require('@polymer/iron-list/iron-list.html');
-  require('@polymer/app-route/app-location.html');
-  require('@polymer/iron-icon/iron-icon.html');
-  require('@polymer/iron-flex-layout/iron-flex-layout.html');
-
-
-
   require('@polymer/paper-dialog/paper-dialog.html');
+  require('@polymer/paper-spinner/paper-spinner-lite.html');
+
+
   require('@andreasgalster/fsn-messaging-input/dist/fsn-messaging-input.html');
-  // require('@polymer/platinum-push-messaging/platinum-push-messaging.html');
-
-
-
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
 
@@ -275,18 +279,43 @@
       user: {
         type: Object
       },
+      users: {
+        type: Array,
+        observer: 'clearScroll'
+      },
       loggedIn: {
         type: Boolean
+      },
+      limiter: {
+        type: Number,
+        value: 12,
+        observer: 'subscribeData'
       }
     },
 
     behaviors:[mwcMixin],
 
 
+    // calculateStyles: function() {
+    //   this.customStyle['--paper-card-header-image'] = gap;
+    //   this.updateStyles() ;
+    //   // Polymer.StyleDefaults.customStyle and Polymer.updateStyles()
+    //
+    // },
     // Subscribe to data. Once data is ready, set dynamic meta tags
-    attached: function() {
-      // this.subscription = Meteor.subscribe('usersTeaser');
-      this.subscribe('usersTeaser');
+    subscribeData: function() {
+      this.subscribe('usersTeaser', this.limiter);
+    },
+    clearScroll: function() {
+      console.log(this.$$('iron-scroll-threshold'));
+      if(this.$$('iron-scroll-threshold')) {
+      // if(this.user && this.user.profile.active) {
+        this.$$('iron-scroll-threshold').clearTriggers();
+      }
+    },
+    loadMoreData: function() {
+      console.log('scroll end');
+      this.limiter += 6;
     },
     // close the current description when view gets deleted
     detached: function() {
@@ -296,7 +325,13 @@
       var user = Meteor.user();
       this.user = user;
       this.loggedIn = (user != null);
-      this.users = Meteor.users.find().fetch();
+      // this.users = [];
+      // for (var i = 0; i<100; i++) {
+      //   this.users.push[1];
+      // };
+
+      this.users = Meteor.users.find({_id: {$ne: Meteor.userId()} }).fetch();
+      console.log(this.users);
     },
     perkClass: function(perk) {
       return perk ? 'green' : '';
@@ -308,10 +343,10 @@
       ironCollapse.toggle();
     },
     sendMessage: function(e) {
-      this.otherUserId = e.model.item._id;
+      // this.otherUserId = e.model.item._id;
       this.$$('paper-dialog').toggle();
-      console.log(`yo ${this.otherUserId}`);
-      // this.path = '/messages';
+      // console.log(`yo ${this.otherUserId}`);
+
     },
 
   });

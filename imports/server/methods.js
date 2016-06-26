@@ -50,26 +50,27 @@
 
 
 
-  sendPublicMessage: function(chatId, message, time) {
-    if(chatId) {
+  sendPublicMessage: function(fromUserId, chatId, message, time) {
+    console.log(chatId);
+    console.log(chatId === null);
+    console.log(!chatId);
+    if(chatId === null) {
       // if there's an existing message thread, insert into thread
-      PublicMessages.upsert(
-        { _id: chatId },
+      PublicMessages.insert(
         {
-          $push: {messages: {content: message, userid: this.userId, time: time,} },
-          $set: {
-            lastmessage: time,
-          }
+          messages: [{content: message, fromUserId: fromUserId, time: time}],
+          dateCreated: new Date(),
+          lastMessage: time
         }
       );
     } else {
       // if there's no message thread yet, create one
       PublicMessages.upsert(
-        {},
+        { _id: chatId },
         {
-          $push: {messages: {content: message, userid: this.userId, time: time,} },
+          $push: {messages: {content: message, fromUserId: fromUserId, time: time} },
           $set: {
-            lastmessage: time,
+            lastMessage: time,
           }
         }
       );
@@ -77,34 +78,34 @@
   },
 
 
-
-
-  messageRead: function() {
-
-    return Meteor.users.update(
-      {_id: Meteor.userId() },
-      {$set: {"profile.messageread": true } }
-    );
-
-  },
-
-  messageNotRead: function() {
-
-    return Meteor.users.update(
-      {_id: Meteor.userId() },
-      {$set: {"profile.messageread": false } }
-    );
-
-  },
-
-  messageNotRead: function() {
-
-    return Meteor.users.update(
-      {_id: Meteor.userId() },
-      {$set: {"profile.messageread": false } }
-    );
-
-  },
+  // 
+  //
+  // messageRead: function() {
+  //
+  //   return Meteor.users.update(
+  //     {_id: Meteor.userId() },
+  //     {$set: {"profile.messageread": true } }
+  //   );
+  //
+  // },
+  //
+  // messageNotRead: function() {
+  //
+  //   return Meteor.users.update(
+  //     {_id: Meteor.userId() },
+  //     {$set: {"profile.messageread": false } }
+  //   );
+  //
+  // },
+  //
+  // messageNotRead: function() {
+  //
+  //   return Meteor.users.update(
+  //     {_id: Meteor.userId() },
+  //     {$set: {"profile.messageread": false } }
+  //   );
+  //
+  // },
 
   removeAllUsers: function() {
     return Meteor.users.remove({});
@@ -112,9 +113,10 @@
 
   removeAllPrivateMessages: function() {
     return PrivateMessages.remove({});
+  },
+  removeAllPublicMessages: function() {
+    return PublicMessages.remove({});
   }
-
-
 
 
 });

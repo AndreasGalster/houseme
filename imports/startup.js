@@ -1,6 +1,6 @@
-// window.Polymer = {
-//   lazyRegister: true
-// };
+window.Polymer = {
+  lazyRegister: true
+};
 
 (function() {
   if ('registerElement' in document
@@ -12,6 +12,7 @@
     require('webcomponents.js/webcomponents-lite.js');
   }
 })();
+
 require('web-animations-js/web-animations-next-lite.min.js');
 require('@polymer/polymer/polymer.html');
 require('./ui/views/main-view.html');

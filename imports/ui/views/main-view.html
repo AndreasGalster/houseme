@@ -8,6 +8,7 @@
 
       :host {
         @apply(--fixed-view);
+        @apply(--scroll-view);
         /*@apply(--bg-img);*/
       }
 
@@ -64,42 +65,54 @@
         </div>
 
 
-        <iron-lazy-pages attr-for-selected="data-route" selected=[[path]]>
-          <template is="iron-lazy-page" data-route="/">
-            <landing-view></landing-view>
+        <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+<!--
+          <template is='iron-lazy-page' data-route='/' path='/public/views/signup-view.html'>
+            <signup-view></signup-view>
           </template>
-          <template is="iron-lazy-page" data-route="/signup">
-            <landing-view></landing-view>
+          <template is='iron-lazy-page' data-route='/signup' path='/public/views/signup-view.html'>
+            <signup-view></signup-view>
           </template>
-          <template is="iron-lazy-page" data-route="/profile">
+          <template is='iron-lazy-page' data-route='/profile' path='/public/views/profile-view.html'>
             <profile-view></profile-view>
           </template>
-          <template is="iron-lazy-page" data-route="/messages">
+          <template is='iron-lazy-page' data-route='/messages' path='/public/views/messages-view.html'>
             <messages-view other-user-id=[[otherUserId]]></messages-view>
           </template>
-          <template is="iron-lazy-page" data-route="/search">
+          <template is='iron-lazy-page' data-route='/search' path='/public/views/search-view.html'>
             <search-view other-user-id={{otherUserId}}></search-view>
           </template>
-          <template is="iron-lazy-page" data-route="/talk">
+          <template is='iron-lazy-page' data-route='/talk' path='/public/views/talk-view.html'>
             <talk-view></talk-view>
           </template>
-        </iron-lazy-pages>
-<!--
 
-<iron-pages attr-for-selected="data-route" selected=[[path]]>
-<landing-view data-route="/"></landing-view>
-<landing-view data-route="/signup"></landing-view>
-<profile-view data-route="/profile"></profile-view>
-<messages-view data-route="/messages" other-user-id=[[otherUserId]]></messages-view>
-<search-view data-route="/search" other-user-id={{otherUserId}}></search-view>
-</iron-pages>
+           -->
+          <template is='iron-lazy-page' data-route='/'>
+            <signup-view></signup-view>
+          </template>
+          <template is='iron-lazy-page' data-route='/signup'>
+            <signup-view></signup-view>
+          </template>
+          <template is='iron-lazy-page' data-route='/profile'>
+            <profile-view></profile-view>
+          </template>
+          <template is='iron-lazy-page' data-route='/messages'>
+            <messages-view other-user-id=[[otherUserId]]></messages-view>
+          </template>
+          <template is='iron-lazy-page' data-route='/search'>
+            <search-view other-user-id={{otherUserId}}></search-view>
+          </template>
+          <template is='iron-lazy-page' data-route='/talk'>
+            <talk-view></talk-view>
+          </template>
+
+
+        </iron-lazy-pages>
+        <!--
         <section hidden$=[[!isLoading]]>
           <paper-spinner active=[[isLoading]]></paper-spinner>
         </section>
-      -->
-
-
-
+        -->
       </div>
     </paper-header-panel>
 
@@ -116,8 +129,23 @@ require('@polymer/app-route/app-location.html');
 require('@polymer/iron-lazy-pages/iron-lazy-pages.html');
 
 
-require('@andreasgalster/fsn-boilerplate/fsn-boilerplate.html');
-require('@andreasgalster/fsn-meta-tags/fsn-meta-tag.html');
+    // true || require('/imports/ui/views/signup-view.html');
+    // true || require('/imports/ui/views/search-view.html');
+    // // true || require('/imports/ui/views/messages-view.html');
+    // true || require('/imports/ui/views/profile-view.html');
+    // true || require('/imports/ui/views/talk-view.html');
+
+    //
+    //
+    // true || require('./signup-view.html');
+    // true || require('./search-view.html');
+    // true || require('./messages-view.html');
+    // true || require('./profile-view.html');
+    // true || require('./talk-view.html');
+
+
+require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+require('@andreasgalster/fsn-meta-tags/dist/fsn-meta-tag.html');
 require('../components/paper-navigation/paper-navigation.html');
 
   // require('./search-view.html');
@@ -127,6 +155,13 @@ require('../components/paper-navigation/paper-navigation.html');
   // require('/imports/ui/views/talk-view.html');
   // require('/imports/ui/views/signup-view.html');
 
+
+  // require('./messages-view.html');
+
+  // require('./signup-view.html');
+  // require('./search-view.html');
+  // require('./profile-view.html');
+  // require('./talk-view.html');
 
 
 
@@ -138,13 +173,18 @@ Polymer({
     }
   },
   observers: [
-    // '_lockScroll(isLoading)'
+    // '_lockScroll(isLoading)',
+    '_loadViewDependency(path)'
   ],
-
+  listeners: {
+    'route-selected': 'changeRoute'
+  },
   notify: function() {
     this.notifyPath('otherUserId');
   },
-
+  changeRoute: function(e) {
+    this.path = e.detail.path;
+  },
   _lockScroll: function(isLoading) {
     if (isLoading) {
       document.body.style.overflow = 'hidden';
@@ -174,15 +214,47 @@ Polymer({
     //     require('/imports/ui/views/signup-view.html');
     // }
 
-    true || require("/imports/ui/views/signup-view.html");
-    true || require("/imports/ui/views/search-view.html");
-    true || require("/imports/ui/views/messages-view.html");
-    true || require("/imports/ui/views/profile-view.html");
-    true || require("/imports/ui/views/talk-view.html");
 
+    // require('./search-view.html');
 
+    //
+    // switch (path) {
+    //   case '/search':
+    //     require('./search-view.html');
+    //     break;
+    //   // case '/messages':
+    //   //   require('./messages-view.html');
+    //   //   break;
+    //   case '/profile':
+    //     require('./profile-view.html');
+    //     break;
+    //   case '/talk':
+    //     require('./talk-view.html');
+    //     break;
+    //   case '/':
+    //     require('./signup-view.html');
+    //     break;
+    //   case '/signup':
+    //     require('./signup-view.html');
+    // }
+
+    // true || require('/imports/ui/views/signup-view.html');
+    // true || require('/imports/ui/views/search-view.html');
+    // // true || require('/imports/ui/views/messages-view.html');
+    // true || require('/imports/ui/views/profile-view.html');
+    // true || require('/imports/ui/views/talk-view.html');
+    //
+    //
+    //
+    true || require('./signup-view.html');
+    true || require('./search-view.html');
+    true || require('./messages-view.html');
+    true || require('./profile-view.html');
+    true || require('./talk-view.html');
+
+    // console.log(`/imports/ui/views${path}-view.html`);
     path === '/' ? require(`/imports/ui/views/signup-view.html`) : require(`/imports/ui/views${path}-view.html`);
-    this.notify();
+    // this.notify();
   }
 });
 </script>

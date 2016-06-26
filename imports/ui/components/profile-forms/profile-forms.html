@@ -54,9 +54,6 @@
       }
     </style>
 
-    <!-- <meteor-user user={{user}}></meteor-user> -->
-    <!-- <meteor-subscribe name='user' args='[]'></meteor-subscribe> -->
-
 		<section>
 			<h1>Profile introduction</h1>
       <paper-textarea
@@ -89,29 +86,15 @@
       </paper-input>
 
       <paper-input
-        value={{user.profile.details.minimum_budget}}
-        class='validate'
-        label='Minimum budget'
-        placeholder='What’s your minimum budget?'
-        allowed-pattern='[0-9]'
-        min='500'
-        max='60000'
-        minlength='3'
-        maxlength='5'
-        required>
-        <div suffix>₱</div>
-      </paper-input>
-
-      <paper-input
         value={{user.profile.details.maximum_budget}}
         class='validate'
         label='Maximum budget'
         placeholder='What’s your maximum budget?'
         allowed-pattern='[0-9]'
         min='3000'
-        max='60000'
+        max='150000'
         minlength='4'
-        maxlength='5'
+        maxlength='6'
         required>
         <div suffix>₱</div>
       </paper-input>
@@ -153,17 +136,17 @@
 		</section>
 
 		<section id='last'>
-			<h1>Your perks</h1>
-			<p>Tell us about your perks so you can find the perfect roommates.</p>
+			<h1>Your preferences</h1>
+			<p>Tell us about your preferences so you can find the perfect roommates.</p>
 
-      <fsn-yesno-button checked={{user.profile.perks.messy}} value=''>Are you a messy?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.profile.perks.messy}} value=''>Are you messy?</fsn-yesno-button>
       <fsn-yesno-button checked={{user.profile.perks.smoker}} value=''>Are you a smoker?</fsn-yesno-button>
       <fsn-yesno-button checked={{user.profile.perks.pets}} value=''>Do you like pets?</fsn-yesno-button>
       <fsn-yesno-button checked={{user.profile.perks.party}} value=''>Do you party a lot?</fsn-yesno-button>
 		</section>
 
     <paper-button full-width class='hidden-md-up' on-tap='saveProfile'>save your profile</paper-button>
-    <paper-toast text="Your profile has been saved" duration="2500"></paper-toast>
+    <paper-toast text="Your profile has been saved" duration="1500"></paper-toast>
 
   </template>
 </dom-module>
@@ -175,6 +158,7 @@
   require('@polymer/paper-input/paper-textarea.html');
   require('@polymer/paper-toast/paper-toast.html');
   require('@polymer/paper-dialog/paper-dialog.html');
+  require('@polymer/app-route/app-location.html');
 
 
   // require('@polymer/vaadin-date-picker/vaadin-date-picker.html');
@@ -189,12 +173,15 @@
 
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-yesno-button/dist/fsn-yesno-button.html');
-  require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
+  // require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
+
+
+
+    require('./profile-forms.js');
 
   var _ = require('lodash');
   // var _includes = require('lodash/includes');
   var moment = require('moment');
-
 
   Polymer({
     is: 'profile-forms',
@@ -210,15 +197,22 @@
         observer: 'formatDate'
       }
     },
+    listeners: {
+      'iron-overlay-closed': 'changeRoute'
+    },
     toggleDatePicker: function() {
       this.$$('app-datepicker-dialog').toggle();
       // moment = require('moment');
     },
     attached: function() {
-      this.subscribe("user");
+      this.subscribe('user');
     },
     tracker: function() {
       this.user = Meteor.user();
+    },
+    changeRoute: function() {
+      console.log('closed');
+      this.fire('route-selected', {path: '/talk'});
     },
     validate: function() {
       var validity = [];
@@ -252,7 +246,6 @@
               introduction: this.user.profile.introduction,
               details: {
                 moving_to: this.user.profile.details.moving_to,
-                minimum_budget: this.user.profile.details.minimum_budget,
                 maximum_budget: this.user.profile.details.maximum_budget,
                 move_in_date: this.user.profile.details.move_in_date,
                 duration_of_stay: this.user.profile.details.duration_of_stay,
@@ -265,13 +258,15 @@
               }
             }
           }}, () => {
-            mixpanel.track("usersSubmittedProfile");
+            mixpanel.track('usersSubmittedProfile');
             this.$$('paper-toast').toggle();
           }
         );
-
       }
+
     }
+
+
   });
 
 </script>

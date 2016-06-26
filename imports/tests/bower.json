@@ -1,0 +1,41 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/AndreasGalster/houseme",
+  "authors": [
+    "Andreas Galster <andreas.galster@salarium.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "paper-tooltip": "PolymerElements/paper-tooltip",
+    "paper-toolbar": "PolymerElements/paper-toolbar",
+    "paper-tabs": "PolymerElements/paper-tabs",
+    "paper-spinner": "PolymerElements/paper-spinner",
+    "paper-input": "PolymerElements/paper-input",
+    "paper-item": "PolymerElements/paper-item",
+    "paper-icon-button": "PolymerElements/paper-icon-button",
+    "paper-header-panel": "PolymerElements/paper-header-panel",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu",
+    "paper-dialog": "PolymerElements/paper-dialog",
+    "paper-card": "PolymerElements/paper-card",
+    "paper-button": "PolymerElements/paper-button",
+    "app-route": "PolymerElements/app-route",
+    "google-apis": "GoogleWebComponents/google-apis",
+    "iron-media-query": "PolymerElements/iron-media-query",
+    "iron-list": "PolymerElements/iron-list",
+    "iron-collapse": "PolymerElements/iron-collapse",
+    "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold",
+    "paper-toast": "PolymerElements/paper-toast",
+    "iron-image": "PolymerElements/iron-image",
+    "grid-element": "^0.4.2",
+    "iron-icons": "PolymerElements/iron-icons#^1.1.3"
+  }
+}

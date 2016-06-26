@@ -1,15 +1,5 @@
 Accounts.onCreateUser(function(options, user) {
 
-  console.log('creating user');
-  // console.log()
-
-
-  // console.log(options);
-  console.log(user);
-  // We still want the default hook's 'profile' behavior.
-  // if (options.profile)
-    // user.profile = options.profile;
-
   let profile = {
     active: false,
     introduction: '',
@@ -28,48 +18,7 @@ Accounts.onCreateUser(function(options, user) {
     }
   }
   user.profile = profile;
-  console.log(user);
-
   return user;
-  // Meteor.users.update(
-  //   this.userId,
-  //   {$set: {
-  //     profile: {
-  //       active: false,
-  //       introduction: '',
-  //       details: {
-  //         moving_to: '',
-  //         minimum_budget: '',
-  //         maximum_budget: '',
-  //         move_in_date: '',
-  //         duration_of_stay: '',
-  //       },
-  //       perks: {
-  //         messy: false,
-  //         smoker: false,
-  //         pets: false,
-  //         party: false
-  //       }
-  //     }
-  //   }}
-  // );
-});
-
-PrivateMessages.allow({
-  insert: function (userId, doc) {
-    // the user must be logged in, and the document must be owned by the user
-    //return (userId && doc.userid === userId);
-    return userId;
-  },
-  update: function (userId, doc) {
-    // can only change your own documents
-    return userId;
-  },
-  remove: function (userId, doc) {
-    // can only remove your own documents
-    return doc.userid === userId;
-  },
-  //fetch: ['userid']
 });
 
 Meteor.publish('user', function() {
@@ -80,7 +29,7 @@ Meteor.publish('user', function() {
       _id: currentUser
     }, {
       fields: {
-        "services.facebook": 1,
+        'services.facebook': 1,
       }
     });
   } else {
@@ -105,18 +54,53 @@ Meteor.publish('messagesRead', function () {
 });
 
 
-// return users. reminder: limit what gets published eventually
-Meteor.publish('usersTeaser', function () {
-  // return Meteor.users.find({});
+Meteor.publish('usersTeaserAll', function () {
   return Meteor.users.find(
-    {'profile.active': true},
-    {fields:
-      {'profile': 1,
-      'services.facebook.first_name': 1,
-      'services.facebook.id': 1}
-    });
+    {
+      'profile.active': true
+      // '_id': {$ne: this.userId}
+    },
+    {
+      fields: {
+        'profile': 1,
+        'services.facebook.first_name': 1,
+        'services.facebook.id': 1
+      }
+    }
+  );
 });
 
+Meteor.publish('usersTeaser', function (limiter) {
+  return Meteor.users.find(
+    {
+      'profile.active': true,
+      '_id': {$ne: this.userId}
+    },
+    {
+      fields: {
+        'status': 1,
+        'profile': 1,
+        'services.facebook.first_name': 1,
+        'services.facebook.id': 1
+      },
+      sort: {
+        'status.lastLogin.date': -1
+      },
+      limit: limiter
+    }
+  );
+
+});
+
+Meteor.publish('PublicMessages', function (limiter) {
+  return PublicMessages.find(
+    {},
+    {
+      sort: {dateCreated: -1},
+      limit: limiter
+    }
+  );
+});
 
 // publish only messages containing user's userid
 Meteor.publish('messagesTeaser', function () {
@@ -140,14 +124,5 @@ Meteor.publish('messagesDetail', function (otherUserId) {
       //   'services.facebook.first_name': 1,
       //   'services.facebook.id': 1}
       // }
-    );
-});
-
-
-
-
-Meteor.publish('PublicMessages', function () {
-    return PublicMessages.find(
-  
     );
 });

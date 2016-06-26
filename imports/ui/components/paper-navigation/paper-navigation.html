@@ -1,7 +1,7 @@
-<dom-module id="paper-navigation">
+<dom-module id='paper-navigation'>
 
   <template>
-    <style include="houseme-styles"></style>
+    <style include='houseme-styles'></style>
     <style>
 
       paper-badge {
@@ -58,39 +58,39 @@
     </style>
 
     <paper-toolbar>
-        <a id='houseme_logo' href="/">
+        <a id='houseme_logo' href='/'>
           <img src='/svg/houseme_logo.svg' id='houseme_logo' />
         </a>
 
         <span></span>
 
-        <nav hidden$="[[!loggedIn]]">
-            <paper-tabs selected="{{selectedPage}}" attr-for-selected="selected-page" no-bar>
+        <nav hidden$='[[!loggedIn]]'>
+            <paper-tabs selected='{{selectedPage}}' attr-for-selected='selected-page' no-bar>
               <paper-tab selected-page='/search'>
                 <iron-icon hide-sm icon='fsn:search'></iron-icon>
-                <menuitem hide-xs>Search</menuitem>
+                <div hide-xs>Search</div>
               </paper-tab>
 
               <!-- <paper-tab selected-page='/messages'>
                 <iron-icon hide-sm icon='fsn:messages'></iron-icon>
-                <menuitem hide-xs>Messages</menuitem>
+                <div hide-xs>Messages</div>
               </paper-tab> -->
 
               <paper-tab selected-page='/talk'>
                 <iron-icon hide-sm icon='fsn:messages'></iron-icon>
-                <menuitem hide-xs>Talk</menuitem>
+                <div hide-xs>Talk</div>
               </paper-tab>
 
               <paper-tab selected-page='/profile'>
                 <iron-icon hide-sm icon='fsn:profile'></iron-icon>
-                <menuitem hide-xs>Profile</menuitem>
+                <div hide-xs>Profile</div>
               </paper-tab>
             </paper-tabs>
 
             <a href='https://feedback.userreport.com/dfcde2cd-6c6d-4d0a-a4c3-cce340dfd149/' target='_blank'>
               <paper-button>
                 <iron-icon hide-sm icon='fsn:ideas'></iron-icon>
-                <menuitem hide-xs>Give Feedback</menuitem>
+                <div hide-xs class='hide-xs'>Give Feedback</div>
               </paper-button>
             </a>
           <!-- <a href='https://fb.me/msg/houseme'><paper-button>Chat with us</paper-button>               -->

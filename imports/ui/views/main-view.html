@@ -1,15 +1,13 @@
-
-<dom-module id="main-view">
+<dom-module id='main-view'>
 
   <template>
-    <style include="view-styles"></style>
-    <style include="houseme-styles"></style>
+    <style include='view-styles'></style>
+    <style include='houseme-styles'></style>
     <style>
 
       :host {
         @apply(--fixed-view);
         @apply(--scroll-view);
-        /*@apply(--bg-img);*/
       }
 
       section {
@@ -28,9 +26,6 @@
         --paper-spinner-layer-4-color: var(--orange);
         --paper-spinner-stroke-width: 2px;
       }
-
-
-
     </style>
 
     <paper-header-panel mode='seamed'>
@@ -38,75 +33,60 @@
       <div class='content'>
 
         <app-location route={{route}} path={{path}}></app-location>
-        <app-route route={{route}}
-                      pattern="/:page"
-                      data={{pageData}}
-                      tail={{pageTail}}></app-route>
+        <app-route route={{route}} pattern='/:page'>
+        </app-route>
 
         <!-- <fsn-meta-tags attr-for-selected="data-route" selected=[[path]]> -->
         <div>
-          <fsn-meta-tag path='/'
-                        title='Finding roommates made easy - houseme'
-                        meta='{ "description": "Are you looking for a roommate? We will help you find the perfect one!" }'>
-          </fsn-meta-tag>
+          <fsn-meta-tag path='/' title='Finding roommates made easy - houseme' meta='{
+            "description": "Are you looking for a roommate? We will help you find the perfect one!"
+          }'></fsn-meta-tag>
 
-          <fsn-meta-tag meta='
-          { "property": "og:title", "content": "Finding roommates made easy - houseme" }'>
-          </fsn-meta-tag>
-          <fsn-meta-tag meta='
-          { "property": "og:image", "content": "https://www.houseme.space/img/bg1.jpg" }'>
-          </fsn-meta-tag>
-          <fsn-meta-tag meta='
-          { "property": "og:site_name", "content": "houseme roommate finder" }'>
-          </fsn-meta-tag>
-          <fsn-meta-tag meta='
-          { "property": "og:description", "content": "Are you looking for a roommate? We will help you find the perfect one!" }'>
-          </fsn-meta-tag>
+          <fsn-meta-tag meta='{
+            "property": "og:title",
+            "content": "Finding roommates made easy - houseme"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:image",
+            "content": "https://www.houseme.space/img/bg1.jpg"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:site_name",
+            "content": "houseme roommate finder"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:description",
+            "content": "Are you looking for a roommate? We will help you find the perfect one!"
+          }'></fsn-meta-tag>
         </div>
 
-
         <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
-<!--
-          <template is='iron-lazy-page' data-route='/' path='/public/views/signup-view.html'>
-            <signup-view></signup-view>
-          </template>
-          <template is='iron-lazy-page' data-route='/signup' path='/public/views/signup-view.html'>
-            <signup-view></signup-view>
-          </template>
-          <template is='iron-lazy-page' data-route='/profile' path='/public/views/profile-view.html'>
-            <profile-view></profile-view>
-          </template>
-          <template is='iron-lazy-page' data-route='/messages' path='/public/views/messages-view.html'>
-            <messages-view other-user-id=[[otherUserId]]></messages-view>
-          </template>
-          <template is='iron-lazy-page' data-route='/search' path='/public/views/search-view.html'>
-            <search-view other-user-id={{otherUserId}}></search-view>
-          </template>
-          <template is='iron-lazy-page' data-route='/talk' path='/public/views/talk-view.html'>
-            <talk-view></talk-view>
-          </template>
-
-           -->
           <template is='iron-lazy-page' data-route='/'>
             <signup-view></signup-view>
           </template>
+
           <template is='iron-lazy-page' data-route='/signup'>
             <signup-view></signup-view>
           </template>
+
           <template is='iron-lazy-page' data-route='/profile'>
             <profile-view></profile-view>
           </template>
+
           <template is='iron-lazy-page' data-route='/messages'>
             <messages-view other-user-id=[[otherUserId]]></messages-view>
           </template>
+
           <template is='iron-lazy-page' data-route='/search'>
-            <search-view other-user-id={{otherUserId}}></search-view>
+            <search-view></search-view>
           </template>
+
           <template is='iron-lazy-page' data-route='/talk'>
             <talk-view></talk-view>
           </template>
-
-
         </iron-lazy-pages>
         <!--
         <section hidden$=[[!isLoading]]>
@@ -128,42 +108,10 @@ require('@polymer/app-route/app-route.html');
 require('@polymer/app-route/app-location.html');
 require('@polymer/iron-lazy-pages/iron-lazy-pages.html');
 
-
-    // true || require('/imports/ui/views/signup-view.html');
-    // true || require('/imports/ui/views/search-view.html');
-    // // true || require('/imports/ui/views/messages-view.html');
-    // true || require('/imports/ui/views/profile-view.html');
-    // true || require('/imports/ui/views/talk-view.html');
-
-    //
-    //
-    // true || require('./signup-view.html');
-    // true || require('./search-view.html');
-    // true || require('./messages-view.html');
-    // true || require('./profile-view.html');
-    // true || require('./talk-view.html');
-
-
 require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
 require('@andreasgalster/fsn-meta-tags/dist/fsn-meta-tag.html');
+
 require('../components/paper-navigation/paper-navigation.html');
-
-  // require('./search-view.html');
-  // require('/imports/ui/views/search-view.html');
-  // require('/imports/ui/views/messages-view.html');
-  // require('/imports/ui/views/profile-view.html');
-  // require('/imports/ui/views/talk-view.html');
-  // require('/imports/ui/views/signup-view.html');
-
-
-  // require('./messages-view.html');
-
-  // require('./signup-view.html');
-  // require('./search-view.html');
-  // require('./profile-view.html');
-  // require('./talk-view.html');
-
-
 
 Polymer({
   is: 'main-view',
@@ -177,10 +125,11 @@ Polymer({
     '_loadViewDependency(path)'
   ],
   listeners: {
-    'route-selected': 'changeRoute'
+    'route-selected': 'changeRoute',
+    'message-userid-changed': 'setMessageUserId'
   },
-  notify: function() {
-    this.notifyPath('otherUserId');
+  setMessageUserId: function(e) {
+    this.otherUserId = e.detail;
   },
   changeRoute: function(e) {
     this.path = e.detail.path;
@@ -192,69 +141,14 @@ Polymer({
       document.body.style.overflow = 'visible';
     }
   },
-
   _loadViewDependency: function(path) {
-    // switch (path) {
-    //   case '/search':
-    //     require('/imports/ui/views/search-view.html');
-    //     break;
-    //   case '/messages':
-    //     require('/imports/ui/views/messages-view.html');
-    //     break;
-    //   case '/profile':
-    //     require('/imports/ui/views/profile-view.html');
-    //     break;
-    //   case '/talk':
-    //     require('/imports/ui/views/talk-view.html');
-    //     break;
-    //   case '/':
-    //     require('/imports/ui/views/signup-view.html');
-    //     break;
-    //   case '/signup':
-    //     require('/imports/ui/views/signup-view.html');
-    // }
-
-
-    // require('./search-view.html');
-
-    //
-    // switch (path) {
-    //   case '/search':
-    //     require('./search-view.html');
-    //     break;
-    //   // case '/messages':
-    //   //   require('./messages-view.html');
-    //   //   break;
-    //   case '/profile':
-    //     require('./profile-view.html');
-    //     break;
-    //   case '/talk':
-    //     require('./talk-view.html');
-    //     break;
-    //   case '/':
-    //     require('./signup-view.html');
-    //     break;
-    //   case '/signup':
-    //     require('./signup-view.html');
-    // }
-
-    // true || require('/imports/ui/views/signup-view.html');
-    // true || require('/imports/ui/views/search-view.html');
-    // // true || require('/imports/ui/views/messages-view.html');
-    // true || require('/imports/ui/views/profile-view.html');
-    // true || require('/imports/ui/views/talk-view.html');
-    //
-    //
-    //
     true || require('./signup-view.html');
     true || require('./search-view.html');
     true || require('./messages-view.html');
     true || require('./profile-view.html');
     true || require('./talk-view.html');
-
-    // console.log(`/imports/ui/views${path}-view.html`);
+    //
     path === '/' ? require(`/imports/ui/views/signup-view.html`) : require(`/imports/ui/views${path}-view.html`);
-    // this.notify();
   }
 });
 </script>

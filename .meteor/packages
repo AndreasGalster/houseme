@@ -29,5 +29,5 @@ service-configuration
 mwc:mixin
 mwc:synthesis
 ecmascript
-meteorhacks:kadira
 mizzao:user-status
+standard-minifier-js

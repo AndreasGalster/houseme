@@ -1,4 +1,4 @@
-  Meteor.methods({
+Meteor.methods({
 
   sendPrivateMessage: function(chatId, messageId, message, time) {
     // console.log('userids');
@@ -19,7 +19,6 @@
         {
           $push: {messages: {content: message, userid: this.userId} },
           $set: {
-            // time: moment().format('ddd D [at] HH:mm'),
             time: time,
             userids: [ this.userId, messageId],
             messageread: [
@@ -35,7 +34,6 @@
         {
           $push: {messages: {content: message, userid: this.userId} },
           $set: {
-            // time: moment().format('ddd D [at] HH:mm'),
             time: time,
             userids: [ this.userId, messageId],
             messageread: [
@@ -51,9 +49,6 @@
 
 
   sendPublicMessage: function(fromUserId, chatId, message, time) {
-    console.log(chatId);
-    console.log(chatId === null);
-    console.log(!chatId);
     if(chatId === null) {
       // if there's an existing message thread, insert into thread
       PublicMessages.insert(
@@ -78,7 +73,7 @@
   },
 
 
-  // 
+  //
   //
   // messageRead: function() {
   //
@@ -97,26 +92,17 @@
   //   );
   //
   // },
-  //
-  // messageNotRead: function() {
-  //
-  //   return Meteor.users.update(
-  //     {_id: Meteor.userId() },
-  //     {$set: {"profile.messageread": false } }
-  //   );
-  //
-  // },
 
   removeAllUsers: function() {
     return Meteor.users.remove({});
   },
-
+  removeUser: function(userid) {
+    return Meteor.users.findOne({_id: userid}).remove({});
+  },
   removeAllPrivateMessages: function() {
     return PrivateMessages.remove({});
   },
   removeAllPublicMessages: function() {
     return PublicMessages.remove({});
   }
-
-
 });

@@ -1,11 +1,9 @@
-<dom-module id="talk-view">
+<dom-module id='talk-view'>
   <template>
-    <style include="view-styles"></style>
+    <style include='view-styles'></style>
     <style>
       :host {
         @apply(--fill-view);
-        /*@apply(--bg-img);*/
-        /*@apply(--fixed-scroll);*/
       }
     </style>
 
@@ -16,13 +14,9 @@
 <script>
   require('@polymer/polymer/polymer.html');
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
-
-
-  // require('@andreasgalster/fsn-public-messaging/dist/fsn-public-messaging.html');
-  require('../components/fsn-public-messaging/fsn-public-messaging.html');
+  require('@andreasgalster/fsn-public-messaging/dist/fsn-public-messaging.html');
 
   Polymer({
-    is: 'talk-view',
-
+    is: 'talk-view'
   });
 </script>

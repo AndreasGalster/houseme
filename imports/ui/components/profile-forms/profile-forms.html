@@ -27,15 +27,14 @@
 
   		.perk {
   			border-bottom: #c4c4c4;
-
   		}
 
 
   		input {
-  		    border-radius: 0;
-  		    padding: 22px 16px;
-  		    font-size: 16px;
-  		    font-weight: 300;
+		    border-radius: 0;
+		    padding: 22px 16px;
+		    font-size: 16px;
+		    font-weight: 300;
   		}
 
   		input:focus {
@@ -67,23 +66,13 @@
 
 		<section>
 			<h1>Basic profile</h1>
-      <!-- <fsn-places-autocomplete
-        value={{user.profile.details.moving_to}}
-        class='validate'
-        label='Desired city'
-        input-value={{selectedCity}}
-        placeholder='Where do you want to move?'
-        required
-        city-id='{{cityId}}'>
-      </fsn-places-autocomplete> -->
-
-      <paper-input
+      <fsn-places-autocomplete
         value={{user.profile.details.moving_to}}
         class='validate'
         label='Desired city'
         placeholder='Where do you want to move?'
         required>
-      </paper-input>
+      </fsn-places-autocomplete>
 
       <paper-input
         value={{user.profile.details.maximum_budget}}
@@ -99,15 +88,13 @@
         <div suffix>₱</div>
       </paper-input>
 
-      <app-datepicker-dialog with-backdrop locale='en' show-long-date date={{user.profile.details.move_in_date}}></app-datepicker-dialog>
-      <paper-input
-        value=[[user.profile.details.move_in_date]]
+      <fsn-datepicker-input
+        value={{user.profile.details.move_in_date}}
         class='validate'
         label='Move in date'
         placeholder='When do you want to move in?'
         required
-        on-tap='toggleDatePicker'>
-      </paper-input>
+      ></fsn-datepicker-input>
 
       <paper-input
         value={{user.profile.details.duration_of_stay}}
@@ -120,19 +107,6 @@
         required>
         <div suffix>months</div>
       </paper-input>
-<!--
-      <paper-dropdown-menu label="Dinosaurs">
-        <paper-listbox class="dropdown-content">
-          <paper-item>allosaurus</paper-item>
-          <paper-item>brontosaurus</paper-item>
-          <paper-item>carcharodontosaurus</paper-item>
-          <paper-item>diplodocus</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <paper-slider min="10" max="200" value="110"></paper-slider>
- -->
-
 		</section>
 
 		<section id='last'>
@@ -152,35 +126,23 @@
 </dom-module>
 
 
+
 <script>
   require('@polymer/polymer/polymer.html');
+
+  require('@polymer/app-route/app-location.html');
+
   require('@polymer/paper-input/paper-input.html');
   require('@polymer/paper-input/paper-textarea.html');
   require('@polymer/paper-toast/paper-toast.html');
   require('@polymer/paper-dialog/paper-dialog.html');
-  require('@polymer/app-route/app-location.html');
 
-
-  // require('@polymer/vaadin-date-picker/vaadin-date-picker.html');
-  require('@polymer/app-datepicker/app-datepicker-dialog.html');
-  // require('@polymer/paper-date-picker/paper-date-picker.html');
-
-
-  // require('@polymer/paper-dropdown-menu/paper-dropdown-menu.html');
-  // require('@polymer/paper-listbox/paper-listbox.html');
-  // require('@polymer/paper-item/paper-item.html');
-  // require('@polymer/paper-slider/paper-slider.html');
-
+  require('../fsn-datepicker-input/fsn-datepicker-input.html');
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-yesno-button/dist/fsn-yesno-button.html');
-  // require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
-
-
-
-    require('./profile-forms.js');
+  require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
 
   var _ = require('lodash');
-  // var _includes = require('lodash/includes');
   var moment = require('moment');
 
   Polymer({
@@ -200,10 +162,6 @@
     listeners: {
       'iron-overlay-closed': 'changeRoute'
     },
-    toggleDatePicker: function() {
-      this.$$('app-datepicker-dialog').toggle();
-      // moment = require('moment');
-    },
     attached: function() {
       this.subscribe('user');
     },
@@ -211,7 +169,6 @@
       this.user = Meteor.user();
     },
     changeRoute: function() {
-      console.log('closed');
       this.fire('route-selected', {path: '/talk'});
     },
     validate: function() {
@@ -249,7 +206,8 @@
                 maximum_budget: this.user.profile.details.maximum_budget,
                 move_in_date: this.user.profile.details.move_in_date,
                 duration_of_stay: this.user.profile.details.duration_of_stay,
-              },
+              }
+              ,
               perks: {
                 messy: this.user.profile.perks.messy,
                 smoker: this.user.profile.perks.smoker,

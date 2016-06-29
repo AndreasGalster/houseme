@@ -12,7 +12,7 @@
         padding: 20px;
       }
 
-      iron-scroll-threshold {
+      iron-scroll-threshold, iron-list {
         @apply(--layout-fit);
       }
 
@@ -40,7 +40,6 @@
         z-index: 3;
         opacity: 0;
         background: rgba(12,138,235,0.8);
-        /*backdrop-filter: blur(10px);*/
         transition: opacity .1s ease-in-out;
 
       }
@@ -51,6 +50,8 @@
 
       paper-button {
         width: auto;
+        background: white !important;
+        color: black;  
       }
 
       table {
@@ -89,11 +90,6 @@
         paper-card {
           width: 100vw;
           height: 100vw;
-/*
-          --paper-card-header-image: {
-            width: 100vw;
-            height: 100vw;
-          }*/
         }
       }
 
@@ -101,11 +97,6 @@
         paper-card {
           width: 50vw;
           height: 50vw;
-/*
-          --paper-card-header-image: {
-            width: 50vw;
-            height: 50vw;
-          }*/
         }
       }
 
@@ -114,11 +105,6 @@
         paper-card {
           width: 33.33vw;
           height: 33.33vw;
-/*
-          --paper-card-header-image: {
-            width: 25vw;
-            height: 25vw;
-          }*/
         }
       }
 
@@ -126,11 +112,6 @@
         paper-card {
           width: 25vw;
           height: 25vw;
-/*
-          --paper-card-header-image: {
-            width: 25vw;
-            height: 25vw;
-          }*/
         }
       }
 
@@ -139,11 +120,6 @@
         paper-card {
           width: 20vw;
           height: 20vw;
-/*
-          --paper-card-header-image: {
-            width: 20vw;
-            height: 20vw;
-          }*/
         }
       }
 
@@ -153,13 +129,6 @@
           padding-bottom: 100%;
         }
       }
-
-
-
-
-
-
-
     </style>
 
     <iron-media-query query='(min-width: 600px)' query-matches='{{queryMatches}}'></iron-media-query>
@@ -239,19 +208,13 @@
       </iron-scroll-threshold>
     </template>
 
-
-
   </template>
 </dom-module>
-
-
 
 <script>
   require('@polymer/polymer/polymer.html');
   require('@polymer/app-route/app-location.html');
 
-  require('@polymer/iron-image/iron-image.html');
-  require('@polymer/iron-collapse/iron-collapse.html');
   require('@polymer/iron-list/iron-list.html');
   require('@polymer/iron-icon/iron-icon.html');
   require('@polymer/iron-scroll-threshold/iron-scroll-threshold.html');
@@ -259,10 +222,7 @@
 
   require('@polymer/paper-button/paper-button.html');
   require('@polymer/paper-card/paper-card.html');
-  require('@polymer/paper-tooltip/paper-tooltip.html');
-  require('@polymer/paper-icon-button/paper-icon-button.html');
   require('@polymer/paper-dialog/paper-dialog.html');
-  require('@polymer/paper-spinner/paper-spinner-lite.html');
 
 
   require('@andreasgalster/fsn-messaging-input/dist/fsn-messaging-input.html');
@@ -292,61 +252,29 @@
         observer: 'subscribeData'
       }
     },
-
     behaviors:[mwcMixin],
 
-
-    // calculateStyles: function() {
-    //   this.customStyle['--paper-card-header-image'] = gap;
-    //   this.updateStyles() ;
-    //   // Polymer.StyleDefaults.customStyle and Polymer.updateStyles()
-    //
-    // },
     // Subscribe to data. Once data is ready, set dynamic meta tags
     subscribeData: function() {
       this.subscribe('usersTeaser', this.limiter);
     },
     clearScroll: function() {
-      console.log(this.$$('iron-scroll-threshold'));
       if(this.$$('iron-scroll-threshold')) {
-      // if(this.user && this.user.profile.active) {
         this.$$('iron-scroll-threshold').clearTriggers();
       }
     },
     loadMoreData: function() {
-      console.log('scroll end');
       this.limiter += 6;
-    },
-    // close the current description when view gets deleted
-    detached: function() {
-      // this.subscription.stop();
     },
     tracker: function() {
       var user = Meteor.user();
       this.user = user;
       this.loggedIn = (user != null);
-      // this.users = [];
-      // for (var i = 0; i<100; i++) {
-      //   this.users.push[1];
-      // };
-
       this.users = Meteor.users.find({_id: {$ne: Meteor.userId()} }).fetch();
-      console.log(this.users);
-    },
-    perkClass: function(perk) {
-      return perk ? 'green' : '';
-    },
-    toggleInfo: function(e) {
-      let ironCollapse = e.currentTarget.querySelector('iron-collapse');
-      let iconButton = e.currentTarget.querySelector('paper-icon-button');
-      iconButton = ironCollapse.opened  ? 'fsn:arrow-up' : 'fsn:arrow-down';
-      ironCollapse.toggle();
     },
     sendMessage: function(e) {
-      // this.otherUserId = e.model.item._id;
+      this.fire('message-userid-changed', e.model.item._id);
       this.$$('paper-dialog').toggle();
-      // console.log(`yo ${this.otherUserId}`);
-
     },
 
   });

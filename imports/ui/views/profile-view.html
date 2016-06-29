@@ -1,14 +1,10 @@
-
-<dom-module id="profile-view">
-
+<dom-module id='profile-view'>
   <template>
-    <style include="view-styles"></style>
-    <style include="houseme-styles"></style>
+    <style include='view-styles'></style>
+    <style include='houseme-styles'></style>
     <style>
-
       :host {
         @apply(--fill-view);
-        /*@apply(--bg-img);*/
       }
 
       paper-material {
@@ -20,7 +16,6 @@
           top: 60px;
         }
       }
-
     </style>
 
     <paper-material class='container' elevation='3'>
@@ -35,6 +30,7 @@
 
 <script>
   require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-material/paper-material.html');
 
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('../components/profile-forms/profile-forms.html');
@@ -43,7 +39,7 @@
   Polymer({
     is: 'profile-view',
     listeners: {
-      'saveProfile': 'saveProfile',
+      'saveProfile': 'saveProfile'
     },
     saveProfile: function() {
       this.$$('profile-forms').saveProfile();

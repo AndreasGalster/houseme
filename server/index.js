@@ -1,26 +1,18 @@
-// import prerender from 'prerender-node';
-// prerender.set('prerenderToken', 'Meteor.settings.prerender.token');
-
-// WebApp.rawConnectHandlers.use(middleware);
-// WebApp.rawConnectHandlers.use(middleware);
-// WebApp.rawConnectHandlers.use(proxyMiddleware('http://localhost:4000/graphql'));
-
+// require prerender and define get prerender tokens
 const prerender = require('prerender-node');
 const settings = Meteor.settings.prerender;
 
+// tell prerender to fetch page
 if (settings && settings.token) {
-// if (settings && settings.token && settings.host) {
     prerender.set('prerenderToken', settings.token);
-    // prerender.set('host', settings.host);
     WebApp.rawConnectHandlers.use(prerender);
 }
 
-
-// var prerender = require('prerender-node').set('prerenderToken', Meteor.settings.prerender.token);
-// console.log(prerender);
-
+// imports startup scripts
 import '../imports/server/startup.js';
 
+// imports only collections
 import '../imports/server/collections.js';
 
+// imports only methods
 import '../imports/server/methods.js';

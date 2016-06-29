@@ -1,0 +1,7 @@
+{
+  "name": "houseme",
+  "short_name": "houseme",
+  "start_url": "/",
+  "display": "standalone",
+  "gcm_sender_id": "pushonesignal-1356"
+}

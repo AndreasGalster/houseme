@@ -53,6 +53,11 @@ Meteor.publish('usersTeaserAll', function () {
   );
 });
 
+
+
+
+
+
 Meteor.publish('usersTeaser', function (limiter) {
   return Meteor.users.find(
     {
@@ -113,18 +118,160 @@ Meteor.publish('PrivateMessagesTeaser', function () {
 });
 
 
-Meteor.publish('PrivateMessagesDetail', function (otherUserId) {
-    // console.log(PrivateMessages.find().fetch());
-    // this.autorun(() => {
-    //   this.subscribe('todos.inList', this.getListId());
-    // });
-    return PrivateMessages.find(
-      {$and: [{userids: this.userId}, otherUserId]}
-      // ,
-      // {fields:
-      //   {'profile': 1,
-      //   'services.facebook.first_name': 1,
-      //   'services.facebook.id': 1}
-      // }
-    );
+
+
+Meteor.publish('PrivateMessageIds', function () {
+  return Meteor.users.find(
+    {
+      'profile.active': true,
+      '_id': {$ne: this.userId}
+    },
+    {
+      fields: {
+        // 'services.facebook.first_name': 1,
+        'services.facebook.id': 1,
+        'messages': 1
+      }
+    }
+  );
+
 });
+
+
+
+Meteor.publish('PrivateMessages', function () {
+  return PrivateMessages.find();
+});
+
+
+
+
+
+
+
+Meteor.publish('SingleUserTeaser', function (toUserId) {
+  return Meteor.users.findOne(
+    {
+      '_id': toUserId
+    },
+    {
+      fields: {
+        'services.facebook.first_name': 1,
+        'services.facebook.id': 1
+      }
+    }
+  );
+});
+
+
+
+
+
+
+
+
+
+
+
+Meteor.publish('usersTeaser', function (limiter) {
+  return Meteor.users.find(
+    {
+      'profile.active': true,
+      '_id': {$ne: this.userId}
+    },
+    {
+      fields: {
+        'status': 1,
+        'profile': 1,
+        'services.facebook.first_name': 1,
+        'services.facebook.id': 1
+      },
+      sort: {
+        'status.lastLogin.date': -1
+      },
+      limit: limiter
+    }
+  );
+
+});
+
+
+
+/* Private Messaging
+ *
+ * Contains three subscriptions
+ * Subscribe to users facebookd id & first_name
+ * Subscribe to a list of messages without content of messages
+ * Subscribe to a specific message including content
+ */
+
+// retrieves the user images and facebook name
+Meteor.publish('PrivateMessagesUsers', function (limiter) {
+  return Meteor.users.find(
+    {
+      'profile.active': true
+      // 'profile.active': true,
+      // '_id': {$ne: this.userId}
+
+    },
+    {
+      fields: {
+        'services.facebook.first_name': 1,
+        'services.facebook.id': 1
+      }
+      // limit: limiter
+    }
+  );
+
+});
+
+
+
+
+// retrieves the list of messages sent/received
+Meteor.publish('PrivateMessagesList', function () {
+  // return [
+  //   Meteor.users.find(
+  //     {'profile.active': true},
+  //     {fields: {
+  //       'services.facebook.first_name': 1,
+  //       'services.facebook.id': 1
+  //     }}
+  //   ),
+  //   PrivateMessagesList.find({ $or: [{toUserId: this.userId}, {fromUserId: this.userId}] })
+  // ];
+  return PrivateMessagesList.find({ $or: [{toUserId: this.userId}, {fromUserId: this.userId}] });
+});
+
+
+
+
+
+// retrieves content of one individual message stream
+Meteor.publish('PrivateMessagesDetail', function (messageId) {
+  console.log(
+    PrivateMessagesDetail.find(
+      {messageId: messageId}
+    ).fetch()
+  );
+
+  return PrivateMessagesDetail.find(
+    {messageId: messageId}
+  );
+});
+
+
+
+
+// // retrieves content of one individual message stream
+// Meteor.publish('PrivateMessagesDetail', function (otherUserId) {
+//   return PrivateMessages.find(
+//     {$and: [{userids: this.userId}, otherUserId]}
+//     // ,
+//     // {fields:
+//     //   {'profile': 1,
+//     //   'services.facebook.first_name': 1,
+//     //   'services.facebook.id': 1}
+//     // }
+//   );
+// });

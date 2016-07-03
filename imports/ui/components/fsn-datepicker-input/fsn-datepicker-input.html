@@ -1,31 +1,7 @@
-<dom-module id="fsn-datepicker-input">
+<dom-module id='fsn-datepicker-input'>
   <template>
     <style include='houseme-styles'></style>
     <style>
-      :host {
-        display: block;
-      }
-
-      :host([hidden]) {
-        display: none !important;
-      }
-
-      input::-webkit-input-placeholder {
-        color: var(--paper-input-container-color, --secondary-text-color);
-      }
-
-      input:-moz-placeholder {
-        color: var(--paper-input-container-color, --secondary-text-color);
-      }
-
-      input::-moz-placeholder {
-        color: var(--paper-input-container-color, --secondary-text-color);
-      }
-
-      input:-ms-input-placeholder {
-        color: var(--paper-input-container-color, --secondary-text-color);
-      }
-
       section {
         background: var(--blue);
         padding: 15px;
@@ -62,64 +38,21 @@
       }
     </style>
 
-    <paper-input-container no-label-float="[[noLabelFloat]]" always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]" auto-validate$="[[autoValidate]]" disabled$="[[disabled]]" invalid="[[invalid]]">
-
-      <content select="[prefix]"></content>
-
-      <label hidden$="[[!label]]" aria-hidden="true">[[label]]</label>
-
-      <input is="iron-input" id="input"
-        aria-labelledby$="[[_ariaLabelledBy]]"
-        aria-describedby$="[[_ariaDescribedBy]]"
-        disabled$="[[disabled]]"
-        title$="[[title]]"
-        bind-value="{{value}}"
-        invalid="{{invalid}}"
-        prevent-invalid-input="[[preventInvalidInput]]"
-        allowed-pattern="[[allowedPattern]]"
-        validator="[[validator]]"
-        type$="[[type]]"
-        pattern$="[[pattern]]"
-        required$="[[required]]"
-        autocomplete$="[[autocomplete]]"
-        autofocus$="[[autofocus]]"
-        inputmode$="[[inputmode]]"
-        minlength$="[[minlength]]"
-        maxlength$="[[maxlength]]"
-        min$="[[min]]"
-        max$="[[max]]"
-        step$="[[step]]"
-        name$="[[name]]"
-        placeholder$="[[placeholder]]"
-        readonly$="[[readonly]]"
-        list$="[[list]]"
-        size$="[[size]]"
-        autocapitalize$="[[autocapitalize]]"
-        autocorrect$="[[autocorrect]]"
-        on-change="_onChange"
-        tabindex$="[[tabindex]]"
-        autosave$="[[autosave]]"
-        results$="[[results]]"
-        accept$="[[accept]]"
-        multiple$="[[multiple]]"
-        on-tap="toggle">
-
-      <content select="[suffix]"></content>
-
-      <template is="dom-if" if="[[errorMessage]]">
-        <paper-input-error>[[errorMessage]]</paper-input-error>
-      </template>
-
-      <template is="dom-if" if="[[charCounter]]">
-        <paper-input-char-counter></paper-input-char-counter>
-      </template>
-
-    </paper-input-container>
+    <paper-input
+      value={{value}}
+      class='validate'
+      invalid={{invalid}}      
+      label='Move in date'
+      placeholder='When do you want to move in?'
+      required
+      on-tap='toggle'>
+    </paper-input>
 
     <paper-dialog with-backdrop>
       <h2>Choose a month</h2>
+
       <div class='content'>
-        <iron-selector attr-for-selected="name" selected={{selected}}>
+        <iron-selector attr-for-selected='name' selected={{selected}}>
           <section name='Jan'>Jan</section>
           <section name='Feb'>Feb</section>
           <section name='Mar'>Mar</section>
@@ -137,7 +70,7 @@
           <section name='Dec'>Dec</section>
         </iron-selector>
       </div>
-      <div class="buttons">
+      <div class='buttons'>
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button dialog-confirm on-tap='setValue'>Accept</paper-button>
       </div>
@@ -149,14 +82,11 @@
 
 <script>
   require('@polymer/polymer/polymer.html');
-  require('@polymer/iron-form-element-behavior/iron-form-element-behavior.html');
-  require('@polymer/iron-input/iron-input.html');
-  require('@polymer/paper-input/paper-input-behavior.html');
-  require('@polymer/paper-input/paper-input-char-counter.html');
-  require('@polymer/paper-input/paper-input-container.html');
-  require('@polymer/paper-input/paper-input-error.html');
 
+  require('@polymer/iron-selector/iron-selector.html');
   require('@polymer/iron-flex-layout/iron-flex-layout.html');
+
+  require('@polymer/paper-input/paper-input.html');
   require('@polymer/paper-dialog/paper-dialog.html');
 
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
@@ -166,11 +96,6 @@
 
   Polymer({
     is: 'fsn-datepicker-input',
-
-    behaviors: [
-      Polymer.IronFormElementBehavior,
-      Polymer.PaperInputBehavior
-    ],
 
     properties: {
       value: {
@@ -189,6 +114,11 @@
 
     toggle: function() {
       this.$$('paper-dialog').toggle();
-    }
+    },
+
+    validate: function() {
+      this.$$('paper-input').validate();
+    },
+
   });
 </script>

@@ -77,7 +77,7 @@
           </template>
 
           <template is='iron-lazy-page' data-route='/messages'>
-            <messages-view other-user-id=[[otherUserId]]></messages-view>
+            <messages-view to-user-id=[[toUserId]]></messages-view>
           </template>
 
           <template is='iron-lazy-page' data-route='/search'>
@@ -115,10 +115,14 @@ require('../components/paper-navigation/paper-navigation.html');
 
 Polymer({
   is: 'main-view',
+  behaviors: [mwcMixin],
   properties: {
-    otherUserId: {
+    toUserId: {
       type: String,
     }
+  },
+  attached: function() {
+    this.subscribe('PrivateMessagesUsers');
   },
   observers: [
     // '_lockScroll(isLoading)',
@@ -126,10 +130,16 @@ Polymer({
   ],
   listeners: {
     'route-selected': 'changeRoute',
-    'message-userid-changed': 'setMessageUserId'
+    'message-userid-changed': 'setMessageUserId',
+    'message-userid-ready': 'notifyToUserId'
   },
   setMessageUserId: function(e) {
-    this.otherUserId = e.detail;
+    this.toUserId = e.detail;
+  },
+  notifyToUserId: function() {
+    var toUserId = this.toUserId;
+    this.set('toUserId', 'lorem');
+    this.set('toUserId', toUserId);
   },
   changeRoute: function(e) {
     this.path = e.detail.path;

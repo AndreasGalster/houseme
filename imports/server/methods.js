@@ -1,48 +1,55 @@
 Meteor.methods({
 
-  sendPrivateMessage: function(chatId, messageId, message, time) {
-    // console.log('userids');
-    // console.log(userids);
-
-    console.log('chatid');
-    console.log(chatId);
-    console.log('messageid');
+  sendPrivateMessage: function(fromUserId, toUserId, messageId, message, time) {
     console.log(messageId);
-    console.log('message');
-    console.log(message);
-    console.log('time');
-    console.log(time);
+    if(messageId) {
+      PrivateMessagesList.update(
+        { messageId: messageId },
+        {
+          messageId: messageId,
+          userIds: [toUserId, fromUserId],
+          toUserId: toUserId,
+          fromUserId: fromUserId,
+          status: {
+            createdAt: time
+          }
+        }
+      );
 
-    if(chatId) {
-      PrivateMessages.upsert(
-        { _id: chatId },
+      PrivateMessagesDetail.insert(
         {
-          $push: {messages: {content: message, userid: this.userId} },
-          $set: {
-            time: time,
-            userids: [ this.userId, messageId],
-            messageread: [
-              { userid: messageId, messageread: false },
-              { userid: this.userId, messageread: true }
-            ]
+          messageId: messageId,
+          fromUserId: fromUserId,
+          createdAt: new Date(),
+          messageText: message
+        }
+      );
+
+    }else {
+      const random = Random.id();
+      PrivateMessagesList.insert(
+        {
+          messageId: random,
+          userIds: [toUserId, fromUserId],
+          toUserId: toUserId,
+          fromUserId: fromUserId,
+          status: {
+            createdAt: time
           }
         }
       );
-    } else {
-      PrivateMessages.upsert(
-        {},
+
+      PrivateMessagesDetail.insert(
+        // { messageId, createdAt, messageText }
+        // {},
         {
-          $push: {messages: {content: message, userid: this.userId} },
-          $set: {
-            time: time,
-            userids: [ this.userId, messageId],
-            messageread: [
-              { userid: messageId, messageread: false },
-              { userid: this.userId, messageread: true }
-            ]
-          }
+          fromUserId: fromUserId,
+          messageId: random,
+          createdAt: new Date(),
+          messageText: message
         }
       );
+
     }
   },
 
@@ -73,34 +80,17 @@ Meteor.methods({
   },
 
 
-  //
-  //
-  // messageRead: function() {
-  //
-  //   return Meteor.users.update(
-  //     {_id: Meteor.userId() },
-  //     {$set: {"profile.messageread": true } }
-  //   );
-  //
-  // },
-  //
-  // messageNotRead: function() {
-  //
-  //   return Meteor.users.update(
-  //     {_id: Meteor.userId() },
-  //     {$set: {"profile.messageread": false } }
-  //   );
-  //
-  // },
-
   removeAllUsers: function() {
     return Meteor.users.remove({});
   },
   removeUser: function(userid) {
     return Meteor.users.findOne({_id: userid}).remove({});
   },
-  removeAllPrivateMessages: function() {
-    return PrivateMessages.remove({});
+  removeAllPrivateMessagesList: function() {
+    return PrivateMessagesList.remove({});
+  },
+  removeAllPrivateMessagesDetail: function() {
+    return PrivateMessagesDetail.remove({});
   },
   removeAllPublicMessages: function() {
     return PublicMessages.remove({});

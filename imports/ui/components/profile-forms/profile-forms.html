@@ -168,28 +168,20 @@
     tracker: function() {
       this.user = Meteor.user();
     },
-    changeRoute: function() {
-      this.fire('route-selected', {path: '/talk'});
+    changeRoute: function(e) {
+      console.log(e);
+      // this.fire('route-selected', {path: '/talk'});
     },
     validate: function() {
       var validity = [];
 
-      Polymer.dom(this.root).querySelectorAll('.validate').forEach(function(value) {
-        value.validate();
-        validity.push(value.invalid);
+      Polymer.dom(this.root).querySelectorAll('.validate').forEach(function(paperInput) {
+        paperInput.validate();
+        validity.push(paperInput.invalid);
       });
 
       return validity;
     },
-
-    formatDate: function() {
-      if(!this.user.profile.details.move_in_date) {
-        this.formattedDate = moment().format('MMM DD');
-      } else {
-        this.formattedDate = moment(this.user.profile.details.move_in_date, 'YYYY-MM-DD').format('MMM DD');
-      }
-    },
-
     saveProfile: function(e) {
       var user;
       this.validate();
@@ -206,8 +198,7 @@
                 maximum_budget: this.user.profile.details.maximum_budget,
                 move_in_date: this.user.profile.details.move_in_date,
                 duration_of_stay: this.user.profile.details.duration_of_stay,
-              }
-              ,
+              },
               perks: {
                 messy: this.user.profile.perks.messy,
                 smoker: this.user.profile.perks.smoker,

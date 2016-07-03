@@ -8,10 +8,6 @@
         display: block;
       }
 
-      paper-dialog {
-        padding: 20px;
-      }
-
       iron-scroll-threshold, iron-list {
         @apply(--layout-fit);
       }
@@ -51,7 +47,7 @@
       paper-button {
         width: auto;
         background: white !important;
-        color: black;  
+        color: black;
       }
 
       table {
@@ -132,10 +128,6 @@
     </style>
 
     <iron-media-query query='(min-width: 600px)' query-matches='{{queryMatches}}'></iron-media-query>
-
-    <paper-dialog class='container' with-backdrop>
-      <h1>Private messaging is coming soon ¯\_(ツ)_/¯</h1>
-    </paper-dialog>
 
     <div hidden$=[[loggedIn]] class='warning layout center'>
       <hero1>Please <a href='/signup'>log in or sign up</a> to start looking for roommates.</hero1>
@@ -225,7 +217,6 @@
   require('@polymer/paper-dialog/paper-dialog.html');
 
 
-  require('@andreasgalster/fsn-messaging-input/dist/fsn-messaging-input.html');
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
 
@@ -274,7 +265,7 @@
     },
     sendMessage: function(e) {
       this.fire('message-userid-changed', e.model.item._id);
-      this.$$('paper-dialog').toggle();
+      this.fire('route-selected', {path: '/messages'});
     },
 
   });

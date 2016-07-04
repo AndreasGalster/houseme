@@ -41,11 +41,11 @@
     <paper-input
       value={{value}}
       class='validate'
-      invalid={{invalid}}      
+      invalid={{invalid}}
       label='Move in date'
       placeholder='When do you want to move in?'
       required
-      on-tap='toggle'>
+      on-focus='toggle'>
     </paper-input>
 
     <paper-dialog with-backdrop>
@@ -99,6 +99,8 @@
 
     properties: {
       value: {
+        type: String,
+        notify: true,
         observer: 'updateValue'
       }
     },
@@ -108,7 +110,6 @@
     },
 
     setValue: function() {
-      console.log(this.selected);
       this.value = this.selected;
     },
 

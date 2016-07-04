@@ -31,3 +31,5 @@ mwc:synthesis
 ecmascript
 mizzao:user-status
 standard-minifier-js
+session
+promise

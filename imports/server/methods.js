@@ -1,17 +1,34 @@
 Meteor.methods({
 
-  sendPrivateMessage: function(fromUserId, toUserId, messageId, message, time) {
+  getUserImage: function(userId) {
+    var user = Meteor.users.findOne({ _id: userId});
+    return user.services.facebook.id;
+  },
+
+  getUserName: function(userId) {
+    var user = Meteor.users.findOne({ _id: userId});
+    return user.services.facebook.first_name;
+  },
+
+  sendPrivateMessage: function(fromUserId, toUserId, messageId, message, userSelected) {
     console.log(messageId);
-    if(messageId) {
+    console.log(userSelected);
+
+    // existing one
+    if(userSelected) {
       PrivateMessagesList.update(
         { messageId: messageId },
         {
           messageId: messageId,
           userIds: [toUserId, fromUserId],
+          toFacebookId: Meteor.users.findOne({_id: toUserId}).services.facebook.id,
+          toFacebookName: Meteor.users.findOne({_id: toUserId}).services.facebook.first_name,
           toUserId: toUserId,
+          fromFacebookId: Meteor.users.findOne({_id: fromUserId}).services.facebook.id,
+          fromFacebookName: Meteor.users.findOne({_id: fromUserId}).services.facebook.first_name,
           fromUserId: fromUserId,
           status: {
-            createdAt: time
+            createdAt: new Date()
           }
         }
       );
@@ -31,10 +48,14 @@ Meteor.methods({
         {
           messageId: random,
           userIds: [toUserId, fromUserId],
+          toFacebookId: Meteor.users.findOne({_id: toUserId}).services.facebook.id,
+          toFacebookName: Meteor.users.findOne({_id: toUserId}).services.facebook.first_name,
           toUserId: toUserId,
+          fromFacebookId: Meteor.users.findOne({_id: fromUserId}).services.facebook.id,
+          fromFacebookName: Meteor.users.findOne({_id: fromUserId}).services.facebook.first_name,
           fromUserId: fromUserId,
           status: {
-            createdAt: time
+            createdAt: new Date()
           }
         }
       );

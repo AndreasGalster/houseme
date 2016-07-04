@@ -28,8 +28,8 @@
 
     <paper-material class='container' elevation='3'>
   		<div class='row row-eq-height no-gutter'>
-        <fsn-messaging-list class='col-xs-12 col-md-4' message-id={{messageId}}></fsn-messaging-list>
-        <fsn-messaging-chat class='col-xs-12 col-md-8' message-id=[[messageId]] to-user-id=[[toUserId]]></fsn-messaging-chat>
+        <fsn-messaging-list class='col-xs-12 col-md-4' message-id={{messageId}} to-user-id={{toUserId}}></fsn-messaging-list>
+        <fsn-messaging-chat class='col-xs-12 col-md-8' message-id=[[messageId]] to-user-id=[[toUserId]] user-selected=[[userSelected]]></fsn-messaging-chat>
       </div>
     </paper-material>
 
@@ -53,7 +53,8 @@
     is: 'messages-view',
     properties: {
       toUserId: String,
-      messageId: String
+      messageId: String,
+      userSelected: Boolean
     },
     attached: function() {
       this.fire('message-userid-ready');

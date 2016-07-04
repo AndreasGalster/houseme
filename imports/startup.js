@@ -1,5 +1,6 @@
 // only register elements lazily when they're used on the page
 window.Polymer = {
+  // useNativeCSSProperties: true,
   lazyRegister: true
 };
 

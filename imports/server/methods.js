@@ -1,4 +1,34 @@
 Meteor.methods({
+  /* Profile retrieval & updating
+   *
+   * Contains three subscriptions
+   * Retrieve user.services facebookd id & first_name
+   * Retrieve user.profile
+   * Update profile
+   */
+  getOwnUserFacebook: function() {
+    return {
+      id: Meteor.user().services.facebook.id,
+      first_name: Meteor.user().services.facebook.first_name,
+    };
+  },
+
+  getOwnUserProfile: function() {
+    return Meteor.user().profile;
+  },
+
+  submitProfile: function(options) {
+    Meteor.users.update(
+      Meteor.userId(),
+      {$set: options}
+    );
+  },
+
+
+
+
+
+
 
   getUserImage: function(userId) {
     var user = Meteor.users.findOne({ _id: userId});
@@ -76,31 +106,35 @@ Meteor.methods({
 
 
 
-  sendPublicMessage: function(fromUserId, chatId, message, time) {
+  sendPublicMessage: function(fromUserId, chatId, message) {
     if(chatId === null) {
       // if there's an existing message thread, insert into thread
-      PublicMessages.insert(
-        {
-          messages: [{content: message, fromUserId: fromUserId, time: time}],
-          dateCreated: new Date(),
-          lastMessage: time
-        }
-      );
+      PublicMessages.insert({
+        messages: [{content: message, fromUserId: fromUserId, dateCreated: new Date()}],
+        dateCreated: new Date(),
+        lastMessage: new Date()
+      });
     } else {
       // if there's no message thread yet, create one
       PublicMessages.upsert(
         { _id: chatId },
         {
-          $push: {messages: {content: message, fromUserId: fromUserId, time: time} },
-          $set: {
-            lastMessage: time,
-          }
+          $push: {messages: {content: message, fromUserId: fromUserId, dateCreated: new Date()} },
+          $set: {lastMessage: new Date()}
         }
       );
     }
   },
 
 
+  /* Utility methods to delete stuff
+   *
+   * Remove all users
+   * Remove a single user
+   * Remove list of private messages (does not contain messages)
+   * Remove all private messages (contains the message content)
+   * Remove all public messages
+   */
   removeAllUsers: function() {
     return Meteor.users.remove({});
   },

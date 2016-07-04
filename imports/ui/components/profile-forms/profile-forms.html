@@ -56,7 +56,7 @@
 		<section>
 			<h1>Profile introduction</h1>
       <paper-textarea
-        value={{user.profile.introduction}}
+        value={{user.introduction}}
         class='validate'
         placeholder='Tell us in less than 200 characters about yourself.'
         char-counter maxlength='200'
@@ -64,10 +64,10 @@
       </paper-textarea>
 		</section>
 
-		<section>
+		<section id='last'>
 			<h1>Basic profile</h1>
       <fsn-places-autocomplete
-        value={{user.profile.details.moving_to}}
+        value={{user.details.moving_to}}
         class='validate'
         label='Desired city'
         placeholder='Where do you want to move?'
@@ -75,7 +75,7 @@
       </fsn-places-autocomplete>
 
       <paper-input
-        value={{user.profile.details.maximum_budget}}
+        value={{user.details.maximum_budget}}
         class='validate'
         label='Maximum budget'
         placeholder='What’s your maximum budget?'
@@ -89,7 +89,7 @@
       </paper-input>
 
       <fsn-datepicker-input
-        value={{user.profile.details.move_in_date}}
+        value={{user.details.move_in_date}}
         class='validate'
         label='Move in date'
         placeholder='When do you want to move in?'
@@ -97,7 +97,7 @@
       ></fsn-datepicker-input>
 
       <paper-input
-        value={{user.profile.details.duration_of_stay}}
+        value={{user.details.duration_of_stay}}
         class='validate'
         label='Duration of stay'
         placeholder='How long do you want to stay?'
@@ -109,18 +109,18 @@
       </paper-input>
 		</section>
 
-		<section id='last'>
+		<!-- <section id='last'>
 			<h1>Your preferences</h1>
 			<p>Tell us about your preferences so you can find the perfect roommates.</p>
 
-      <fsn-yesno-button checked={{user.profile.perks.messy}} value=''>Are you messy?</fsn-yesno-button>
-      <fsn-yesno-button checked={{user.profile.perks.smoker}} value=''>Are you a smoker?</fsn-yesno-button>
-      <fsn-yesno-button checked={{user.profile.perks.pets}} value=''>Do you like pets?</fsn-yesno-button>
-      <fsn-yesno-button checked={{user.profile.perks.party}} value=''>Do you party a lot?</fsn-yesno-button>
-		</section>
+      <fsn-yesno-button checked={{user.perks.messy}} value=''>Are you messy?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.perks.smoker}} value=''>Are you a smoker?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.perks.pets}} value=''>Do you like pets?</fsn-yesno-button>
+      <fsn-yesno-button checked={{user.perks.party}} value=''>Do you party a lot?</fsn-yesno-button>
+		</section> -->
 
     <paper-button full-width class='hidden-md-up' on-tap='saveProfile'>save your profile</paper-button>
-    <paper-toast text="Your profile has been saved" duration="1500"></paper-toast>
+    <paper-toast text='Your profile has been saved' duration='1500'></paper-toast>
 
   </template>
 </dom-module>
@@ -139,7 +139,7 @@
 
   require('../fsn-datepicker-input/fsn-datepicker-input.html');
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
-  require('@andreasgalster/fsn-yesno-button/dist/fsn-yesno-button.html');
+  // require('@andreasgalster/fsn-yesno-button/dist/fsn-yesno-button.html');
   require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
 
   var _ = require('lodash');
@@ -147,29 +147,19 @@
 
   Polymer({
     is: 'profile-forms',
-    behaviors:[mwcMixin],
     listeners: {
       'saveProfile': 'saveProfile',
     },
     properties: {
-      user: Object,
-      formattedDate: String,
-      unformattedDate: {
-        type: String,
-        observer: 'formatDate'
-      }
+      user: Object
     },
     listeners: {
       'iron-overlay-closed': 'changeRoute'
     },
     attached: function() {
-      this.subscribe('user');
+      Meteor.call('getOwnUserProfile', (err,res) => this.user = res );
     },
-    tracker: function() {
-      this.user = Meteor.user();
-    },
-    changeRoute: function(e) {
-      console.log(e);
+    changeRoute: function() {
       // this.fire('route-selected', {path: '/talk'});
     },
     validate: function() {
@@ -182,40 +172,27 @@
 
       return validity;
     },
-    saveProfile: function(e) {
-      var user;
+    saveProfile: function() {
       this.validate();
 
       if ( _.includes(this.validate(), true) === false ) {
-        Meteor.users.update(
-          Meteor.userId(),
-          {$set: {
-            profile: {
-              active: true,
-              introduction: this.user.profile.introduction,
-              details: {
-                moving_to: this.user.profile.details.moving_to,
-                maximum_budget: this.user.profile.details.maximum_budget,
-                move_in_date: this.user.profile.details.move_in_date,
-                duration_of_stay: this.user.profile.details.duration_of_stay,
-              },
-              perks: {
-                messy: this.user.profile.perks.messy,
-                smoker: this.user.profile.perks.smoker,
-                pets: this.user.profile.perks.pets,
-                party: this.user.profile.perks.party
-              }
+        console.log(this.user.details.move_in_date);
+        let options = {
+          profile: {
+            active: true,
+            introduction: this.user.introduction,
+            details: {
+              moving_to: this.user.details.moving_to,
+              maximum_budget: this.user.details.maximum_budget,
+              move_in_date: this.user.details.move_in_date,
+              duration_of_stay: this.user.details.duration_of_stay,
             }
-          }}, () => {
-            mixpanel.track('usersSubmittedProfile');
-            this.$$('paper-toast').toggle();
           }
-        );
+        };
+        console.log(options);
+        Meteor.call('submitProfile', options, (err, res) => this.$$('paper-toast').toggle());
       }
-
     }
-
-
   });
 
 </script>

@@ -45,11 +45,8 @@
 
     </style>
 
-    <!-- <meteor-user user={{user}}></meteor-user> -->
-    <!-- <meteor-subscribe name='user' args='[]'></meteor-subscribe> -->
-
-    <img src="https://graph.facebook.com/[[user.services.facebook.id]]/picture?type=large" />
-    <h1>[[user.services.facebook.first_name]]</h1>
+    <img src="https://graph.facebook.com/[[user.id]]/picture?type=large" />
+    <h1>[[user.first_name]]</h1>
 
 <!--
     <h2 class='active'>Introduction</h2>
@@ -68,12 +65,8 @@
 
   Polymer({
     is: 'profile-sidebar',
-    behaviors:[mwcMixin],
     attached: function() {
-      this.subscribe("user");
-    },
-    tracker: function() {
-      this.user = Meteor.user();
+      Meteor.call('getOwnUser', (err,res) => this.user = res );
     },
     saveProfile: function() {
       this.fire('saveProfile');

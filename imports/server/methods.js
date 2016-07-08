@@ -29,6 +29,53 @@ Meteor.methods({
 
 
 
+  /* Analytics utilities
+   *
+   * Contains eight subscriptions
+   * Retrieve logged in users
+   */
+
+  getLoggedInUsers: function() {
+    return someMeteorQuery;
+  },
+
+  getLoggedOutUsers: function() {
+    return someMeteorQuery;
+  },
+
+  getUsers: function(options) {
+    return someMeteorQuery;
+  },
+
+  getActiveUsers: function(options) {
+    return someMeteorQuery;
+  },
+
+  getInactiveUsers: function(options) {
+    return someMeteorQuery;
+  },
+
+  getPrivateMessages: function(options) {
+    return someMeteorQuery;
+  },
+
+  getPublicConversations: function(options) {
+    return someMeteorQuery;
+  },
+
+  getPublicMessages: function(options) {
+    return someMeteorQuery;
+  },
+
+
+
+
+
+
+
+
+
+
 
   getUserImage: function(userId) {
     var user = Meteor.users.findOne({ _id: userId});
@@ -42,47 +89,21 @@ Meteor.methods({
 
   sendPrivateMessage: function(fromUserId, toUserId, messageId, message, userSelected) {
     console.log(messageId);
+    console.log(toUserId);
+    console.log(fromUserId);
     console.log(userSelected);
+    // PrivateMessagesList._ensureIndex({ 'messageId': 1});
+    // PrivateMessagesDetail._ensureIndex({ 'messageId': 1});
 
-    // existing one
+
+    // new one
     if(userSelected) {
-      PrivateMessagesList.update(
-        { messageId: messageId },
-        {
-          messageId: messageId,
-          userIds: [toUserId, fromUserId],
-          toFacebookId: Meteor.users.findOne({_id: toUserId}).services.facebook.id,
-          toFacebookName: Meteor.users.findOne({_id: toUserId}).services.facebook.first_name,
-          toUserId: toUserId,
-          fromFacebookId: Meteor.users.findOne({_id: fromUserId}).services.facebook.id,
-          fromFacebookName: Meteor.users.findOne({_id: fromUserId}).services.facebook.first_name,
-          fromUserId: fromUserId,
-          status: {
-            createdAt: new Date()
-          }
-        }
-      );
-
-      PrivateMessagesDetail.insert(
-        {
-          messageId: messageId,
-          fromUserId: fromUserId,
-          createdAt: new Date(),
-          messageText: message
-        }
-      );
-
-    }else {
       const random = Random.id();
       PrivateMessagesList.insert(
         {
           messageId: random,
           userIds: [toUserId, fromUserId],
-          toFacebookId: Meteor.users.findOne({_id: toUserId}).services.facebook.id,
-          toFacebookName: Meteor.users.findOne({_id: toUserId}).services.facebook.first_name,
           toUserId: toUserId,
-          fromFacebookId: Meteor.users.findOne({_id: fromUserId}).services.facebook.id,
-          fromFacebookName: Meteor.users.findOne({_id: fromUserId}).services.facebook.first_name,
           fromUserId: fromUserId,
           status: {
             createdAt: new Date()
@@ -91,8 +112,6 @@ Meteor.methods({
       );
 
       PrivateMessagesDetail.insert(
-        // { messageId, createdAt, messageText }
-        // {},
         {
           fromUserId: fromUserId,
           messageId: random,
@@ -101,6 +120,29 @@ Meteor.methods({
         }
       );
 
+      return random;
+    }else {
+      PrivateMessagesList.update(
+        { messageId: messageId },
+        {
+          messageId: messageId,
+          userIds: [toUserId, fromUserId],
+          toUserId: toUserId,
+          fromUserId: fromUserId,
+          status: {
+            createdAt: new Date()
+          }
+        }
+      );
+
+      PrivateMessagesDetail.insert(
+        {
+          messageId: messageId,
+          fromUserId: fromUserId,
+          createdAt: new Date(),
+          messageText: message
+        }
+      );
     }
   },
 
@@ -149,5 +191,9 @@ Meteor.methods({
   },
   removeAllPublicMessages: function() {
     return PublicMessages.remove({});
+  },
+  removePublicMessage: function(id) {
+    return PublicMessages.findOne({_id: id}).remove({});
   }
+
 });

@@ -36,35 +36,35 @@ Meteor.methods({
    */
 
   getLoggedInUsers: function() {
-    return someMeteorQuery;
+    return Meteor.users.find({'profile.logged_in': true}).fetch().length;
   },
 
   getLoggedOutUsers: function() {
-    return someMeteorQuery;
+    return Meteor.users.find({'profile.loggedin': false}).fetch().length;
   },
 
-  getUsers: function(options) {
-    return someMeteorQuery;
+  getUsers: function() {
+    return Meteor.users.find().fetch().length;
   },
 
-  getActiveUsers: function(options) {
-    return someMeteorQuery;
+  getActiveUsers: function() {
+    return Meteor.users.find({'profile.active': true}).fetch().length;
   },
 
-  getInactiveUsers: function(options) {
-    return someMeteorQuery;
+  getInactiveUsers: function() {
+    return Meteor.users.find({'profile.active': false}).fetch().length;
   },
 
-  getPrivateMessages: function(options) {
-    return someMeteorQuery;
+  getPrivateMessages: function() {
+    return PrivateMessagesDetail.find().fetch().length;
   },
 
-  getPublicConversations: function(options) {
-    return someMeteorQuery;
+  getPrivateConversations: function() {
+    return PrivateMessagesList.find().fetch().length;
   },
 
-  getPublicMessages: function(options) {
-    return someMeteorQuery;
+  getPublicConversations: function() {
+    return PublicMessages.find().fetch().length;
   },
 
 

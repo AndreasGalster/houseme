@@ -1,6 +1,7 @@
 // when the user is created, create an empty user profile
 Accounts.onCreateUser(function(options, user) {
   let profile = {
+    logged_in: true,
     active: false,
     introduction: '',
     details: {
@@ -144,7 +145,12 @@ Meteor.publish('PrivateMessagesUsers', function (limiter) {
 
 // retrieves the list of messages sent/received
 Meteor.publish('PrivateMessagesList', function () {
-  return PrivateMessagesList.find({ $or: [{toUserId: this.userId}, {fromUserId: this.userId}] });
+  return PrivateMessagesList.find(
+    { $or: [{toUserId: this.userId}, {fromUserId: this.userId}] },
+    {
+      sort: {'status.createdAt': -1}
+    }
+  );
 });
 
 

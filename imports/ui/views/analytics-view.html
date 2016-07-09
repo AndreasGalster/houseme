@@ -1,0 +1,51 @@
+<dom-module id='analytics-view'>
+  <template>
+    <style include='view-styles'></style>
+    <style>
+      :host {
+        @apply(--fill-view);
+      }
+    </style>
+    <h3>Logged in users (signed up and haven't logged out via logout button):</h3>
+    <h5>[[loggedInUsers]]</h5>
+
+    <h3>Logged out users (signed up but logged out and no login since):</h3>
+    <h5>[[loggedOutUsers]]</h5>
+
+    <h3>Total signed up users:</h3>
+    <h5>[[users]]</h5>
+
+    <h3>Active users. Signed up and finished filling out their profile:</h3>
+    <h5>[[activeUsers]]</h5>
+
+    <h3>Inactive users. Signed up and didn't finish filling out their profile:</h3>
+    <h5>[[inActiveUsers]]</h5>
+
+    <h3>Public Conversations:</h3>
+    <h5>[[publicConversations]]</h5>
+
+    <h3>Private Conversations (i. e. 3 conversations, each contains several messages):</h3>
+    <h5>[[privateConversations]]</h5>
+
+    <h3>Private Messages (i. e. 1 conversation may contain 30 messages):</h3>
+    <h5>[[privateMessages]]</h5>
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+
+  Polymer({
+    is: 'analytics-view',
+    attached: function() {
+      Meteor.call('getLoggedInUsers', (err,res) => this.loggedInUsers = res);
+      Meteor.call('getLoggedOutUsers', (err,res) => this.loggedOutUsers = res);
+      Meteor.call('getUsers', (err,res) => this.users = res);
+      Meteor.call('getActiveUsers', (err,res) => this.activeUsers = res);
+      Meteor.call('getInactiveUsers', (err,res) => this.inActiveUsers = res);
+      Meteor.call('getPrivateMessages', (err,res) => this.privateMessages = res);
+      Meteor.call('getPrivateConversations', (err,res) => this.privateConversations = res);
+      Meteor.call('getPublicConversations', (err,res) => this.publicConversations = res);
+    }
+  });
+</script>

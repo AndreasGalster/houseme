@@ -48,7 +48,7 @@
       on-focus='toggle'>
     </paper-input>
 
-    <paper-dialog with-backdrop>
+    <paper-dialog with-backdrop on-iron-overlay-closed='resetFocus'>
       <h2>Choose a month</h2>
 
       <div class='content'>
@@ -102,6 +102,10 @@
         type: String,
         notify: true,
         observer: 'updateValue'
+      },
+      focused: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -111,10 +115,20 @@
 
     setValue: function() {
       this.value = this.selected;
+      this.focused = false;
+    },
+
+    resetFocus: function() {
+      this.focused = false;
+      console.log('focus reset');
     },
 
     toggle: function() {
-      this.$$('paper-dialog').toggle();
+      console.log('toggled');
+      if(!this.focused) {
+        this.$$('paper-dialog').toggle();
+      }
+      this.focused = true;
     },
 
     validate: function() {

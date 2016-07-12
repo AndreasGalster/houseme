@@ -2,46 +2,305 @@
   <template>
     <style include='view-styles'></style>
     <style>
-      :host {
-        @apply(--fixed-view);
-        @apply(--scroll-view);
-        @apply(--bg-img);
+      * {
+        font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
       }
 
-      fsn-text-swapper {
-        margin-top:120px;
+      h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 70px;
+        font-weight: 100;
+        color: var(--blue);
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 32px;
+        font-weight: 600;
+      }
+
+      h3 {
+        font-size: 42px;
+        font-weight: 500;
+        color: var(--blue);
+        margin-bottom: 65px;
+      }
+
+      h4 {
+        font-size: 25px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 20px;
+        margin-top: 5px;
+        font-weight: 600;
       }
 
       fsn-fblogin-button {
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+
+      header fsn-fblogin-button {
         margin-top:150px;
       }
 
-      @media screen and (max-width: 480px) {
-        fsn-text-swapper {
-          margin-top: 70px;
-        }
+      footer fsn-fblogin-button {
+        --background-color: rgba(255,255,255,0.2);
+      }
 
-        fsn-fblogin-button {
-          margin-top: 60px;
+      header {
+        background-image: url('/img/hero_image.jpg');
+	      background-size: cover;
+	      background-repeat: no-repeat;
+	    	background-position: center center;
+        padding: 25px 0;
+        box-shadow: inset 0 -8px 15px -7px rgba(0,0,0,.2);
+      }
+
+      header iron-icon {
+        width: 30px;
+        height: 30px;
+        color: var(--blue);
+        border-radius: 50%;
+        background: rgba(255,255,255,.5);
+        border: 2px solid var(--blue);
+        padding: 0px;
+        box-sizing: content-box;
+        margin-top: 100px;
+      }
+
+      header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-top: 15px;
+        margin-bottom: 0;
+      }
+
+      #logo {
+        color: var(--blue);
+        width: 176px;
+        margin-bottom:120px;
+      }
+
+      #how iron-icon {
+        width: 70px;
+        height: 70px;
+        color: var(--blue);
+        border-radius: 50%;
+        border: 4px solid var(--blue);
+        padding: 30px;
+        box-sizing: content-box;
+        margin-bottom: 10px;
+      }
+
+      * {
+        text-align: center;
+      }
+
+      .container-fluid {
+        padding: 75px 0;
+      }
+
+      .white {
+        background: white;
+      }
+
+      .blue {
+        background: var(--blue);
+      }
+
+      .light-gray {
+        background: #E0E0E0;
+      }
+
+      .text-white * {
+        color: white !important;
+      }
+
+      .services {
+        margin-top: 95px;
+      }
+
+      .services-wrapper {
+        max-width: 750px;
+      }
+
+      .services div {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        padding: 20px;
+      }
+
+      .services div:nth-child(odd) {
+        background: rgba(0,0,0,.05);
+      }
+
+      .services div:nth-child(even) {
+        background: rgba(255,255,255,.1);
+      }
+
+      .services paper-button {
+        border: 2px solid white;
+        padding: 15px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .services h5 {
+        text-align: left;
+        @apply(--layout-flex);
+      }
+
+      @media screen and (max-width: 767px) {
+        #how p {
+          margin-bottom: 80px;
         }
       }
+
+
     </style>
 
-    <fsn-text-swapper></fsn-text-swapper>
-    <fsn-fblogin-button redirect-to='profile'></fsn-fblogin-button>
+    <header>
+      <img id='logo' src='svg/houseme_logo_positive.svg' />
+      <h1>Welcome home :)</h1>
+      <h2>We're here to help you find a roommate.</h2>
+      <fsn-fblogin-button redirect-to='profile'></fsn-fblogin-button>
+      <p>We will never post on your wall.</p>
+
+      <iron-icon icon='fsn:arrow-down'></iron-icon>
+      <h3>Learn more</h3>
+    </header>
+
+    <section id='how' class='container-fluid white'>
+      <h3>How houseme works</h3>
+
+      <div class='container'>
+        <div class='row'>
+          <div class='col-md-4'>
+            <iron-icon icon='fsn:facebook'></iron-icon>
+            <h4>Create your account</h4>
+            <p>Creating an account with Facebook is fast and free. After signup we'll ask you what you're looking for.</p>
+          </div>
+          <div class='col-md-4'>
+            <iron-icon icon='fsn:home'></iron-icon>
+            <h4>List a room for free</h4>
+            <p>You can list your room if you already have an apartment and are not looking for a new apartment.</p>
+            <!--
+            <h6>Are you a broker?</h6>
+            <paper-button ghost>List a property<paper-button>
+            -->
+          </div>
+          <div class='col-md-4'>
+            <iron-icon icon='fsn:smiley'></iron-icon>
+            <h4>Match up with people</h4>
+            <p>We help you match up with people based on your budget, location and lifestyle preferences.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class='container-fluid blue text-white'>
+      <div class='container services-wrapper'>
+        <h3>We all know the problem:<br /><strong>Roommates tend to be lazy</strong></h3>
+
+        <h4>Our added services come for the rescue (or cleanup)</h4>
+        <p>We have the best service providers to help you take care of your rooms and mates &ndash; just chill and relax :)
+
+        <div class='services'>
+          <div>
+            <h5>Room cleanup (coming soon)</h5><paper-button ghost on-tap='registerCleanup'>Be notified once available</paper-button>
+          </div>
+          <div>
+            <h5>Laundry services (coming soon)</h5><paper-button ghost on-tap='registerLaundry'>Be notified once available</paper-button>
+          </div>
+          <div>
+            <h5>Roommate finder assistant (coming soon)</h5><paper-button ghost on-tap='registerAssistant'>Be notified once available</paper-button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--
+    <section class='container'>
+      <h3>These roommates dig us</h3>
+
+      <div class='row'>
+        <div class='col-md-4'>
+          <img src='/img/testimonial_niko.jpg' />
+          <div class='testimonial'>
+            <h4>Niko</h4>
+            <p>Creating an account with Facebook is fast and free. After signup we'll ask you what you're looking for.</p>
+          </div>
+        </div>
+        <div class='col-md-4'>
+          <img src='/img/testimonial_andreas.jpg' />
+          <div class='testimonial'>
+            <h4>Andreas</h4>
+            <p>You can list your room if you already have an apartment and are not looking for a new apartment.</p>
+          </div>
+        </div>
+        <div class='col-md-4'>
+          <img src='/img/testimonial_denice.jpg' />
+          <div class='testimonial'>
+            <h4>Denice</h4>
+            <p>We help you match up with people based on your budget, location and lifestyle preferences.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    -->
+
+    <section class='container-fluid light-gray'>
+      <img src='/img/houseme_as_seen_on_abs_cbn.png' title='watch a houseme interview on abs cbn' />
+    </section>
+
+    <footer class='container-fluid blue text-white'>
+      <h3>Search for roommates</h3>
+      <fsn-fblogin-button redirect-to='profile'></fsn-fblogin-button>
+      <p>We will never post on your wall</p>
+    </footer>
+
   </template>
 </dom-module>
 
 <script>
   require('@polymer/polymer/polymer.html');
+  require('@polymer/paper-button/paper-button.html');
+  require('@polymer/iron-flex-layout/iron-flex-layout.html');
+
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-fblogin-button/dist/fsn-fblogin-button.html');
-  require('@andreasgalster/fsn-text-swapper/dist/fsn-text-swapper.html');
 
   Polymer({
-    is: 'signup-view'
+    is: 'signup-view',
+    registerCleanup: function() {
+      if(Meteor.isProduction) {
+        mixpanel.track('registerCleanup');
+        this.subscribeNotifications();
+      }
+    },
+    registerLaundry: function() {
+      if(Meteor.isProduction) {
+        mixpanel.track('registerLaundry');
+        this.subscribeNotifications();
+      }
+    },
+    registerAssistant: function() {
+      if(Meteor.isProduction) {
+        mixpanel.track('registerAssistant');
+        this.subscribeNotifications();
+      }
+    },
+    subscribeNotifications: function() {
+      window.OneSignal.push(["registerForPushNotifications"]);
+    }
   });
 </script>

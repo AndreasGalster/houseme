@@ -1,8 +1,14 @@
 // when the user is created, create an empty user profile
 Accounts.onCreateUser(function(options, user) {
+  console.log('options');
+  console.log(options);
+  console.log('user');
+  console.log(user);
+
   let profile = {
     logged_in: true,
     active: false,
+    email: user.services.facebook.email,
     introduction: '',
     details: {
       moving_to: '',
@@ -19,9 +25,10 @@ Accounts.onCreateUser(function(options, user) {
     }
   }
   user.profile = profile;
+
+  console.log(user);
   return user;
 });
-
 
 
 

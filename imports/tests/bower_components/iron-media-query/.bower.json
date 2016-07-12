@@ -36,6 +36,6 @@
     "commit": "3f916be171af7a3e03eb019acdfea71055d3c744"
   },
   "_source": "git://github.com/PolymerElements/iron-media-query.git",
-  "_target": "*",
+  "_target": "1",
   "_originalSource": "PolymerElements/iron-media-query"
 }

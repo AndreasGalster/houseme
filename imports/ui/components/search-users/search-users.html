@@ -264,7 +264,7 @@
       this.users = Meteor.users.find({_id: {$ne: Meteor.userId()} }).fetch();
     },
     sendMessage: function(e) {
-      this.fire('message-userid-changed', e.model.item._id);
+      this.fire('userid-selected', e.model.item._id);
       this.fire('route-selected', {path: '/messages'});
     },
 

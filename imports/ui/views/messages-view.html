@@ -25,10 +25,15 @@
         }
       }
     </style>
+    <!--
+    <h1>selected [[userSelected]]</h1>
+    <h1>message [[messageId]]</h1>
+    <h1>toUserId [[toUserId]]</h1>
+    -->
 
     <paper-material class='container' elevation='3'>
   		<div class='row row-eq-height no-gutter'>
-        <fsn-messaging-list class='col-xs-12 col-md-4' message-id={{messageId}} to-user-id={{toUserId}}></fsn-messaging-list>
+        <fsn-messaging-list class='col-xs-12 col-md-4' message-id={{messageId}} to-user-id={{toUserId}} user-selected={{userSelected}}></fsn-messaging-list>
         <fsn-messaging-chat class='col-xs-12 col-md-8' message-id=[[messageId]] to-user-id=[[toUserId]] user-selected=[[userSelected]]></fsn-messaging-chat>
       </div>
     </paper-material>
@@ -41,11 +46,11 @@
   require('@polymer/paper-material/paper-material.html');
 
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
-  require('@andreasgalster/fsn-messaging-list/dist/fsn-messaging-list.html');
-  require('@andreasgalster/fsn-messaging-chat/dist/fsn-messaging-chat.html');
+  // require('@andreasgalster/fsn-messaging-list/dist/fsn-messaging-list.html');
+  // require('@andreasgalster/fsn-messaging-chat/dist/fsn-messaging-chat.html');
 
-  // require('../components/fsn-messaging-list/src/fsn-messaging-list.html');
-  // require('../components/fsn-messaging-chat/src/fsn-messaging-chat.html');
+  require('../components/fsn-messaging-list/src/fsn-messaging-list.html');
+  require('../components/fsn-messaging-chat/src/fsn-messaging-chat.html');
 
 
 
@@ -54,10 +59,13 @@
     properties: {
       toUserId: String,
       messageId: String,
-      userSelected: Boolean
+      userSelected: {
+        type: Boolean,
+        value: false
+      }
     },
     attached: function() {
-      this.fire('message-userid-ready');
+      this.fire('message-view-ready');
     }
   });
 </script>

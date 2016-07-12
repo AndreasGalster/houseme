@@ -1,0 +1,32 @@
+<dom-module id='fb-user-name'>
+  <template>
+  <style include='houseme-styles'>
+    :host {
+      color: var(--text-color, inherit);
+    }
+
+  </style>
+
+  [[facebookName]]
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+  Polymer({
+    is: 'fb-user-name',
+    properties: {
+      toUserId: {
+        type: String,
+        observer: 'getFacebookName'
+      }
+    },
+    getFacebookName: function() {
+      Meteor.call('getUserName', this.toUserId, (err,res) => {
+          this.facebookName = res;
+      });
+    },
+  });
+</script>

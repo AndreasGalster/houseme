@@ -1,0 +1,39 @@
+<dom-module id='fb-user-image'>
+  <template>
+  <style include='houseme-styles'></style>
+  <style>
+  img {
+    left:10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+
+  </style>
+
+  <img src='https://graph.facebook.com/[[facebookId]]/picture?type=square'>
+
+  </template>
+</dom-module>
+
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+  Polymer({
+    is: 'fb-user-image',
+    properties: {
+      toUserId: {
+        type: String,
+        observer: 'getFacebookUserId'
+      }
+    },
+    getFacebookUserId: function() {
+      Meteor.call('getUserImage', this.toUserId, (err,res) => {
+          this.facebookId = res;
+      });
+    },
+  });
+
+</script>

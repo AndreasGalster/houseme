@@ -1,0 +1,37 @@
+<dom-module id='user-onboarding'>
+
+  <template>
+    <style include='houseme-styles'></style>
+    <style>
+
+      :host {
+        @apply(--fixed-view);
+        background: var(--blue);
+      }
+
+    </style>
+
+    <fsn-select-buttons>
+      <fsn-select-button>Yo I need this</fsn-select-button>
+      <fsn-select-button>No I don't need this</fsn-select-button>
+    </fsn-select-buttons>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/iron-icon/iron-icon.html');
+
+  require('../fsn-select-buttons/fsn-select-buttons.html');
+
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+  require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
+
+  Polymer({
+    is: 'user-onboarding',
+    properties: {
+    },
+  });
+</script>

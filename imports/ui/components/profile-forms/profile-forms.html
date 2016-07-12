@@ -53,7 +53,7 @@
       }
     </style>
 
-		<section>
+		<!-- <section>
 			<h1>Profile introduction</h1>
       <paper-textarea
         value={{user.introduction}}
@@ -62,7 +62,7 @@
         char-counter maxlength='200'
         required>
       </paper-textarea>
-		</section>
+		</section> -->
 
 		<section id='last'>
 			<h1>Basic profile</h1>
@@ -109,16 +109,6 @@
       </paper-input>
 		</section>
 
-		<!-- <section id='last'>
-			<h1>Your preferences</h1>
-			<p>Tell us about your preferences so you can find the perfect roommates.</p>
-
-      <fsn-yesno-button checked={{user.perks.messy}} value=''>Are you messy?</fsn-yesno-button>
-      <fsn-yesno-button checked={{user.perks.smoker}} value=''>Are you a smoker?</fsn-yesno-button>
-      <fsn-yesno-button checked={{user.perks.pets}} value=''>Do you like pets?</fsn-yesno-button>
-      <fsn-yesno-button checked={{user.perks.party}} value=''>Do you party a lot?</fsn-yesno-button>
-		</section> -->
-
     <paper-button full-width class='hidden-md-up' on-tap='saveProfile'>save your profile</paper-button>
     <paper-toast text='Your profile has been saved' duration='1500'></paper-toast>
 
@@ -139,7 +129,6 @@
 
   require('../fsn-datepicker-input/fsn-datepicker-input.html');
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
-  // require('@andreasgalster/fsn-yesno-button/dist/fsn-yesno-button.html');
   require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
 
   var _ = require('lodash');
@@ -153,14 +142,8 @@
     properties: {
       user: Object
     },
-    listeners: {
-      'iron-overlay-closed': 'changeRoute'
-    },
     attached: function() {
       Meteor.call('getOwnUserProfile', (err,res) => this.user = res );
-    },
-    changeRoute: function() {
-      // this.fire('route-selected', {path: '/talk'});
     },
     validate: function() {
       var validity = [];
@@ -176,11 +159,10 @@
       this.validate();
 
       if ( _.includes(this.validate(), true) === false ) {
-        console.log(this.user.details.move_in_date);
         let options = {
           profile: {
             active: true,
-            introduction: this.user.introduction,
+            logged_in: true,
             details: {
               moving_to: this.user.details.moving_to,
               maximum_budget: this.user.details.maximum_budget,
@@ -189,7 +171,6 @@
             }
           }
         };
-        console.log(options);
         Meteor.call('submitProfile', options, (err, res) => this.$$('paper-toast').toggle());
       }
     }

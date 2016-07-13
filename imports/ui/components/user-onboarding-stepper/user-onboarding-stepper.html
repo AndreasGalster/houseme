@@ -18,6 +18,24 @@
 
       neon-animated-pages {
         width: 100%;
+        height: 400px;
+      }
+
+      circle {
+        border:2px solid white;
+        border-radius: 50%;
+        width: 10px;
+        height:10px;
+        display: inline-block;
+        margin: 0 15px;
+      }
+
+      circle.iron-selected {
+        background: white;
+      }
+
+      div {
+        @apply(--layout-horizontal);
       }
     </style>
 
@@ -27,13 +45,16 @@
       <content id='steps' select='*'></content>
     </neon-animated-pages>
 
-    <div>
-      <template is='dom-repeat' items=[[stepsArray]]>
-        <div>items
-        </div>
-      </template>
-    </div>
 
+    <div>
+      <paper-button on-tap='previousStep'>[[backButtonText]]</paper-button>
+      <iron-selector selected=[[selected]]>
+        <template is='dom-repeat' items=[[stepsArray]]>
+          <circle></circle>
+        </template>
+      </iron-selector>
+      <paper-button on-tap='confirmStep'>[[nextButtonText]]</paper-button>
+    </div>
 
     <!-- <paper-button>back</paper-button> -->
     <!-- <paper-button on-tap='confirmStep'>next</paper-button> -->
@@ -43,6 +64,7 @@
 
 <script>
   require('@polymer/polymer/polymer.html');
+  require('@polymer/iron-selector/iron-selector.html');
   require('@polymer/iron-image/iron-image.html');
   require('@polymer/neon-animation/web-animations.html');
   require('@polymer/neon-animation/neon-animated-pages.html');
@@ -59,6 +81,14 @@
       selected: {
         type: Number,
         value: 0
+      },
+      backButtonText: {
+        type: String,
+        value: 'back'
+      },
+      nextButtonText: {
+        type: String,
+        value: 'next'
       }
     },
     observers: {

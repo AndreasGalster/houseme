@@ -13,6 +13,9 @@
 
     <content select='*'></content>
 
+    <paper-button on-tap='previousStep'>[[backButtonText]]</paper-button>
+    <paper-button on-tap='confirmStep'>[[nextButtonText]]</paper-button>
+
   </template>
 </dom-module>
 
@@ -25,30 +28,31 @@
 
   Polymer({
     is: 'user-onboarding-step',
+    properties: {
+      backButtonText: {
+        type: String,
+        value: 'back'
+      },
+      nextButtonText: {
+        type: String,
+        value: 'next'
+      },
+    },
     behaviors: [
       Polymer.NeonAnimatableBehavior
     ],
-    // properties: {
-    //   animationConfig: {
-    //     value: function() {
-    //       return {
-    //         // provided by neon-animation/animations/scale-down-animation.html
-    //         name: 'scale-down-animation',
-    //         node: this
-    //       }
-    //     }
-    //   }
-    // },
     listeners: {
       // this event is fired when the animation finishes
       'neon-animation-finish': '_onNeonAnimationFinish'
     },
-    // animate: function() {
-    //   // run scale-down-animation
-    //   this.playAnimation();
-    // },
     _onNeonAnimationFinish: function() {
       console.log('animation done!');
+    },
+    previousStep: function() {
+      this.fire('previous-step');
+    },
+    confirmStep: function() {
+      this.fire('confirm-step');
     }
   });
 

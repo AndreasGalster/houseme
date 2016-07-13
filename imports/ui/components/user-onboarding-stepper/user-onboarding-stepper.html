@@ -34,6 +34,10 @@
       </template>
     </div>
 
+
+    <!-- <paper-button>back</paper-button> -->
+    <!-- <paper-button on-tap='confirmStep'>next</paper-button> -->
+
   </template>
 </dom-module>
 
@@ -57,6 +61,13 @@
         value: 0
       }
     },
+    observers: {
+      'selected': 'confirmStep'
+    },
+    listeners: {
+      'previous-step': 'previousStep',
+      'confirm-step': 'confirmStep'
+    }
     attached: function() {
       this.getChildren();
     },
@@ -64,6 +75,19 @@
       var children = this.getContentChildren('#steps');
       this.stepsLength = children.length;
       this.stepsArray = children;
+    },
+    confirmStep: function() {
+      console.log(this.selected);
+      console.log(this.stepsLength);
+      if(this.selected < (this.stepsLength -1)) {
+        this.selected = this.selected + 1;
+        console.log(this.selected);
+      }
+
+    },
+    previousStep: function() {
+      if(this.selected > 0)
+        this.selected = this.selected - 1;
     }
   });
 </script>

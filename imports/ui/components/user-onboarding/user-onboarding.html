@@ -84,23 +84,18 @@
     </style>
 
 
-    <user-onboarding-stepper logo='/svg/houseme_logo.svg'>
-      <!-- <user-onboarding-step not-counting>
-      </user-onboarding-step> -->
-
+    <user-onboarding-stepper logo='/svg/houseme_logo.svg' on-onboarding-submit=''>
       <user-onboarding-step>
         <h3><strong>Hi Andreas,</strong><br />how can we help you?</h3>
         <fsn-select-buttons id='situation' attr-for-selected='value' selected={{months}}>
           <fsn-select-button value='1'>I need a roommate and an apartment</fsn-select-button>
           <fsn-select-button value='2'>I have an apartment but need a roommate</fsn-select-button>
         </fsn-select-buttons>
-        <paper-button>next step</paper-button>
       </user-onboarding-step>
 
       <user-onboarding-step>
         <h3>Where do you want to move?</h3>
         <fsn-places-autocomplete label='Choose a city' value={{city}}></fsn-places-autocomplete>
-        <paper-button>next step</paper-button>
       </user-onboarding-step>
 
       <user-onboarding-step>
@@ -114,23 +109,20 @@
           <fsn-select-button value='6'>6</fsn-select-button>
           <fsn-select-button value='7'>7+</fsn-select-button>
         </fsn-select-buttons>
-        <paper-button>next step</paper-button>
       </user-onboarding-step>
 
-      <user-onboarding-step>
+      <user-onboarding-step next-button-text='finish your profile'>
         <h3>What's your monthly rent budget?</h3>
         <!-- <paper-slider value={{budget}} min='100' editable></paper-slider> -->
         <paper-slider value='500' min='1000' max='100000' step='500' snaps editable></paper-slider>
-        <paper-button>finish your profile</paper-button>
       </user-onboarding-step>
 
-      <user-onboarding-step>
+      <user-onboarding-step next-button-text='search for roommates'>
         <h3><strong>You're all set up! One more thing:</strong><br />Do you want to get push notifications for updates</h3>
         <span>
           <p>Push notifications</p>
           <paper-toggle-button on-change='registerPushNotifications'></paper-toggle-button>
         </span>
-        <paper-button>search for roommates</paper-button>
       </user-onboarding-step>
 
     </user-onboarding-stepper>
@@ -212,6 +204,9 @@
         console.log('register for notification');
         // push notification stuff here
       }
+    },
+    confirmStep: function() {
+      this.$$('user-onboarding-stepper').confirmStep();
     }
   });
 </script>

@@ -1,0 +1,36 @@
+{
+	"facebook": {
+		"appId": "1487917704866795",
+		"secret": "7bc4bef977c9a54a563c6e97dd30ca96"
+  },
+	"public": {
+		"analyticsSettings": {
+	  		"Google Analytics" : {"trackingId": "UA-64951752-1"},
+			"Mixpanel"         : {"token":  "f00bd1a9e127eee3064860c0de81b991", "people": true}
+		},
+		"cloudinary": {
+			"cloud_name": "pigments"
+		}
+	},
+	"prerender": {
+		"token": "shcAJhf1RQNPpqdc7aBA"
+	},
+	"sendgrid": {
+		"api_key": "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"
+	},
+	"cloudinary": {
+		"cloud_name": "pigments",
+		"api_key": "548566117354883",
+		"api_secret": "iqZNun9VbJUQmj1j-F0zH4B5CV8"
+	},
+  "private": {
+      "MailChimp": {
+          "apiKey": "d3188c839ffa89e14782576d3cc39b81-us3",
+          "listId": "3999338f74"
+      }
+  },
+	"kadira": {
+	  "appId": "XmWMZ8dPc45qMDjRQ",
+	  "appSecret": "4f2fb3ed-085e-4a0a-b0fa-83a8afdc2600"
+	 }
+}

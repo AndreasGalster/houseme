@@ -36,6 +36,8 @@
 
       div {
         @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-center);
       }
     </style>
 
@@ -47,7 +49,7 @@
 
 
     <div>
-      <paper-button on-tap='previousStep'>[[backButtonText]]</paper-button>
+      <paper-button on-tap='previousStep' hidden$=[[isFirstStep(selected)]]>[[backButtonText]]</paper-button>
       <iron-selector selected=[[selected]]>
         <template is='dom-repeat' items=[[stepsArray]]>
           <circle></circle>
@@ -118,6 +120,9 @@
     previousStep: function() {
       if(this.selected > 0)
         this.selected = this.selected - 1;
+    },
+    isFirstStep: function(selected) {
+      return selected == 0;
     }
   });
 </script>

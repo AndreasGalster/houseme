@@ -1,7 +1,0 @@
-{
-  "name": "houseme",
-  "short_name": "houseme",
-  "start_url": "/",
-  "display": "standalone",
-  "gcm_sender_id": "pushnotifications-1245"
-}

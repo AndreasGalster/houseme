@@ -1,0 +1,41 @@
+<dom-module id='fsn-select-buttons'>
+  <template>
+    <style>
+      :host {
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+
+        /* NOTE: Both values are needed, since some phones require the value to be `transparent`. */
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+    </style>
+
+    <content select='*'></content>
+
+  </template>
+
+  <script>
+    require('@polymer/polymer/polymer.html');
+    require('@polymer/iron-flex-layout/iron-flex-layout.html');
+    require('@polymer/iron-selector/iron-selectable.html');
+    require('./fsn-select-button.html');
+
+
+    Polymer({
+      is: 'fsn-select-buttons',
+
+      behaviors: [
+        Polymer.IronSelectableBehavior
+      ],
+
+      hostAttributes: {
+        role: 'tablist'
+      },
+
+    });
+  </script>
+</dom-module>

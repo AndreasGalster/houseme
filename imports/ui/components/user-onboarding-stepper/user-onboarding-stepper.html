@@ -1,0 +1,69 @@
+<dom-module id='user-onboarding-stepper'>
+
+  <template>
+    <style include='houseme-styles'></style>
+    <style>
+
+      :host {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        width: 100%;
+      }
+
+      iron-image {
+        max-width: var(--onboarding-logo-max-width, 175px);
+        width: var(--onboarding-logo-width, 175px);
+        height: 100px;
+      }
+
+      neon-animated-pages {
+        width: 100%;
+      }
+    </style>
+
+    <iron-image src=[[logo]] sizing='contain'></iron-image>
+
+    <neon-animated-pages selected=[[selected]] entry-animation='fade-in-animation' exit-animation='fade-out-animation'>
+      <content id='steps' select='*'></content>
+    </neon-animated-pages>
+
+    <div>
+      <template is='dom-repeat' items=[[stepsArray]]>
+        <div>items
+        </div>
+      </template>
+    </div>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/iron-image/iron-image.html');
+  require('@polymer/neon-animation/web-animations.html');
+  require('@polymer/neon-animation/neon-animated-pages.html');
+  require('@polymer/neon-animation/animations/fade-in-animation.html');
+  require('@polymer/neon-animation/animations/fade-out-animation.html');
+
+  require('./user-onboarding-step.html');
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+  Polymer({
+    is: 'user-onboarding-stepper',
+    properties: {
+      selected: {
+        type: Number,
+        value: 0
+      }
+    },
+    attached: function() {
+      this.getChildren();
+    },
+    getChildren: function() {
+      var children = this.getContentChildren('#steps');
+      this.stepsLength = children.length;
+      this.stepsArray = children;
+    }
+  });
+</script>

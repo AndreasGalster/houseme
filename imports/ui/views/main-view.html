@@ -63,9 +63,9 @@
           }'></fsn-meta-tag>
         </div>
 
-        <!-- <user-onboarding></user-onboarding> -->
+        <user-onboarding></user-onboarding>
 
-        <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+        <!-- <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
           <template is='iron-lazy-page' data-route='/'>
             <signup-view></signup-view>
           </template>
@@ -93,7 +93,7 @@
           <template is='iron-lazy-page' data-route='/analytics'>
             <analytics-view></analytics-view>
           </template>
-        </iron-lazy-pages>
+        </iron-lazy-pages> -->
         <!--
         <section hidden$=[[!isLoading]]>
           <paper-spinner active=[[isLoading]]></paper-spinner>
@@ -118,7 +118,7 @@ require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
 require('@andreasgalster/fsn-meta-tags/dist/fsn-meta-tag.html');
 
 require('../components/paper-navigation/paper-navigation.html');
-// require('../components/user-onboarding/user-onboarding.html');
+require('../components/user-onboarding/user-onboarding.html');
 
 
 Polymer({

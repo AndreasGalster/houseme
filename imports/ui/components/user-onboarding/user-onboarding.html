@@ -6,15 +6,188 @@
 
       :host {
         @apply(--fixed-view);
+        @apply(--layout-vertical);
+        @apply(--layout-center);
         background: var(--blue);
+        z-index: 9999;
+      }
+
+      #months fsn-select-button {
+        --select-button-padding: 12px 35px;
+      }
+
+      h3 {
+        font-size: 42px;
+        font-weight: 500;
+        color: white;
+        /*margin-bottom: 65px;*/
+      }
+
+      p {
+        font-size: 20px;
+        color: white;
+        font-weight: 500;
+        margin-right: 20px;
+        margin-bottom: 0;
+      }
+
+
+      paper-button {
+        color: white;
+        background: rgba(255,255,255,0.2);
+        font-size: 20px;
+        padding:20px;
+        font-weight: 700;
+        font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      }
+
+      fsn-places-autocomplete {
+        text-align: center;
+        min-width: 300px;
+        --paper-input-container-color: red;
+      }
+
+      #situation fsn-select-button {
+        --select-button-size: 22px;
+        --select-button-padding: 35px 20px;
+      }
+
+      span {
+        @apply(--layout-horizontal);
+        /*@apply(--layout-center);*/
+        @apply(--layout-center-justified);
+
+      }
+
+
+      paper-slider {
+        min-width: 500px;
+        --paper-slider-container-color: rgba(0,0,0,.25);
+        --paper-slider-active-color: white;
+        --paper-slider-knob-color: white;
+        --paper-slider-pin-color: white;
+        --paper-slider-knob-start-color: white;
+        --paper-slider-knob-start-border-color: white;
+        --paper-slider-height: 3px;
+        --paper-slider-input: {
+          width: 100px;
+          opacity: 0.8;
+          color: pink;
+          --paper-input-container-color: red;
+        };
+        /*
+        --paper-slider-font-color	The pin's text color	#fff
+        --paper-slider-pin-start-color	The color of the pin at the far left	--paper-grey-400
+                */
       }
 
     </style>
 
-    <fsn-select-buttons>
-      <fsn-select-button>Yo I need this</fsn-select-button>
-      <fsn-select-button>No I don't need this</fsn-select-button>
+
+    <user-onboarding-stepper logo='/svg/houseme_logo.svg'>
+      <!-- <user-onboarding-step not-counting>
+      </user-onboarding-step> -->
+
+      <user-onboarding-step>
+        <h3><strong>Hi Andreas,</strong><br />how can we help you?</h3>
+        <fsn-select-buttons id='situation' attr-for-selected='value' selected={{months}}>
+          <fsn-select-button value='1'>I need a roommate and an apartment</fsn-select-button>
+          <fsn-select-button value='2'>I have an apartment but need a roommate</fsn-select-button>
+        </fsn-select-buttons>
+        <paper-button>next step</paper-button>
+      </user-onboarding-step>
+
+      <user-onboarding-step>
+        <h3>Where do you want to move?</h3>
+        <fsn-places-autocomplete label='Choose a city' value={{city}}></fsn-places-autocomplete>
+        <paper-button>next step</paper-button>
+      </user-onboarding-step>
+
+      <user-onboarding-step>
+        <h3>For how many months?</h3>
+        <fsn-select-buttons id='months' attr-for-selected='value' selected={{months}}>
+          <fsn-select-button value='1'>1</fsn-select-button>
+          <fsn-select-button value='2'>2</fsn-select-button>
+          <fsn-select-button value='3'>3</fsn-select-button>
+          <fsn-select-button value='4'>4</fsn-select-button>
+          <fsn-select-button value='5'>5</fsn-select-button>
+          <fsn-select-button value='6'>6</fsn-select-button>
+          <fsn-select-button value='7'>7+</fsn-select-button>
+        </fsn-select-buttons>
+        <paper-button>next step</paper-button>
+      </user-onboarding-step>
+
+      <user-onboarding-step>
+        <h3>What's your monthly rent budget?</h3>
+        <!-- <paper-slider value={{budget}} min='100' editable></paper-slider> -->
+        <paper-slider value='500' min='1000' max='100000' step='500' snaps editable></paper-slider>
+        <paper-button>finish your profile</paper-button>
+      </user-onboarding-step>
+
+      <user-onboarding-step>
+        <h3><strong>You're all set up! One more thing:</strong><br />Do you want to get push notifications for updates</h3>
+        <span>
+          <p>Push notifications</p>
+          <paper-toggle-button on-change='registerPushNotifications'></paper-toggle-button>
+        </span>
+        <paper-button>search for roommates</paper-button>
+      </user-onboarding-step>
+
+    </user-onboarding-stepper>
+
+    <!-- <img src='/svg/houseme_logo.svg' />
+    <h3>What's your monthly rent budget?</h3>
+    <paper-slider value={{budget}} min='100' editable></paper-slider>
+    <paper-slider value='500' min='1000' max='100000' step='500' snaps editable></paper-slider>
+    <paper-button>finish your profile</paper-button> -->
+
+    <!-- <img src='/svg/houseme_logo.svg' />
+
+    <h3><strong>You're all set up! One more thing:</strong><br />Do you want to get push notifications for updates</h3>
+
+    <span>
+      <p>Push notifications</p>
+      <paper-toggle-button on-change='registerPushNotifications'></paper-toggle-button>
+    </span>
+
+    <paper-button>search for roommates</paper-button> -->
+
+    <!-- <img src='/svg/houseme_logo.svg' />
+
+    <h3><strong>Hi Andreas,</strong><br />how can we help you?</h3>
+
+    <fsn-select-buttons id='situation' attr-for-selected='value' selected={{months}}>
+      <fsn-select-button value='1'>I need a roommate and an apartment</fsn-select-button>
+      <fsn-select-button value='2'>I have an apartment but need a roommate</fsn-select-button>
     </fsn-select-buttons>
+
+    <paper-button>next step</paper-button> -->
+
+<!--
+
+    <img src='/svg/houseme_logo.svg' />
+
+    <h3>Where do you want to move?</h3>
+
+    <fsn-places-autocomplete label='Choose a city' value={{city}}></fsn-places-autocomplete>
+
+    <paper-button>next step</paper-button> -->
+
+    <!-- <img src='/svg/houseme_logo.svg' />
+
+    <h3>For how many months?</h3>
+
+    <fsn-select-buttons id='months' attr-for-selected='value' selected={{months}}>
+      <fsn-select-button value='1'>1</fsn-select-button>
+      <fsn-select-button value='2'>2</fsn-select-button>
+      <fsn-select-button value='3'>3</fsn-select-button>
+      <fsn-select-button value='4'>4</fsn-select-button>
+      <fsn-select-button value='5'>5</fsn-select-button>
+      <fsn-select-button value='6'>6</fsn-select-button>
+      <fsn-select-button value='7'>7+</fsn-select-button>
+    </fsn-select-buttons>
+
+    <paper-button>next step</paper-button> -->
 
   </template>
 </dom-module>
@@ -22,16 +195,23 @@
 <script>
   require('@polymer/polymer/polymer.html');
   require('@polymer/iron-icon/iron-icon.html');
+  require('@polymer/paper-toggle-button/paper-toggle-button.html');
+  require('@polymer/paper-slider/paper-slider.html');
 
+  require('../user-onboarding-stepper/user-onboarding-stepper.html');
   require('../fsn-select-buttons/fsn-select-buttons.html');
 
 
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
-  require('@andreasgalster/fsn-icons/dist/fsn-icons.html');
+  require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
 
   Polymer({
     is: 'user-onboarding',
-    properties: {
-    },
+    registerPushNotifications: function(e) {
+      if(e.target.checked) {
+        console.log('register for notification');
+        // push notification stuff here
+      }
+    }
   });
 </script>

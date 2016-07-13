@@ -1,0 +1,56 @@
+<dom-module id='user-onboarding-step'>
+
+  <template>
+    <style include='houseme-styles'></style>
+    <style>
+
+      :host {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+
+    </style>
+
+    <content select='*'></content>
+
+  </template>
+</dom-module>
+
+<script>
+  require('@polymer/polymer/polymer.html');
+  require('@polymer/neon-animation/web-animations.html');
+  require('@polymer/neon-animation/neon-animatable-behavior.html');
+
+  require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+  Polymer({
+    is: 'user-onboarding-step',
+    behaviors: [
+      Polymer.NeonAnimatableBehavior
+    ],
+    // properties: {
+    //   animationConfig: {
+    //     value: function() {
+    //       return {
+    //         // provided by neon-animation/animations/scale-down-animation.html
+    //         name: 'scale-down-animation',
+    //         node: this
+    //       }
+    //     }
+    //   }
+    // },
+    listeners: {
+      // this event is fired when the animation finishes
+      'neon-animation-finish': '_onNeonAnimationFinish'
+    },
+    // animate: function() {
+    //   // run scale-down-animation
+    //   this.playAnimation();
+    // },
+    _onNeonAnimationFinish: function() {
+      console.log('animation done!');
+    }
+  });
+
+
+</script>

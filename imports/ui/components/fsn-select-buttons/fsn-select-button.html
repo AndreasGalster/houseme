@@ -1,0 +1,65 @@
+<dom-module id='fsn-select-button'>
+  <template>
+    <style>
+      :host {
+        @apply(--layout-inline);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        /*@apply(--layout-flex-auto);*/
+
+        position: relative;
+        cursor: pointer;
+        vertical-align: middle;
+
+        padding: var(--select-button-padding, 25px);
+        border-radius: 3px;
+        border: 1px solid white;
+        margin: 0 5px;
+        font-size: var(--select-button-size, 18px);
+        font-weight: 500;
+        font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+        color: white;
+        margin-bottom: 10px;
+        max-width: 250px;
+        text-align: center;
+      }
+
+      :host(:focus) {
+        outline: none;
+      }
+      /*
+      :host(:not(.iron-selected)) > .button-content {
+        opacity: 0.8;
+      }*/
+      :host(.iron-selected) {
+        background: white;
+      }
+
+      :host(.iron-selected) .button-content {
+        /*opacity: 1;*/
+        color: var(--blue);
+      }
+
+      .button-content {
+        white-space: normal;
+      }
+
+    </style>
+
+    <div class='button-content'>
+      <content></content>
+    </div>
+  </template>
+
+  <script>
+    require('@polymer/polymer/polymer.html');
+    require('@polymer/iron-flex-layout/iron-flex-layout.html');
+
+    require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+
+    Polymer({
+      is: 'fsn-select-button',
+
+    });
+  </script>
+</dom-module>

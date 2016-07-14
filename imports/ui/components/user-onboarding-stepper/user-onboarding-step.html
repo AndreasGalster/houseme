@@ -9,9 +9,22 @@
         @apply(--layout-center);
       }
 
+      div {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
     </style>
 
     <content select='*'></content>
+
+
+    <!-- <div hidden$=[[isNotSelected(selected)]]> -->
+    <div hidden$=[[!valid]]>
+      <!-- <paper-button on-tap='previousStep' hidden$=[[isFirstStep(selected)]]>[[backButtonText]]</paper-button> -->
+      <paper-button on-tap='confirmStep' hidden$=[[!isStepFilledOut]]>[[nextButtonText]]</paper-button>
+    </div>
+
 
   </template>
 </dom-module>
@@ -26,30 +39,38 @@
   Polymer({
     is: 'user-onboarding-step',
     properties: {
-      backButtonText: {
+      selected: {
         type: String,
-        value: 'back'
+        value: undefined
+      },
+      valid: {
+        type: Boolean,
+        value: false,
+        observer: 'fireValid'
       },
       nextButtonText: {
         type: String,
         value: 'next'
       },
+      backButtonText: {
+        type: String,
+        value: 'back'
+      },
     },
     behaviors: [
       Polymer.NeonAnimatableBehavior
     ],
-    listeners: {
-      // this event is fired when the animation finishes
-      'neon-animation-finish': '_onNeonAnimationFinish'
-    },
-    _onNeonAnimationFinish: function() {
-      console.log('animation done!');
-    },
     previousStep: function() {
       this.fire('previous-step');
     },
     confirmStep: function() {
       this.fire('confirm-step');
+    },
+    isNotSelected: function(selected) {
+      return selected == undefined;
+    },
+    fireValid: function() {
+      this.fire('valid-changed');
     }
   });
 

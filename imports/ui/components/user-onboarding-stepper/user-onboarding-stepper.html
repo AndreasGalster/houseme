@@ -5,6 +5,7 @@
     <style>
 
       :host {
+        @apply(--fixed-view);
         @apply(--layout-vertical);
         @apply(--layout-center);
         width: 100%;
@@ -16,10 +17,6 @@
         height: 100px;
       }
 
-      neon-animated-pages {
-        width: 100%;
-        height: 400px;
-      }
 
       circle {
         border:2px solid white;
@@ -38,6 +35,12 @@
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
         @apply(--layout-center);
+        margin-bottom: 20px;
+      }
+
+      neon-animated-pages {
+        width: 100%;
+        @apply(--layout-flex);
       }
     </style>
 
@@ -47,19 +50,19 @@
       <content id='steps' select='*'></content>
     </neon-animated-pages>
 
-
     <div>
-      <paper-button on-tap='previousStep' hidden$=[[isFirstStep(selected)]]>[[backButtonText]]</paper-button>
-      <iron-selector selected=[[selected]]>
+      <paper-button on-tap='previousStep' style$=[[isFirstStep(selected)]]>[[backButtonText]]</paper-button>
+      <iron-selector id='selector' selected={{selected}}>
         <template is='dom-repeat' items=[[stepsArray]]>
           <circle></circle>
         </template>
       </iron-selector>
-      <paper-button on-tap='confirmStep'>[[nextButtonText]]</paper-button>
+      <span style$=[[isValid(valid)]]>
+        <paper-button on-tap='confirmStep' hidden$=[[isLastStep(selected)]]>[[nextButtonText]]</paper-button>
+        <paper-button on-tap='confirmStep' hidden$=[[!isLastStep(selected)]]>Finish</paper-button>
+      </span>
     </div>
-
-    <!-- <paper-button>back</paper-button> -->
-    <!-- <paper-button on-tap='confirmStep'>next</paper-button> -->
+    <!-- hidden$=[[!valid]] -->
 
   </template>
 </dom-module>
@@ -91,17 +94,23 @@
       nextButtonText: {
         type: String,
         value: 'next'
-      }
+      },
     },
     observers: {
       'selected': 'confirmStep'
     },
     listeners: {
       'previous-step': 'previousStep',
-      'confirm-step': 'confirmStep'
+      'confirm-step': 'confirmStep',
+      'valid-changed': 'checkValidity',
+      'neon-animation-finish': '_onNeonAnimationFinish'
+    },
+    _onNeonAnimationFinish: function() {
+      console.log('animation done!');
     },
     attached: function() {
       this.getChildren();
+      this.checkValidity();
     },
     getChildren: function() {
       var children = this.getContentChildren('#steps');
@@ -109,20 +118,32 @@
       this.stepsArray = children;
     },
     confirmStep: function() {
-      console.log(this.selected);
-      console.log(this.stepsLength);
       if(this.selected < (this.stepsLength -1)) {
-        this.selected = this.selected + 1;
-        console.log(this.selected);
+        this.$.selector.selectNext();
+      } else {
+        this.fire('onboarding-submit');
       }
-
+      this.checkValidity();
     },
     previousStep: function() {
-      if(this.selected > 0)
-        this.selected = this.selected - 1;
+      if(this.selected > 0) {
+        this.$.selector.selectPrevious();
+      }
+      this.checkValidity();      
     },
     isFirstStep: function(selected) {
-      return selected == 0;
+      return (selected == 0) ? 'visibility: hidden' : '';
+    },
+    isLastStep: function(selected) {
+      return this.selected == (this.stepsLength -1);
+    },
+    isValid: function(valid) {
+      return valid ? '' : 'visibility: hidden';
+    },
+    checkValidity: function() {
+      var children = this.getContentChildren('#steps');
+      console.log(children[this.selected].valid);
+      this.valid = children[this.selected].valid;
     }
   });
 </script>

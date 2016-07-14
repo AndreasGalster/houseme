@@ -1,11 +1,11 @@
-  CRISP_WEBSITE_ID = "e814fea1-2e1d-436b-b042-84b989dec750";
-  (function(){
-    d=document;
-    s=d.createElement("script");
-    s.src="https://client.crisp.im/l.js";
-    s.async=1;
-    d.getElementsByTagName("head")[0].appendChild(s);
-  })();
+  // CRISP_WEBSITE_ID = "e814fea1-2e1d-436b-b042-84b989dec750";
+  // (function(){
+  //   d=document;
+  //   s=d.createElement("script");
+  //   s.src="https://client.crisp.im/l.js";
+  //   s.async=1;
+  //   d.getElementsByTagName("head")[0].appendChild(s);
+  // })();
 
 
   // (function(){

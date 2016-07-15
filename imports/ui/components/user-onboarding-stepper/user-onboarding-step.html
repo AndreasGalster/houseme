@@ -12,6 +12,7 @@
       div {
         @apply(--layout-horizontal);
         @apply(--layout-center);
+        margin-top:50px;
       }
 
     </style>
@@ -56,6 +57,10 @@
         type: String,
         value: 'back'
       },
+      autoConfirm: {
+        type: Boolean,
+        value: false
+      }
     },
     behaviors: [
       Polymer.NeonAnimatableBehavior

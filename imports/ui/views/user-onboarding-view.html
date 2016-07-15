@@ -1,4 +1,4 @@
-<dom-module id='user-onboarding'>
+<dom-module id='user-onboarding-view'>
 
   <template>
     <style include='houseme-styles'></style>
@@ -16,11 +16,22 @@
         --select-button-padding: 12px 35px;
       }
 
+      #month {
+        max-width: 320px;
+      }
+
+      #month fsn-select-button {
+        --select-button-padding: 12px 15px;
+        width: 70px;
+      }
+
       h3 {
         font-size: 42px;
         font-weight: 500;
         color: white;
         /*margin-bottom: 65px;*/
+        margin-top: 125px;
+        margin-bottom: 65px;
       }
 
       p {
@@ -84,7 +95,7 @@
     </style>
 
     <user-onboarding-stepper logo='/svg/houseme_logo.svg' on-onboarding-submit='saveProfile'>
-      <user-onboarding-step selected=[[apartment]] valid=[[isSelected(apartmentSelected)]]>
+      <user-onboarding-step selected=[[apartment]] valid=[[isSelected(apartmentSelected)]] auto-confirm>
         <h3 text-center><strong>Hi Andreas,</strong><br />how can we help you?</h3>
         <fsn-select-buttons id='situation' attr-for-selected='value' selected={{apartment}} selected-item={{apartmentSelected}}>
           <fsn-select-button value='false'>I need a roommate and an apartment</fsn-select-button>
@@ -92,12 +103,12 @@
         </fsn-select-buttons>
       </user-onboarding-step>
 
-      <user-onboarding-step valid=[[citySelected]]>
+      <user-onboarding-step valid=[[citySelected]] auto-confirm>
         <h3 text-center>Where do you want to move?</h3>
         <fsn-places-autocomplete label='Choose a city' value={{city}} valid={{citySelected}}></fsn-places-autocomplete>
       </user-onboarding-step>
 
-      <user-onboarding-step valid=[[isSelected(monthsSelected)]]>
+      <user-onboarding-step valid=[[isSelected(monthsSelected)]] auto-confirm>
         <h3>For how many months?</h3>
         <fsn-select-buttons id='months' attr-for-selected='value' selected={{months}} selected-item={{monthsSelected}}>
           <fsn-select-button value='1'>1</fsn-select-button>
@@ -110,9 +121,26 @@
         </fsn-select-buttons>
       </user-onboarding-step>
 
+      <user-onboarding-step valid=[[isSelected(monthSelected)]] auto-confirm>
+        <h3>When would you like to move in?</h3>
+        <fsn-select-buttons id='month' attr-for-selected='value' selected={{month}} selected-item={{monthSelected}}>
+          <fsn-select-button value='Jan'>Jan</fsn-select-button>
+          <fsn-select-button value='Feb'>Feb</fsn-select-button>
+          <fsn-select-button value='Mar'>Mar</fsn-select-button>
+          <fsn-select-button value='Apr'>Apr</fsn-select-button>
+          <fsn-select-button value='May'>May</fsn-select-button>
+          <fsn-select-button value='Jun'>Jun</fsn-select-button>
+          <fsn-select-button value='Jul'>Jul</fsn-select-button>
+          <fsn-select-button value='Aug'>Aug</fsn-select-button>
+          <fsn-select-button value='Sep'>Sep</fsn-select-button>
+          <fsn-select-button value='Oct'>Oct</fsn-select-button>
+          <fsn-select-button value='Nov'>Nov</fsn-select-button>
+          <fsn-select-button value='Dec'>Dec</fsn-select-button>
+        </fsn-select-buttons>
+      </user-onboarding-step>
+
       <user-onboarding-step valid>
         <h3 text-center>What's your monthly rent budget?</h3>
-        <!-- <paper-slider value={{budget}} min='100' editable></paper-slider> -->
         <paper-slider value='{{budget}}' min='1000' max='100000' step='500' snaps editable required></paper-slider>
       </user-onboarding-step>
 
@@ -135,15 +163,16 @@
   require('@polymer/paper-toggle-button/paper-toggle-button.html');
   require('@polymer/paper-slider/paper-slider.html');
 
-  require('../user-onboarding-stepper/user-onboarding-stepper.html');
-  require('../fsn-select-buttons/fsn-select-buttons.html');
+
+  require('../components/user-onboarding-stepper/user-onboarding-stepper.html');
+  require('../components/fsn-select-buttons/fsn-select-buttons.html');
 
 
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
 
   Polymer({
-    is: 'user-onboarding',
+    is: 'user-onboarding-view',
     properties: {
       budget: {
         type: Number,
@@ -180,14 +209,13 @@
             has_apartment: this.apartment === 'true',
             moving_to: this.city,
             maximum_budget: this.budget,
-            move_in_date: 'Jun',
-            // move_in_date: this.user.date,
+            move_in_date: this.month,
             duration_of_stay: this.months,
           }
         }
       };
-      console.log(options);
-      // Meteor.call('submitProfile', options, (err, res) => console.log('saved profile'));
+      // console.log(options);
+      Meteor.call('submitProfile', options, (err, res) => this.fire('route-selected', {path: '/search'}));
     }
   });
 </script>

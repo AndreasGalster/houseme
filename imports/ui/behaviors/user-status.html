@@ -1,0 +1,23 @@
+<script>
+// UserStatusImpl = {
+UserStatus = {
+  properties: {
+    user: Object,
+    userLoggedIn: Boolean,
+    userActive: Boolean
+  },
+  attached: function() {
+    Meteor.call('getOwnUser', (err,res) => {
+      // let user = Meteor.user();
+      let user = res;
+      this.user = user;
+      this.userLoggedIn = (user != null);
+      this.userActive = (user != undefined) ? user.profile.active : true;
+      // this.userActive = user.profile.active;
+    });
+  },
+  tracker: function() {
+  }
+};
+// UserStatus = [mwcMixin, UserStatusImpl];
+</script>

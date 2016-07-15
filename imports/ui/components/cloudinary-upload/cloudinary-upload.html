@@ -1,0 +1,402 @@
+<link rel="import" href="../../google-elements/polymer/polymer.html">
+<link rel="import" href="../../google-elements/Sortable/Sortable.html">
+<link rel="import" href="../../custom-elements/pigments-styles.html">
+
+
+
+
+<link rel="import" href="../../google-elements/paper-button/paper-button.html">
+<link rel="import" href="../../google-elements/iron-icon/iron-icon.html">
+<link rel="import" href="../../google-elements/iron-image/iron-image.html">
+<link rel="import" href="../../google-elements/paper-progress/paper-progress.html">
+
+
+<link rel="import" href="../../google-elements/meteor-elements/meteor-subscribe.html">
+<link rel="import" href="../../google-elements/meteor-elements/meteor-collection.html">
+<link rel="import" href="../../google-elements/meteor-elements/meteor-query.html">
+
+
+<dom-module id="cloudinary-upload">
+
+  <template>
+    <style include="pigments-styles"></style>
+    <style>
+      div {
+        cursor: move;
+        cursor: -webkit-grabbing;
+        background: rgba(0,0,0,0.2);
+        margin: 15px 0;
+        padding: 5px;
+        display: block;
+      }
+
+      iron-image {
+        width: 10%;
+        height: auto;
+        padding-bottom: 6%;
+        background-color: gray;
+      }
+
+      label {
+        width: 13%;
+        height: auto;
+        padding-bottom: 3%;
+        margin: 0;
+        margin-left: -13%;
+        z-index: 9999;
+      }
+
+      .image_upload_input {
+        display: none;
+      }
+
+      paper-progress {
+        --paper-progress-active-color: white;
+        --paper-progress-container-color: rgba(255,255,255,0.5);
+        padding: 5px;
+        width: 100%;
+      }
+    </style>
+
+    <meteor-subscribe name="AllVendorProfileImages" args='[]' isready="{{subready}}"></meteor-subscribe>
+    <meteor-collection name="vendorimages">
+      <meteor-query data="{{images}}" enable='{{subready}}'></meteor-query>
+    </meteor-collection>
+
+<h1>[[images]]</h1>
+    <template is='dom-if' if="{{imagesAvailable}}">
+      <div id='items'>
+        <sortable-js handle=".order" animation='500' on-sort-end='sortableEnd' on-filter='sortArrows' filter=".move-up, .move-down" force-fallback>
+          <template is="dom-repeat" items="[[images]]">
+
+            <div class="layout horizontal">
+              <iron-icon icon="pigments:reorder" class='order self-center'></iron-icon>
+
+              <iron-image sizing="cover" preload fade src="https://res.cloudinary.com/pigments/image/upload/w_150,h_90,c_fill,q_70/{{item.downloadurl}}.jpg"></iron-image>
+              <label class="layout vertical" for="{{item.downloadurl}}">
+                <input class='image_upload_input' id="{{item.downloadurl}}" on-change="uploadImage" type="file" accept=".png, .gif, .jpg, .jpeg">
+              </label>
+
+              <paper-progress hidden$='{{!active}}' class='self-center flex' value="{{progress}}"></paper-progress>
+              <h4 class="self-center flex" hidden$='{{active}}'>
+
+                <span>{{item.index}}</span>
+
+              </h4>
+
+              <!-- <iron-icon icon="pigments:clear" class='move-up self-center'></iron-icon> -->
+              <!-- <iron-icon icon="pigments:clear" class='move-down self-center'></iron-icon> -->
+
+              <iron-icon on-tap='removeImage' icon="pigments:clear" class='close self-center'></iron-icon>
+            </div>
+
+          </template>
+        </sortable-js>
+      </div>
+
+      <paper-button large fullwidth on-tap='addImage'>add new image <iron-icon icon="pigments:image"></iron-icon></paper-button>
+    </template>
+
+    <template is='dom-if' if="{{!imagesAvailable}}">
+      <paper-button large fullwidth on-tap='addImage'>Add your first image<iron-icon icon="pigments:image"></iron-icon></paper-button>
+    </template>
+
+
+
+
+
+
+  </template>
+
+</dom-module>
+
+<script>
+  // import cloudinary from '../../../../node_modules/cloudinary/cloudinary';
+  //
+  // let cloudinary = require('npm-module')
+  // let cloudinary = require('./folder/foo')
+  // console.log(foo)
+
+
+</script>
+<script src="../../../../node_modules/lodash/lodash.js"                   type="text/javascript"></script>
+<script src="../../../../node_modules/cloudinary-core/cloudinary-core.js" type="text/javascript"></script>
+<script src="../../../../node_modules/jquery.fileupload.js"               type="text/javascript"></script>
+
+<script>
+$(function () {
+  $('input').fileupload({
+      /* ... */
+      progressall: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $('#progress .bar').css(
+              'width',
+              progress + '%'
+          );
+      }
+  });
+});
+
+
+  Polymer({
+
+    is: 'cloudinary-upload',
+
+    properties: {
+
+      // progress: {
+      //   type: String,
+      //   observer: 'progressChanged'
+      // },
+
+      // downloadurl: {
+      //   type: String,
+      //   observer: 'downloadUrlChanged'
+      // },
+
+      // downloadurlComputed: {
+      //   type: String,
+      //   computed: 'computedDownloadurl(downloadurl)'
+      // },
+
+      // imagename: {
+      //   type: String,
+      // },
+
+      // active: {
+      //   type: Boolean,
+      //   value: false
+      // },
+
+      images: {
+        type: Array,
+        observer: 'uploadsTrue'
+        // observer: 'checkImages'
+      },
+
+      imagesAvailable: {
+        type: Boolean,
+        value: function() {
+          return true;
+        }
+      },
+
+      sortable: {
+        type: Boolean,
+        value: false,
+        observer: 'toggleSortable'
+      },
+
+      // imageCollection: {
+      //   type: String,
+      // },
+
+      limiter: {
+        type: String,
+        value: 5,
+        reflectToAttribute: true
+      },
+
+      // uploaded: {
+      //   type: Boolean,
+      //   reflectToAttribute: true
+      // },
+
+
+    },
+
+    // computedDownloadurl: function(downloadurl) {
+    //   return 'https://res.cloudinary.com/pigments/image/upload/w_150,h_90,c_fill,q_70/' + downloadurl + '.jpg';
+    // },
+
+    // progressChanged: function(newValue, oldValue) {
+    //   this.$$('paper-progress').setAttribute('progress', newValue);
+    // },
+
+    // downloadUrlChanged: function(newValue, oldValue) {
+    //   newValue = 'https://res.cloudinary.com/pigments/image/upload/w_150,h_90,c_fill,q_70/' + newValue + '.jpg';
+    //   this.$$('iron-image').setAttribute('src', newValue);
+    // },
+
+
+    checkImages: function(e) {
+      console.log(this.images.length);
+      this.imagesAvailable = true;
+
+    },
+
+    ///////////////////////////////////////////////////////
+    // sets uploaded to true if at least one image added //
+    ///////////////////////////////////////////////////////
+    uploadsTrue: function(oldValue, newValue) {
+      console.log(this.images.length);
+      if(this.images.length > 0) {
+        // this.uploaded == true;
+        this.toggleAttribute('uploaded', true);
+      }
+
+      else {
+        // this.uploaded == false;
+        this.toggleAttribute('uploaded', false);
+      }
+    },
+
+
+
+
+
+    uploadImage: function(e) {
+      var self = this;
+      var id = this.imageid;
+      var files = e.currentTarget.files;
+
+
+      this.active = !this.active;
+      //self.fire('kick', {kicked: true});
+
+
+      // this.toggleAttribute('active');
+      // return Cloudinary.upload(files, {
+
+
+
+      //
+      // cloudinary.v2.uploader.upload(files, {
+      //   folder: 'vendor_images',
+      // }, function(err, res) {
+      //
+      //   self.active = !self.active;
+      //   self.fire('uploadFinished', {uploadFinished: true});
+      //
+      //   if(err) {
+      //     console.log('Upload Error: ' + err);
+      //     console.log(err);
+      //   }
+      //   else {
+      //     VendorProfileImages.update(
+      //       {_id: id},
+      //       {
+      //         $set: {
+      //           'downloadurl': res.public_id,
+      //           'active': true
+      //         }
+      //       }
+      //     );
+      //   }
+      // });
+      //
+    },
+
+    removeImage: function(e) {
+      // var imageUploads = this.querySelectorAll('image-upload');
+      var self = this;
+      var imageUploads = this.$$('template').items;
+      var model = e.model;
+      // console.log(model);
+      var imageId = model.item._id;
+      // console.log(imageId);
+      this.$$('meteor-collection').remove(imageId);
+
+      function sortIndex(element, index, array) {
+        var imageId = element._id;
+        self.$$('meteor-collection').update({_id: imageId}, {$set: {index: index}});
+      }
+
+      _.each( imageUploads, sortIndex.bind(this) );
+
+      // this.imagesAvailable = true;
+    },
+
+
+
+    ////////////////////////////////////////////////////////////
+    // config/initiate cloudinary and set collection variable //
+    ////////////////////////////////////////////////////////////
+    attached: function() {
+      // $.cloudinary.config({
+      //   cloud_name: 'pigments'
+      // });
+
+      // console.log(Meteor.settings.public.cloudinary.cloud_name);
+      // console.log(cloudinary);
+      var cl = cloudinary.Cloudinary.new();
+      cl.config('cloud_name', Meteor.settings.public.cloudinary.cloud_name);
+
+      console.log( cl.url("sample") );
+
+      // collectionName = this.imageCollection;
+      // collectionName = window[collectionName];
+    },
+
+
+
+    /////////////////////////////////////////////////
+    // function sorting images after drag finished //
+    /////////////////////////////////////////////////
+    sortableEnd: function() {
+      var imageUploads = this.querySelectorAll('image-upload');
+      function setIndex(element, index, array) {
+        var id = element.imageid;
+        collectionName.update({_id: id }, {$set: {index: index}});
+      }
+      _.each(imageUploads, setIndex.bind(this));
+    },
+
+
+
+    /////////////////////////////////////////////////
+    // function sorting images after drag finished //
+    /////////////////////////////////////////////////
+    sortArrows: function(e) {
+
+      //   var item = e.item,
+      //       elem = item.previousElementSibling;
+      //
+      //   if (Sortable.utils.is(e.target, '.move-down')) {
+      //     elem = item.nextElementSibling.nextElementSibling;
+      //   }
+      //
+      //   this.el.insertBefore(item, elem);
+    },
+
+
+
+
+    //////////////////////////////////////////////////
+    // sets the image-upload to sortable if defined //
+    //////////////////////////////////////////////////
+    toggleSortable: function(oldValue, newValue) {
+
+      // if(this.sortable) {
+      //   this.$$('sortable-js').initialize();
+      // }
+      // else {
+      //   // this.$$('sortable-js').destroy();
+      // }
+
+    },
+
+
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // add a new image, limiter property defines how many images can be added//
+    ///////////////////////////////////////////////////////////////////////////
+    addImage: function(e) {
+      if ( this.$$('meteor-query').data.length < this.limiter ) {
+        this.$$('meteor-collection').insert({
+          downloadurl: 'vendor_images/cover',
+          imagename: 'Upload your image',
+          index: this.$$('meteor-query').data.length,
+          userid: Meteor.userId(),
+          active: false
+        });
+      }
+    },
+
+  });
+
+</script>

@@ -21,9 +21,6 @@
         width: 40px;
         height: 40px;
         --paper-spinner-layer-1-color: var(--blue);
-        --paper-spinner-layer-2-color: var(--orange);
-        --paper-spinner-layer-3-color: var(--blue);
-        --paper-spinner-layer-4-color: var(--orange);
         --paper-spinner-stroke-width: 2px;
       }*/
     </style>
@@ -63,37 +60,50 @@
           }'></fsn-meta-tag>
         </div>
 
-        <user-onboarding></user-onboarding>
+        <template is='dom-if' if=[[!userActive]]>
+          <user-onboarding-view></user-onboarding-view>
+        </template>
 
-        <!-- <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
-          <template is='iron-lazy-page' data-route='/'>
-            <signup-view></signup-view>
-          </template>
+        <template is='dom-if' if=[[!userLoggedIn]]>
+          <signup-view></signup-view>
 
-          <template is='iron-lazy-page' data-route='/signup'>
-            <signup-view></signup-view>
-          </template>
+          <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+            <template is='iron-lazy-page' data-route='/analytics'>
+              <analytics-view></analytics-view>
+            </template>
+          </iron-lazy-pages>
+        </template>
 
-          <template is='iron-lazy-page' data-route='/profile'>
-            <profile-view></profile-view>
-          </template>
+        <template is='dom-if' if=[[userLoggedIn]]>
+          <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+            <template is='iron-lazy-page' data-route='/'>
+              <search-view></search-view>
+            </template>
 
-          <template is='iron-lazy-page' data-route='/messages'>
-            <messages-view to-user-id=[[toUserId]] message-id=[[messageId]] user-selected=[[userSelected]]></messages-view>
-          </template>
+            <template is='iron-lazy-page' data-route='/profile'>
+              <profile-view></profile-view>
+            </template>
 
-          <template is='iron-lazy-page' data-route='/search'>
-            <search-view></search-view>
-          </template>
+            <template is='iron-lazy-page' data-route='/messages'>
+              <messages-view to-user-id=[[toUserId]] message-id=[[messageId]] user-selected=[[userSelected]]></messages-view>
+            </template>
 
-          <template is='iron-lazy-page' data-route='/talk'>
-            <talk-view></talk-view>
-          </template>
+            <template is='iron-lazy-page' data-route='/search'>
+              <search-view></search-view>
+            </template>
 
-          <template is='iron-lazy-page' data-route='/analytics'>
-            <analytics-view></analytics-view>
-          </template>
-        </iron-lazy-pages> -->
+            <template is='iron-lazy-page' data-route='/talk'>
+              <talk-view></talk-view>
+            </template>
+
+            <template is='iron-lazy-page' data-route='/analytics'>
+              <analytics-view></analytics-view>
+            </template>
+          </iron-lazy-pages>
+        </template>
+
+
+
         <!--
         <section hidden$=[[!isLoading]]>
           <paper-spinner active=[[isLoading]]></paper-spinner>
@@ -118,11 +128,14 @@ require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
 require('@andreasgalster/fsn-meta-tags/dist/fsn-meta-tag.html');
 
 require('../components/paper-navigation/paper-navigation.html');
-require('../components/user-onboarding/user-onboarding.html');
+require('./user-onboarding-view.html');
+require('./signup-view.html');
+require('../behaviors/user-status.html');
 
 
 Polymer({
   is: 'main-view',
+  behaviors: [UserStatus],
   properties: {
     toUserId: String,
     messageId: String,
@@ -197,7 +210,7 @@ Polymer({
     true || require('./talk-view.html');
     true || require('./analytics-view.html');
     //
-    path === '/' ? require(`/imports/ui/views/signup-view.html`) : require(`/imports/ui/views${path}-view.html`);
+    path === '/' ? require(`/imports/ui/views/search-view.html`) : require(`/imports/ui/views${path}-view.html`);
   }
 });
 </script>

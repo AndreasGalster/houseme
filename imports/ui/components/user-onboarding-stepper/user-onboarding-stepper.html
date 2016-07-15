@@ -24,7 +24,7 @@
         width: 10px;
         height:10px;
         display: inline-block;
-        margin: 0 15px;
+        margin: 0 10px;
       }
 
       circle.iron-selected {
@@ -129,7 +129,7 @@
       if(this.selected > 0) {
         this.$.selector.selectPrevious();
       }
-      this.checkValidity();      
+      this.checkValidity();
     },
     isFirstStep: function(selected) {
       return (selected == 0) ? 'visibility: hidden' : '';
@@ -142,8 +142,11 @@
     },
     checkValidity: function() {
       var children = this.getContentChildren('#steps');
-      console.log(children[this.selected].valid);
       this.valid = children[this.selected].valid;
+
+      // if(children[this.selected].autoConfirm && children[this.selected].valid) {
+      //   this.confirmStep();
+      // }
     }
   });
 </script>

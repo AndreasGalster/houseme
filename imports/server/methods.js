@@ -17,6 +17,10 @@ Meteor.methods({
     return Meteor.user().profile;
   },
 
+  getOwnUser: function() {
+    return Meteor.user();
+  },
+
   submitProfile: function(options) {
     Meteor.users.update(
       Meteor.userId(),
@@ -143,7 +147,9 @@ Meteor.methods({
   },
   removeUser: function(userid) {
     return Meteor.users.remove({_id: userid});
-    // return Meteor.users.findOne({_id: userid}).remove({});
+  },
+  removeOwnUser: function() {
+    return Meteor.users.remove({_id: Meteor.userId()});
   },
   removeAllPrivateMessagesList: function() {
     return PrivateMessagesList.remove({});

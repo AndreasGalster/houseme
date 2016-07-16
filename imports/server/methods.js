@@ -1,3 +1,12 @@
+var cloudinary = require('cloudinary');
+cloudinary.config({
+  cloud_name: settings.cloudinary.cloud_name,
+  api_key: settings.cloudinary.api_key,
+  api_secret: settings.cloudinary.api_secret
+});
+
+
+
 Meteor.methods({
   /* Profile retrieval & updating
    *
@@ -132,6 +141,31 @@ Meteor.methods({
       );
     }
   },
+
+
+
+  imageUpload: function (imagepath) {
+
+    cloudinary.uploader.upload(imagePath, (err, res) => {
+          if(err){
+            console.log(err.reason);
+          }
+          else{
+            return res.public_id;
+          }
+      },{
+          crop: 'limit',
+          width: 400,
+          height: 400,
+          eager: [
+            { width: 200, height: 200, crop: 'thumb', gravity: 'face',
+              radius: 20 },
+              { width: 100, height: 150, crop: fit, format: 'png'}
+          ],
+          tags: ['profile']
+      })
+
+   },
 
 
   /* Utility methods to delete stuff

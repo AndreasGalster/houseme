@@ -95,6 +95,11 @@
     </style>
 
     <user-onboarding-stepper logo='/svg/houseme_logo.svg' on-onboarding-submit='saveProfile'>
+      <user-onboarding-step selected=[[image]] valid=[[imageValid]] auto-confirm>
+        <h3 text-center><strong>Hi Andreas,</strong><br />how can we help you?</h3>
+        <cloudinary-upload valid={{imageValid}} imageId={{image}}></cloudinary-upload>
+      </user-onboarding-step>
+
       <user-onboarding-step selected=[[apartment]] valid=[[isSelected(apartmentSelected)]] auto-confirm>
         <h3 text-center><strong>Hi Andreas,</strong><br />how can we help you?</h3>
         <fsn-select-buttons id='situation' attr-for-selected='value' selected={{apartment}} selected-item={{apartmentSelected}}>
@@ -164,6 +169,7 @@
   require('@polymer/paper-slider/paper-slider.html');
 
 
+  require('../components/cloudinary-upload/cloudinary-upload.html');
   require('../components/user-onboarding-stepper/user-onboarding-stepper.html');
   require('../components/fsn-select-buttons/fsn-select-buttons.html');
 
@@ -205,6 +211,7 @@
         profile: {
           active: true,
           logged_in: true,
+          image_id: this.image,
           details: {
             has_apartment: this.apartment === 'true',
             moving_to: this.city,

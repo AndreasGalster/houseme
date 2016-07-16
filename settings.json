@@ -1,34 +1,26 @@
-//settings file
 {
+  "public": {
+    "cloudinary": {
+      "cloud_name": "djkegjjwb"
+    }
+  },
   "facebook": {
-		"appId": "1487921041533128",
-		"secret": "b93b1c33d6a2fdab8d20785693982d95"
+    "appId": "1487921041533128",
+    "secret": "b93b1c33d6a2fdab8d20785693982d95"
   },
-	"public": {
-		"cloudinary": {
-			"cloud_name": "djkegjjwb"
-		}
-	},
-	"prerender": {
-		"token": "shcAJhf1RQNPpqdc7aBA"
-	},
-	"sendgrid": {
-		"api_key": "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"
-	},
-	"cloudinary": {
-		"cloud_name": "djkegjjwb",
-		"api_key": "164899291251532",
-		"api_secret": "dhEkzagLq7KiCNfCax1-sE7jfuw"
-	},
-  "cloudinary2": {
-		"cloud_name": "djkegjjwb",
-		"api_key": "164899291251532",
-		"api_secret": "dhEkzagLq7KiCNfCax1-sE7jfuw"
-	},
-  "private": {
-      "MailChimp": {
-          "apiKey": "d3188c839ffa89e14782576d3cc39b81-us3",
-          "listId": "3999338f74"
-      }
+  "prerender": {
+    "token": "shcAJhf1RQNPpqdc7aBA"
   },
+  "sendgrid": {
+    "api_key": "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"
+  },
+  "cloudinary": {
+    "cloud_name": "djkegjjwb",
+    "api_key": "164899291251532",
+    "api_secret": "dhEkzagLq7KiCNfCax1-sE7jfuw"
+  },
+  "MailChimp": {
+    "apiKey": "d3188c839ffa89e14782576d3cc39b81-us3",
+    "listId": "3999338f74"
+  }
 }

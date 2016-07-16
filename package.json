@@ -32,6 +32,7 @@
     "@polymer/paper-toolbar": "0.0.3",
     "@polymer/polymer": "^1.2.5-npm-test.2",
     "bootstrap": "^4.0.0-alpha.2",
+    "cloudinary": "^1.4.1",
     "lodash": "^4.6.1",
     "moment": "^2.13.0",
     "prerender-node": "^2.3.0",

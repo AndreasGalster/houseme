@@ -1,0 +1,337 @@
+<link rel="import" href="../../google-elements/polymer/polymer.html">
+<link rel="import" href="../../google-elements/paper-input/paper-input.html">
+<link rel="import" href="../../google-elements/gold-email-input/gold-email-input.html">
+
+<link rel="import" href="../../google-elements/paper-button/paper-button.html">
+<link rel="import" href="../../google-elements/paper-toast/paper-toast.html">
+<link rel="import" href="../../google-elements/paper-spinner/paper-spinner.html">
+
+
+<link rel="import" href="../../google-elements/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../google-elements/iron-icon/iron-icon.html">
+<link rel="import" href="../../custom-elements/custom-icons.html">
+
+
+<dom-module id="login-form">
+
+  <template>
+    <style is="custom-style" include="iron-positioning iron-flex-alignment iron-flex"></style>
+    <style>
+      :host {
+        background: white;
+        padding: 10px;
+        margin:0;  
+        display: block;
+      }
+
+      h1 {
+        text-align: center;
+        color: white;
+        background-color: var(--grey-darker, #384555);
+        margin: -10px;
+        margin-top: -10px !important;
+        font-weight: 300;
+        font-size: 31px;
+        text-transform: uppercase;
+        margin-bottom: 43px;
+        padding: 24px;
+      }
+
+      h2, h3 {
+        color: var(--blue, #3896ed);
+        font-size:18px;
+        margin: 0;
+        margin-top: -3px;
+      }
+
+      h2 {
+        margin-top: -15px;
+      }
+
+      paper-input, gold-email-input {
+        margin-bottom: 30px;
+      }
+
+      section paper-button {
+        background: var(--confirm, #1ee01f);
+        width: 100%;
+        font-weight: 900;
+        color: white;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+      section#logged_in {
+        background: var(--grey-darker, #384555);
+        margin: -30px;
+        padding: 20px;        
+      }
+
+      footer {
+        color: black;
+      }
+
+      footer span {
+        color: var(--blue, #3896ed); 
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      #logout {
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+      }
+
+      paper-toast paper-button {
+        color: var(--pigments-green-500);
+        font-weight: bold;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);        
+      }
+
+      paper-spinner {
+        --paper-spinner-layer-1-color: var(--pigments-blue-500);
+        --paper-spinner-layer-2-color: var(--pigments-blue-500);
+        --paper-spinner-layer-3-color: var(--pigments-blue-500);
+        --paper-spinner-layer-4-color: var(--pigments-blue-500);
+
+
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(-50%,-50%);        
+      }
+
+    </style>
+
+
+    <paper-toast class='fixed-bottom' duration="7000">
+      <paper-button no-ink on-tap="close">Close</paper-button>
+    </paper-toast>
+
+    <template is="dom-if" if="{{loggedIn}}">
+      <section id='logged_in'>
+          <h1>You are logged in</h1>
+          <a href='/account'><paper-button>Visit your account</paper-button></a>
+          <a href='/projects'><paper-button>Visit your projects</paper-button></a>
+          <span id='logout' on-tap='logout'>Logout from your account</span>
+      </section>
+    </template>
+
+    <template is="dom-if" if="{{!loggedIn}}">
+      <section>
+        <!-- <paper-spinner active></paper-spinner> -->
+
+        <form>
+          <template is="dom-if" if="{{alreadyMember}}">
+            <h1>Login as a user</h1>
+          </template>
+
+          <template is="dom-if" if="{{!alreadyMember}}">
+            <h1>Sign up as a user</h1>
+          </template>
+            
+          <h2>What's your e-mail?</h2>              
+          <gold-email-input 
+            class='validate' 
+            no-label-float 
+            required
+            auto-validate
+            label="Your e-mail address" 
+            error-message="This doesn't look like an e-mail address."
+            value='{{email}}'>
+          </gold-email-input>
+
+          <h2>Tell us a secret!</h2>
+          <paper-input 
+            class='validate'
+            no-label-float 
+            required
+            auto-validate
+            minlength="6"
+            name="registerPassword" 
+            label="Your password" 
+            type='password' 
+            error-message="Looks like the password is shorter than 6 characters."                
+            value='{{password}}'>
+            <iron-icon hidden$='{{visiblePassword}}' on-tap='showPassword' suffix icon="pigments:visibility"></iron-icon>
+            <iron-icon hidden$='{{!visiblePassword}}' on-tap='hidePassword' suffix icon="pigments:visibility-off"></iron-icon>
+          </paper-input>
+
+          <template is="dom-if" if="{{alreadyMember}}">
+            <paper-button on-tap='loginUser'>Login</paper-button>
+            <footer>Not a member? <span on-tap='setAlreadyMember'>Register here.</span></footer>
+          </template>
+
+          <template is="dom-if" if="{{!alreadyMember}}">
+            <paper-button on-tap='signupUser'>Sign up</paper-button>
+            <footer>Already a member? <span on-tap='setAlreadyMember'>Login here.</span></footer>
+          </template>
+
+         </form>
+      </section>
+    </template>
+
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+    is: 'login-form',
+    properties: {
+      ////////////////////////////////////////////////
+      // determines if form is set to vendor signup //
+      ////////////////////////////////////////////////
+      vendor: {
+        type: Boolean,
+        value: false
+      },
+
+      redirectTo: {
+        type: String,
+        value: function() {
+          return FlowRouter.current().path;
+        }
+      },
+
+      ////////////////////////////////////////////////
+      // user state - changes behavior on logged in //
+      ////////////////////////////////////////////////      
+      loggedIn: {
+        type: Boolean,
+        value: false
+      },
+      ///////////////////////////////////////////////////
+      // defines if state is currently login or signup //
+      ///////////////////////////////////////////////////  
+      alreadyMember: {
+        type: Boolean,
+        value: false
+      },
+      ///////////////////////////////////////////////////
+      // defines if state is currently login or signup //
+      ///////////////////////////////////////////////////  
+      visiblePassword: {
+        type: Boolean,
+        value: false
+      },      
+      ///////////////////////////////////////////////////
+      // defines if state is currently login or signup //
+      ///////////////////////////////////////////////////      
+      signup: {
+        type: Boolean,
+        value: false
+      },
+      ///////////////////////////////////////////////////
+      // name of callback function to execute on login //
+      ///////////////////////////////////////////////////
+      callback: {
+        type: String,
+      },             
+    },
+
+    attached: function() {
+      var self = this;
+      Tracker.autorun(function () {
+        self.loggedIn = Meteor.user();
+      }); 
+    },
+
+    logout: function() {
+      Meteor.logout();
+    },
+
+    validate: function() {
+      var self = this;
+      var validity = [];
+
+      Polymer.dom(this.root).querySelectorAll('.validate').forEach(function(value) {
+        value.validate();
+        validity.push(value.invalid);
+      });
+
+      return validity;
+    },
+
+    signupUser: function(e) {    
+      var user;
+      var self = this;
+
+      user = {
+        password: this.password,
+        email: this.email,
+        profile: {
+          vendor: this.vendor,
+          vendorVerified: false
+        }
+      };
+
+      this.validate();
+
+      if ( _.includes(this.validate(), true) === false ) {
+        Accounts.createUser(user, function (error, result) {
+          if (error) {
+            // console.log(error);
+            // console.log(error.error);
+            if (error.error === 403) {
+              self.$$('paper-toast').text = 'This e-mail is already in use.';
+              self.$$('paper-toast').toggle();
+            }
+          }
+
+
+          // Meteor.call('');Accounts.sendVerificationEmail( Meteor.userId(), Meteor.user().emails[0].address);
+        });
+      }
+
+    },
+
+
+
+    loginUser: function(e) {    
+      var self = this;
+      this.validate();
+
+      if ( _.includes(this.validate(), true) === false ) {        
+        Meteor.loginWithPassword(this.email, this.password, function (error, result) {
+          if (error) {
+            if (error.error === 403) {
+              self.$$('paper-toast').text = 'This account does not exist.';          
+              self.$$('paper-toast').toggle();
+            }
+          }
+
+          else {
+            console.log('logged in');
+            FlowRouter.go('/' + self.redirectTo);
+          }
+        });
+      }
+    },
+
+    showPassword: function(e) {    
+      this.$$('paper-input').setAttribute('type','text');
+      this.visiblePassword = true;
+    },
+
+    hidePassword: function(e) {  
+      this.$$('paper-input').setAttribute('type','password');
+      this.visiblePassword = false;
+    },
+
+    setAlreadyMember: function(e) {    
+      this.toggleAttribute('already-member');
+    },
+
+    close: function() {
+      this.$$('paper-toast').close();    
+    },
+
+  });
+
+</script>

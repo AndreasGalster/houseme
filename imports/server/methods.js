@@ -144,16 +144,15 @@ Meteor.methods({
 
 
 
-  imageUpload: function (imagepath) {
-
-    cloudinary.uploader.upload(imagePath, (err, res) => {
+  imageUpload: function (imageFile) {
+    cloudinary.uploader.upload(imageFile, (err, res) => {
           if(err){
             console.log(err.reason);
           }
           else{
             return res.public_id;
           }
-      },{
+      }, {
           crop: 'limit',
           width: 400,
           height: 400,
@@ -164,7 +163,6 @@ Meteor.methods({
           ],
           tags: ['profile']
       })
-
    },
 
 

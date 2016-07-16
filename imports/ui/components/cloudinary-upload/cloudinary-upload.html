@@ -1,5 +1,4 @@
 <dom-module id='cloudinary-upload'>
-
   <template>
     <style include='houseme-styles'></style>
     <style>
@@ -20,13 +19,18 @@
       }
     </style>
 
-    <iron-image sizing='cover' preload fade src='https://res.cloudinary.com/pigments/image/upload/w_150,h_90,c_fill,q_70/{{item.downloadurl}}.jpg'></iron-image>
+    <iron-image
+      sizing='cover'
+      preload
+      fade
+      src='https://res.cloudinary.com/pigments/image/upload/w_150,h_90,c_fill,q_70/{{item.downloadurl}}.jpg'>
+    </iron-image>
+
     <label for='image'>
       <input id='image' on-change='uploadImage' type='file' accept='.png, .gif, .jpg, .jpeg'>
     </label>
 
   </template>
-
 </dom-module>
 
 <script>
@@ -35,44 +39,34 @@
 
   require('@andreasgalster/fsn-boilerplate/fsn-boilerplate.html');
 
-  require('lodash/lodash.js');
-  require('cloudinary-core/cloudinary-core.js');
-
   Polymer({
-
     is: 'cloudinary-upload',
-
     properties: {
-
       imagesAvailable: Boolean,
-      limiter: {
-        type: String,
-        value: 1,
-        reflectToAttribute: true
-      },
       valid: Boolean,
+      imageId: String,
+      baseUrl: {
+        type: String,
+        value: `https://res.cloudinary.com/${Meteor.settings.public.cloudinary.cloud_name}/image/upload/`
+      }
     },
-
     uploadImage: function(e) {
       let file = e.currentTarget.files;
-
-      cloudinary.v2.uploader.upload(file, {
-        folder: 'vendor_images',
-      }, (err, res) => {
+      Meteor.call('upload', file, (err, res) => {
         if(err) {
-          console.log('Upload Error: ' + err);
-        } else { }
+          return;
+        } else {
+          this.imageId = res;
+          this.valid = true;
+        }
       });
-
     },
-
-    ////////////////////////////////////////////////////////////
-    // config/initiate cloudinary and set collection variable //
-    ////////////////////////////////////////////////////////////
-    attached: function() {
-      var clConfig = cloudinary.Cloudinary.new();
-      clConfig.config('cloud_name', Meteor.settings.public.cloudinary.cloud_name);
-    },
+    imageUrl: function() {
+      return
+      this.imageId ?
+      `${this.baseUrl}w_150,h_90,c_fill,q_70/${this.ImageId}` :
+      `${this.baseUrl}w_150,h_90,c_fill,q_70/yolo`;
+    }
 
   });
 

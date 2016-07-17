@@ -143,6 +143,8 @@
     checkValidity: function() {
       var children = this.getContentChildren('#steps');
       this.valid = children[this.selected].valid;
+      // this.toggleClass('selectable', true, children[this.selected]);
+      // this.toggleClass('selectable', true, children[this.selected+1]);
 
       // if(children[this.selected].autoConfirm && children[this.selected].valid) {
       //   this.confirmStep();

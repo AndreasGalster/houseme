@@ -65,9 +65,11 @@
         </template>
 
         <template is='dom-if' if=[[!userLoggedIn]]>
-          <signup-view></signup-view>
-
           <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+            <template is='iron-lazy-page' data-route='/'>
+              <signup-view></signup-view>
+            </template>
+
             <template is='iron-lazy-page' data-route='/analytics'>
               <analytics-view></analytics-view>
             </template>
@@ -130,12 +132,13 @@ require('@andreasgalster/fsn-meta-tags/dist/fsn-meta-tag.html');
 require('../components/paper-navigation/paper-navigation.html');
 require('./user-onboarding-view.html');
 require('./signup-view.html');
-require('../behaviors/user-status.html');
+// require('../behaviors/user-status.html');
 
 
 Polymer({
   is: 'main-view',
-  behaviors: [UserStatus],
+  // behaviors: [UserStatus],
+  behaviors: [mwcMixin],
   properties: {
     toUserId: String,
     messageId: String,
@@ -150,6 +153,12 @@ Polymer({
     'userid-selected': 'setUserSelected',
     'user-selected-false': 'resetUserSelected',
     'message-view-ready': 'notifyMessageView'
+  },
+  tracker: function() {
+    let user = Meteor.user();
+    this.user = user;
+    this.userLoggedIn = (user != null);
+    this.userActive = (user != undefined) ? user.profile.active : true;
   },
   attached: function() {
     // hotjar

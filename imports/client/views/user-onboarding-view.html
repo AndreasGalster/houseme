@@ -55,7 +55,10 @@
       fsn-places-autocomplete {
         text-align: center;
         min-width: 300px;
-        --paper-input-container-color: red;
+        --places-autocomplete-container-color: white;
+        --places-autocomplete-container-focus-color: white;
+        --places-autocomplete-container-invalid-color: white;
+        --places-autocomplete-input-container-input-color: white;
       }
 
       #situation fsn-select-button {
@@ -83,24 +86,26 @@
         --paper-slider-input: {
           width: 100px;
           opacity: 0.8;
-          color: pink;
-          --paper-input-container-color: red;
         };
-        /*
-        --paper-slider-font-color	The pin's text color	#fff
-        --paper-slider-pin-start-color	The color of the pin at the far left	--paper-grey-400
-                */
+        paper-input {
+          --paper-input-container-color: white;
+          --paper-input-container-focus-color: white;
+          --paper-input-container-invalid-color: white;
+          --paper-input-container-input-color: white;
+        }
       }
+
+
 
     </style>
 
     <user-onboarding-stepper logo='/svg/houseme_logo.svg' on-onboarding-submit='saveProfile'>
-      <user-onboarding-step selected=[[image]] valid=[[imageValid]] auto-confirm>
+      <!-- <user-onboarding-step selected=[[image]] valid=[[imageValid]] auto-confirm>
         <h3 text-center><strong>Hi Andreas,</strong><br />how can we help you?</h3>
         <cloudinary-upload valid={{imageValid}} imageId={{image}}></cloudinary-upload>
-      </user-onboarding-step>
+      </user-onboarding-step> -->
 
-      <user-onboarding-step selected=[[apartment]] valid=[[isSelected(apartmentSelected)]] auto-confirm>
+      <user-onboarding-step selected=[[apartment]] valid=[[isSelected(apartmentSelected)]] auto-confirm class='is-selectable'>
         <h3 text-center><strong>Hi Andreas,</strong><br />how can we help you?</h3>
         <fsn-select-buttons id='situation' attr-for-selected='value' selected={{apartment}} selected-item={{apartmentSelected}}>
           <fsn-select-button value='false'>I need a roommate and an apartment</fsn-select-button>
@@ -108,7 +113,7 @@
         </fsn-select-buttons>
       </user-onboarding-step>
 
-      <user-onboarding-step valid=[[citySelected]] auto-confirm>
+      <user-onboarding-step valid=[[citySelected]] auto-confirm class='is-selectable'>
         <h3 text-center>Where do you want to move?</h3>
         <fsn-places-autocomplete label='Choose a city' value={{city}} valid={{citySelected}}></fsn-places-autocomplete>
       </user-onboarding-step>
@@ -146,7 +151,7 @@
 
       <user-onboarding-step valid>
         <h3 text-center>What's your monthly rent budget?</h3>
-        <paper-slider value='{{budget}}' min='1000' max='100000' step='500' snaps editable required></paper-slider>
+        <paper-slider value={{budget}} min='1000' max='100000' step='500' snaps editable required></paper-slider>
       </user-onboarding-step>
 
       <user-onboarding-step next-button-text='search for roommates' valid>
@@ -168,14 +173,14 @@
   require('@polymer/paper-toggle-button/paper-toggle-button.html');
   require('@polymer/paper-slider/paper-slider.html');
 
-
   require('../components/cloudinary-upload/cloudinary-upload.html');
   require('../components/user-onboarding-stepper/user-onboarding-stepper.html');
   require('../components/fsn-select-buttons/fsn-select-buttons.html');
 
-
   require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
   require('@andreasgalster/fsn-places-autocomplete/dist/fsn-places-autocomplete.html');
+
+  const _ = require('lodash');
 
   Polymer({
     is: 'user-onboarding-view',
@@ -205,24 +210,36 @@
     confirmStep: function() {
       this.$$('user-onboarding-stepper').confirmStep();
     },
+    validate: function() {
+      var validity = [];
+      Polymer.dom(this.root).querySelectorAll('user-onboarding-step').forEach(function(stepper) {
+        validity.push(stepper.valid);
+      });
+
+      return validity;
+    },
     saveProfile: function() {
-      // console.log('saving profile');
-      let options = {
-        profile: {
-          active: true,
-          logged_in: true,
-          image_id: this.image,
-          details: {
-            has_apartment: this.apartment === 'true',
-            moving_to: this.city,
-            maximum_budget: this.budget,
-            move_in_date: this.month,
-            duration_of_stay: this.months,
+      if ( _.includes(this.validate(), false) === false ) {
+        let options = {
+          profile: {
+            active: true,
+            logged_in: true,
+            image_id: this.image,
+            details: {
+              has_apartment: this.apartment === 'true',
+              moving_to: this.city,
+              maximum_budget: this.budget,
+              move_in_date: this.month,
+              duration_of_stay: this.months,
+            }
           }
-        }
-      };
-      // console.log(options);
-      Meteor.call('submitProfile', options, (err, res) => this.fire('route-selected', {path: '/search'}));
+        };
+        Meteor.call('submitProfile', options, (err, res) => this.fire('route-selected', {path: '/search'}));
+      } else {
+        console.log('yo something needs to be filled out');
+      }
+      // console.log(this.validate());
+      // console.log(_.includes(this.validate(), false));
     }
   });
 </script>

@@ -15,4 +15,4 @@ import '../imports/server/startup.js';
 import '../imports/server/collections.js';
 
 // imports only methods
-import '../imports/server/methods.js';
+import '../imports/server/methods/methods.js';

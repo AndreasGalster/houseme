@@ -20,7 +20,7 @@
     "api_secret": "dhEkzagLq7KiCNfCax1-sE7jfuw"
   },
   "MailChimp": {
-    "apiKey": "d3188c839ffa89e14782576d3cc39b81-us3",
-    "listId": "3999338f74"
+      "apiKey": "d3188c839ffa89e14782576d3cc39b81-us3",
+      "listId": "3999338f74"
   }
 }

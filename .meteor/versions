@@ -53,9 +53,9 @@ modules@0.6.5
 modules-runtime@0.6.5
 mongo@1.1.9_1
 mongo-id@1.0.5
-mwc:mixin@1.0.24
-mwc:synthesis@1.0.40
-mwc:synthesis-compiler@1.0.38
+mwc:mixin@1.0.25
+mwc:synthesis@1.0.41
+mwc:synthesis-compiler@1.0.39
 npm-bcrypt@0.8.6_2
 npm-mongo@1.4.45
 oauth@1.1.11

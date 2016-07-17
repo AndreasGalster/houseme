@@ -1,0 +1,216 @@
+<dom-module id='main-view'>
+
+  <template>
+    <style include='view-styles'></style>
+    <style include='houseme-styles'></style>
+    <style>
+
+      :host {
+        @apply(--fixed-view);
+        @apply(--scroll-view);
+      }
+
+      section {
+        @apply(--fill-view);
+        @apply(--layout);
+        @apply(--layout-center-center);
+        background: white;
+      }
+
+      /*paper-spinner {
+        width: 40px;
+        height: 40px;
+        --paper-spinner-layer-1-color: var(--blue);
+        --paper-spinner-stroke-width: 2px;
+      }*/
+    </style>
+
+    <paper-header-panel mode='waterfall'>
+      <paper-navigation selected-page={{path}} class='paper-header'></paper-navigation>
+      <div class='content'>
+
+        <app-location route={{route}} path={{path}}></app-location>
+        <app-route route={{route}} pattern='/:page'>
+        </app-route>
+
+        <!-- <fsn-meta-tags attr-for-selected="data-route" selected=[[path]]> -->
+        <div>
+          <fsn-meta-tag path='/' title='Finding roommates made easy - houseme (beta)' meta='{
+            "description": "Are you looking for a roommate? We will help you find the perfect one!"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:title",
+            "content": "Finding roommates made easy - houseme (beta)"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:image",
+            "content": "https://www.houseme.space/img/hero_image.jpg"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:site_name",
+            "content": "houseme roommate finder"
+          }'></fsn-meta-tag>
+
+          <fsn-meta-tag meta='{
+            "property": "og:description",
+            "content": "Are you looking for a roommate? We will help you find the perfect one!"
+          }'></fsn-meta-tag>
+        </div>
+
+        <template is='dom-if' if=[[!userActive]]>
+          <user-onboarding-view></user-onboarding-view>
+        </template>
+
+        <template is='dom-if' if=[[!userLoggedIn]]>
+          <signup-view></signup-view>
+
+          <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+            <template is='iron-lazy-page' data-route='/analytics'>
+              <analytics-view></analytics-view>
+            </template>
+          </iron-lazy-pages>
+        </template>
+
+        <template is='dom-if' if=[[userLoggedIn]]>
+          <iron-lazy-pages attr-for-selected='data-route' selected=[[path]]>
+            <template is='iron-lazy-page' data-route='/'>
+              <search-view></search-view>
+            </template>
+
+            <template is='iron-lazy-page' data-route='/profile'>
+              <profile-view></profile-view>
+            </template>
+
+            <template is='iron-lazy-page' data-route='/messages'>
+              <messages-view to-user-id=[[toUserId]] message-id=[[messageId]] user-selected=[[userSelected]]></messages-view>
+            </template>
+
+            <template is='iron-lazy-page' data-route='/search'>
+              <search-view></search-view>
+            </template>
+
+            <template is='iron-lazy-page' data-route='/talk'>
+              <talk-view></talk-view>
+            </template>
+
+            <template is='iron-lazy-page' data-route='/analytics'>
+              <analytics-view></analytics-view>
+            </template>
+          </iron-lazy-pages>
+        </template>
+
+
+
+        <!--
+        <section hidden$=[[!isLoading]]>
+          <paper-spinner active=[[isLoading]]></paper-spinner>
+        </section>
+        -->
+      </div>
+    </paper-header-panel>
+
+  </template>
+</dom-module>
+
+<script>
+require('@polymer/polymer/polymer.html');
+require('@polymer/paper-header-panel/paper-header-panel.html');
+require('@polymer/paper-spinner/paper-spinner.html');
+require('@polymer/iron-flex-layout/iron-flex-layout.html');
+require('@polymer/app-route/app-route.html');
+require('@polymer/app-route/app-location.html');
+require('@polymer/iron-lazy-pages/iron-lazy-pages.html');
+
+require('@andreasgalster/fsn-boilerplate/dist/fsn-boilerplate.html');
+require('@andreasgalster/fsn-meta-tags/dist/fsn-meta-tag.html');
+
+require('../components/paper-navigation/paper-navigation.html');
+require('./user-onboarding-view.html');
+require('./signup-view.html');
+require('../behaviors/user-status.html');
+
+
+Polymer({
+  is: 'main-view',
+  behaviors: [UserStatus],
+  properties: {
+    toUserId: String,
+    messageId: String,
+    userSelected: Boolean
+  },
+  observers: [
+    // '_lockScroll(isLoading)',
+    '_loadViewDependency(path)'
+  ],
+  listeners: {
+    'route-selected': 'changeRoute',
+    'userid-selected': 'setUserSelected',
+    'user-selected-false': 'resetUserSelected',
+    'message-view-ready': 'notifyMessageView'
+  },
+  attached: function() {
+    // hotjar
+    // old pigments credentials
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:233036,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+
+
+    window.OneSignal = window.OneSignal || [];
+    window.OneSignal.push(['init', {
+      safari_web_id: 'web.onesignal.auto.13d8bf97-93cf-4a09-b799-2a50baaf1',
+      appId: '747d7b85-5f75-42a4-a888-cd7c5d6c6fa5',
+      autoRegister: false,
+      notifyButton: {
+        enable: false /* Set to false to hide */
+      }
+    }]);
+    mixpanel.init('94b58665ac1566d80c71cd218370772b');
+  },
+  resetUserSelected: function() {
+    this.userSelected = false;
+    this.toUserId = undefined;
+  },
+  setUserSelected: function(e) {
+    this.userSelected = true;
+    this.toUserId = e.detail;
+    this.messageId = undefined;
+    this.notifyMessageView();
+  },
+  // notify the userId or otherwise binding won't update
+  notifyMessageView: function() {
+    this.notifyPath('userSelected', this.userSelected);
+    this.notifyPath('toUserId', this.toUserId);
+    this.notifyPath('messageId', this.messageId);
+  },
+  // takes route path where to go
+  changeRoute: function(e) {
+    this.path = e.detail.path;
+  },
+  // _lockScroll: function(isLoading) {
+  //   if (isLoading) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'visible';
+  //   }
+  // },
+  _loadViewDependency: function(path) {
+    true || require('./signup-view.html');
+    true || require('./search-view.html');
+    true || require('./messages-view.html');
+    true || require('./profile-view.html');
+    true || require('./talk-view.html');
+    true || require('./analytics-view.html');
+    //
+    path === '/' ? require(`/imports/client/views/search-view.html`) : require(`/imports/client/views${path}-view.html`);
+  }
+});
+</script>
